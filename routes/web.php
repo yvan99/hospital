@@ -40,3 +40,23 @@ Route::prefix('nurse')->group(function () {
     Route::post('/login', [AuthNurseLoginController::class, 'login'])->name('nurse.login.submit');
     // Add other routes specific to the nurse
 });
+
+// AUTHENTICATED MIDDLEWARE ROUTES
+
+Route::middleware('auth:receptionist')->group(function () {
+    Route::prefix('receptionist')->group(function () {
+        // Add receptionist dashboard routes here
+    });
+});
+
+Route::middleware('auth:doctor')->group(function () {
+    Route::prefix('doctor')->group(function () {
+        // Add doctor dashboard routes here
+    });
+});
+
+Route::middleware('auth:nurse')->group(function () {
+    Route::prefix('nurse')->group(function () {
+        // Add nurse dashboard routes here
+    });
+});
