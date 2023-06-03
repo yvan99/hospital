@@ -6,24 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateReceptionistsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('receptionists', function (Blueprint $table) {
             $table->id();
+            $table->string('names');
+            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('password');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('receptionists');
