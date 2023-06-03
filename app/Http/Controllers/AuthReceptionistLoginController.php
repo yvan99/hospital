@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class AuthReceptionistLoginController extends Controller
 {
@@ -22,5 +24,16 @@ class AuthReceptionistLoginController extends Controller
     protected function guard()
     {
         return auth()->guard('receptionist');
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard('receptionist')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/receptionist/login');
     }
 }

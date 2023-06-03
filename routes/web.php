@@ -20,25 +20,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Receptionist login routes
+// Receptionist Auth
 Route::prefix('receptionist')->group(function () {
     Route::get('/login', [AuthReceptionistLoginController::class, 'showLoginForm'])->name('receptionist.login');
     Route::post('/login', [AuthReceptionistLoginController::class, 'login'])->name('receptionist.login.submit');
-    // Add other routes specific to the receptionist
+    Route::get('/logout', [AuthReceptionistLoginController::class, 'logout'])->name('receptionist.logout');
 });
 
-// Doctor login routes
+// Doctor Auth
 Route::prefix('doctor')->group(function () {
     Route::get('/login', [AuthDoctorLoginController::class, 'showLoginForm'])->name('doctor.login');
     Route::post('/login', [AuthDoctorLoginController::class, 'login'])->name('doctor.login.submit');
-    // Add other routes specific to the doctor
+    Route::get('/logout', [AuthDoctorLoginController::class, 'logout'])->name('doctor.logout');
 });
 
-// Nurse login routes
+// Nurse Auth
 Route::prefix('nurse')->group(function () {
     Route::get('/login', [AuthNurseLoginController::class, 'showLoginForm'])->name('nurse.login');
     Route::post('/login', [AuthNurseLoginController::class, 'login'])->name('nurse.login.submit');
-    // Add other routes specific to the nurse
+    Route::get('/logout', [AuthNurseLoginController::class, 'logout'])->name('nurse.logout');
 });
 
 // AUTHENTICATED MIDDLEWARE ROUTES
