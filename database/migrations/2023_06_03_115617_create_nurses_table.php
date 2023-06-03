@@ -6,24 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateNursesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('nurses', function (Blueprint $table) {
             $table->id();
+            $table->string('names');
+            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('password');
+            $table->foreignId('department_id')->constrained('departments');
+            $table->boolean('is_hod')->default(false);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('nurses');
