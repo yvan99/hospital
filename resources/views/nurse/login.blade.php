@@ -3,7 +3,7 @@
 <body class="">
     <div class="wrapper">
         <section class="login-content overflow-hidden">
-            <div class="row no-gutters align-items-center bg-primary auth-screen">
+            <div class="row no-gutters align-items-center auth-screen" style="background: #300074">
                 <div class="col-md-12 col-lg-12 align-self-center">
                     <div class="row justify-content-center">
                         <div class="col-md-3">
