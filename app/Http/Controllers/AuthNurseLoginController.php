@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class AuthNurseLoginController extends Controller
 {
@@ -22,5 +24,17 @@ class AuthNurseLoginController extends Controller
     protected function guard()
     {
         return auth()->guard('nurse');
+    }
+    // NurseLoginController.php
+
+    public function logout(Request $request)
+    {
+        $this->guard('nurse')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/nurse/login');
     }
 }
