@@ -2,36 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthReceptionistLoginController extends Controller
 {
-    use AuthenticatesUsers;
-
-    protected $redirectTo = '/receptionist/dashboard';
-
-    public function __construct()
-    {
-        $this->middleware('guest:receptionist')->except('logout');
-    }
-
     public function showLoginForm()
     {
         return view('auth.receptionist-login');
     }
 
-    protected function guard()
+    public function login(Request $request)
     {
-        return auth()->guard('receptionist');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('receptionist')->attempt($credentials)) {
+            return redirect()->intended('/receptionist/dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ]);
     }
 
     public function logout(Request $request)
     {
-        $this->guard('receptionist')->logout();
+        Auth::guard('receptionist')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/receptionist/login');
