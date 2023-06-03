@@ -2,37 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AuthNurseLoginController extends Controller
 {
-    use AuthenticatesUsers;
-
-    protected $redirectTo = '/nurse/dashboard';
-
-    public function __construct()
-    {
-        $this->middleware('guest:nurse')->except('logout');
-    }
-
     public function showLoginForm()
     {
         return view('auth.nurse-login');
     }
 
-    protected function guard()
+    public function login(Request $request)
     {
-        return auth()->guard('nurse');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('nurse')->attempt($credentials)) {
+            return redirect()->intended('/nurse/dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ]);
     }
-    // NurseLoginController.php
 
     public function logout(Request $request)
     {
-        $this->guard('nurse')->logout();
+        Auth::guard('nurse')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/nurse/login');
