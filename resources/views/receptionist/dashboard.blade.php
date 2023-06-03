@@ -1,5 +1,5 @@
 @include('components.dashcss')
-@include('admin.components.aside')
+@include('receptionist.components.aside')
 <main class="main-content">
     <div class="position-relative ">
         <!--Nav Start-->

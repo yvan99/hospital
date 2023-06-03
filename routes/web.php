@@ -34,7 +34,7 @@ Route::prefix('nurse')->group(function () {
 
 Route::middleware('auth:receptionist')->group(function () {
     Route::prefix('receptionist')->group(function () {
-        // Add receptionist dashboard routes here
+        Route::view('/dashboard', 'receptionist.dashboard');
     });
 });
 
