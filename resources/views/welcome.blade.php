@@ -34,7 +34,7 @@
     </div>
 </nav>
 <!-- Mashead header-->
-<header class="masthead text-white" style="background: #026852">
+<header class="masthead text-white" style="background: #300074">
     <div class="container px-1">
         <div class="row gx-5 align-items-center">
             <div class="col-lg-6">
