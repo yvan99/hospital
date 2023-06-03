@@ -9,7 +9,7 @@ class AuthReceptionistLoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.receptionist-login');
+        return view('receptionist.login');
     }
 
     public function login(Request $request)

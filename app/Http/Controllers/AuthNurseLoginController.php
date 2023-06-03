@@ -9,7 +9,7 @@ class AuthNurseLoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.nurse-login');
+        return view('nurse.login');
     }
 
     public function login(Request $request)
