@@ -16,7 +16,7 @@ class ReceptionistFactory extends Factory
             'names' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->phoneNumber,
-            'password' => bcrypt('password'), // Change this to generate secure passwords
+            'password' => bcrypt('password'),
         ];
     }
 }
