@@ -16,7 +16,7 @@
 
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#createDepartmentModal">
+                            data-bs-target="#createDoctorModal">
                             Register Doctor
                         </button>
 
@@ -44,9 +44,7 @@
                                 </tbody>
                             </table>
 
-                            <!-- Modal for adding energy -->
-                            <!-- Modal -->
-                            <!-- Modal -->
+                            <!-- Modal for adding doctor -->
                             <div class="modal fade" id="createDoctorModal" tabindex="-1" role="dialog"
                                 aria-labelledby="createDoctorModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
