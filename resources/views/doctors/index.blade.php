@@ -108,12 +108,10 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="is_hod"
-                                                        name="is_hod">
-                                                    <label class="form-check-label" for="is_hod">Head of
-                                                        Department</label>
+                                                    <input type="checkbox" class="form-check-input" id="is_hod" name="is_hod" value="1">
+                                                    <label class="form-check-label" for="is_hod">Head of Department</label>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Create</button>
+                                                <button type="submit" class="btn btn-primary mt-3">Create</button>
                                             </form>
                                         </div>
                                     </div>
