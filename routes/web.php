@@ -3,6 +3,11 @@
 use App\Http\Controllers\AuthDoctorLoginController;
 use App\Http\Controllers\AuthNurseLoginController;
 use App\Http\Controllers\AuthReceptionistLoginController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\NurseController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,7 +39,14 @@ Route::prefix('nurse')->group(function () {
 
 Route::middleware('auth:receptionist')->group(function () {
     Route::prefix('receptionist')->group(function () {
-        // Add receptionist dashboard routes here
+        Route::view('/dashboard', 'receptionist.dashboard');
+        Route::resource('patients', PatientController::class);
+        Route::resource('departments', DepartmentController::class);
+        Route::resource('doctors', DoctorController::class);
+        Route::resource('nurses', NurseController::class);
+        Route::resource('patients', PatientController::class);
+        Route::post('/patient_orders', [PatientOrderController::class, 'store'])->name('patient_orders.store');
+
     });
 });
 

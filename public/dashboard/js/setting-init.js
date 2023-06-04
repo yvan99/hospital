@@ -16,7 +16,7 @@
             },
             "theme_color": {
                 "colors": {
-                    "--{{prefix}}primary": "#0b3d2c",
+                    "--{{prefix}}primary": "#300074",
                     "--{{prefix}}secondary": "#aca4bc",
                     "--{{prefix}}tertiray": "#3FF0B9",
                     "--{{prefix}}success": "#1AA053",
