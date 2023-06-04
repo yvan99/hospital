@@ -52,7 +52,7 @@ Route::middleware('auth:receptionist')->group(function () {
 
 Route::middleware('auth:doctor')->group(function () {
     Route::prefix('doctor')->group(function () {
-        // Add doctor dashboard routes here
+        Route::view('/dashboard', 'doctor.dashboard');
     });
 });
 
