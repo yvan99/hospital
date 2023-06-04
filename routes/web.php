@@ -39,15 +39,10 @@ Route::prefix('nurse')->group(function () {
 Route::middleware('auth:receptionist')->group(function () {
     Route::prefix('receptionist')->group(function () {
         Route::view('/dashboard', 'receptionist.dashboard');
-        Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
-        Route::get('/departments/create', [DepartmentController::class, 'create'])->name('departments.create');
-        Route::post('/departments', [DepartmentController::class, 'store'])->name('departments.store');
-        Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-        Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
-        Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-        Route::get('/nurses', [NurseController::class, 'index'])->name('nurses.index');
-        Route::get('/nurses/create', [NurseController::class, 'create'])->name('nurses.create');
-        Route::post('/nurses', [NurseController::class, 'store'])->name('nurses.store');
+        Route::resource('patients', PatientController::class);
+        Route::resource('departments', DepartmentController::class);
+        Route::resource('doctors', DoctorController::class);
+        Route::resource('nurses', NurseController::class);
         Route::resource('patients', PatientController::class);
     });
 });

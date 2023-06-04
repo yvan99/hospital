@@ -22,7 +22,7 @@ class PatientController extends Controller
     {
         $validatedData = $request->validate([
             'code' => 'required|string|unique:patients',
-            'name' => 'required|string|max:255',
+            'names' => 'required|string|max:255',
             'gender' => 'required|string',
             'age' => 'required|integer',
             'blood_group' => 'required|string',
