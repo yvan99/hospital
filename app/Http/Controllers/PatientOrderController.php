@@ -16,7 +16,7 @@ class PatientOrderController extends Controller
             'code' => 'required|string|unique:patient_orders',
             'description' => 'required|string',
             'payment_status' => ['required', Rule::in(['pending', 'paid'])],
-            'status' => ['required', Rule::in(['active', 'inactive'])],
+            'status' => ['required', Rule::in(['initiated'])],
         ]);
 
         // Create the patient order

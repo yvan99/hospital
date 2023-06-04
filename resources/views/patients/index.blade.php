@@ -64,9 +64,9 @@
                                             <td>{{ $patient->blood_group }}</td>
                                             <td>{{ $patient->insurance }}</td>
                                             <td>
-                                                <button class="btn btn-primary" data-bs-toggle="modal"
+                                                <button class="btn btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#createOrderModal"
-                                                    data-bs-patient-id="{{ $patient->id }}">Create Order</button>
+                                                    data-patient-id="{{ $patient->id }}">Create Order</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -150,10 +150,10 @@
                                             <form method="POST" action="{{ route('patient_orders.store') }}">
                                                 @csrf
 
-                                                <div class="mb-3">
+                                                <div class="mb-3 d-none">
                                                     <label for="patient_id" class="form-label">Patient ID</label>
                                                     <input type="text" class="form-control" id="patient_id"
-                                                        name="patient_id">
+                                                        name="patient_id" value="" readonly>
                                                 </div>
 
                                                 <div class="mb-3">
@@ -161,12 +161,6 @@
                                                     <input type="text" class="form-control" id="code"
                                                         name="code" value="{{ Str::random(15) }}">
                                                 </div>
-
-                                                <div class="mb-3">
-                                                    <label for="description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                                                </div>
-
                                                 <div class="mb-3">
                                                     <label for="payment_status" class="form-label">Payment
                                                         Status</label>
@@ -178,13 +172,19 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="status" class="form-label">Status</label>
+                                                    <label for="status" class="form-label">Order Status</label>
                                                     <select class="form-control form-select" id="status"
                                                         name="status">
-                                                        <option value="active">Active</option>
-                                                        <option value="inactive">Inactive</option>
+                                                        <option value="initiated" selected>Initiated</option>
                                                     </select>
                                                 </div>
+
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                                </div>
+
+
 
                                                 <button type="submit" class="btn btn-primary">Create</button>
                                             </form>
@@ -192,11 +192,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
                         </div>
                     </div>
                 </div>
