@@ -12,12 +12,12 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Doctors List</h4>
+                            <h4 class="card-title">Nurses List</h4>
 
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#createDoctorModal">
-                            Register Doctor
+                            Register Nurse
                         </button>
 
                     </div>
@@ -49,17 +49,21 @@
                                         <th>Phone</th>
                                         <th>Department</th>
                                         <th>Head of Department</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($doctors as $doctor)
+                                    @foreach ($nurses as $nurse)
                                         <tr>
-                                            <td>{{ $doctor->id }}</td>
-                                            <td>{{ $doctor->names }}</td>
-                                            <td>{{ $doctor->email }}</td>
-                                            <td>{{ $doctor->phone }}</td>
-                                            <td>{{ $doctor->department->name }}</td>
-                                            <td>{{ $doctor->is_hod ? 'Yes' : 'No' }}</td>
+                                            <td>{{ $nurse->id }}</td>
+                                            <td>{{ $nurse->name }}</td>
+                                            <td>{{ $nurse->email }}</td>
+                                            <td>{{ $nurse->phone }}</td>
+                                            <td>{{ $nurse->department->name }}</td>
+                                            <td>{{ $nurse->is_hod ? 'Yes' : 'No' }}</td>
+                                            <td>
+                                                <!-- Actions, e.g., edit and delete buttons -->
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -76,23 +80,27 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ route('doctors.store') }}" method="POST">
+                                            <form method="POST" action="{{ route('nurses.store') }}">
                                                 @csrf
-                                                <div class="form-group">
-                                                    <label for="name">Name</label>
+
+                                                <div class="mb-3">
+                                                    <label for="names" class="form-label">Names</label>
                                                     <input type="text" class="form-control" id="names"
-                                                        name="names" required>
+                                                        name="names" value="{{ old('names') }}">
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="email">Email</label>
+
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Email</label>
                                                     <input type="email" class="form-control" id="email"
-                                                        name="email" required>
+                                                        name="email" value="{{ old('email') }}">
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="phone">Phone</label>
+
+                                                <div class="mb-3">
+                                                    <label for="phone" class="form-label">Phone</label>
                                                     <input type="text" class="form-control" id="phone"
-                                                        name="phone" required>
+                                                        name="phone" value="{{ old('phone') }}">
                                                 </div>
+
                                                 <div class="form-group">
                                                     <label for="password">Password</label>
                                                     <input type="text" class="form-control" id="password"
@@ -100,24 +108,26 @@
                                                     <button type="button" class="btn btn-secondary mt-2"
                                                         onclick="copyPassword()">Copy</button>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="department_id">Department</label>
-                                                    <select class="form-control" id="department_id" name="department_id"
-                                                        required>
-                                                        <option value="">Select Department</option>
+
+                                                <div class="mb-3">
+                                                    <label for="department_id" class="form-label">Department</label>
+                                                    <select class="form-control" id="department_id"
+                                                        name="department_id">
                                                         @foreach ($departments as $department)
                                                             <option value="{{ $department->id }}">
                                                                 {{ $department->name }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="form-check">
+
+                                                <div class="mb-3 form-check">
                                                     <input type="checkbox" class="form-check-input" id="is_hod"
                                                         name="is_hod" value="1">
                                                     <label class="form-check-label" for="is_hod">Head of
                                                         Department</label>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary mt-3">Create</button>
+
+                                                <button type="submit" class="btn btn-primary">Register</button>
                                             </form>
                                         </div>
                                     </div>
