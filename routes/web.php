@@ -44,6 +44,8 @@ Route::middleware('auth:receptionist')->group(function () {
         Route::resource('doctors', DoctorController::class);
         Route::resource('nurses', NurseController::class);
         Route::resource('patients', PatientController::class);
+        Route::post('/patient_orders', [PatientOrderController::class, 'store'])->name('patient_orders.store');
+
     });
 });
 
