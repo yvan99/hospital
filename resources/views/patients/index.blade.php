@@ -64,9 +64,14 @@
                                             <td>{{ $patient->blood_group }}</td>
                                             <td>{{ $patient->insurance }}</td>
                                             <td>
-                                                <button class="btn btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#createOrderModal"
-                                                    data-patient-id="{{ $patient->id }}">Create Order</button>
+                                                @if ($patient->patientOrders()->where('status', 'initiated')->exists())
+                                                   
+                                                <button class="btn btn-success btn-sm">Pending Order</button>
+                                                @else
+                                                    <button class="btn btn-secondary" data-bs-toggle="modal"
+                                                        data-bs-target="#createOrderModal"
+                                                        data-patient-id="{{ $patient->id }}">Create Order</button>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

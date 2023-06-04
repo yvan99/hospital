@@ -9,6 +9,14 @@ class PatientOrder extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'patient_id',
+        'code',
+        'description',
+        'payment_status',
+        'status',
+    ];
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

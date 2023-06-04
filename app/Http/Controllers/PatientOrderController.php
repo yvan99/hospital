@@ -22,6 +22,6 @@ class PatientOrderController extends Controller
         // Create the patient order
         PatientOrder::create($validatedData);
 
-        return redirect()->back()->with('success', 'Patient order created successfully.');
+        return redirect()->back()->with('success', 'Patient Consultation order created successfully.');
     }
 }
