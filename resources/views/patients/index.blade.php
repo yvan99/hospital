@@ -179,7 +179,8 @@
 
                                                 <div class="mb-3">
                                                     <label for="status" class="form-label">Status</label>
-                                                    <select class="form-control form-select" id="status" name="status">
+                                                    <select class="form-control form-select" id="status"
+                                                        name="status">
                                                         <option value="active">Active</option>
                                                         <option value="inactive">Inactive</option>
                                                     </select>
@@ -205,3 +206,12 @@
     @include('components.dashfooter')
 </main>
 @include('components.dashjs')
+
+<script>
+    $('#createOrderModal').on('show.bs.modal', function(event) {
+        let button = $(event.relatedTarget);
+        let patientId = button.data('patient-id');
+        let modal = $(this);
+        modal.find('#patient_id').val(patientId);
+    });
+</script>
