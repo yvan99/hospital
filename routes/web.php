@@ -47,6 +47,7 @@ Route::middleware('auth:receptionist')->group(function () {
         Route::get('/nurses', [NurseController::class, 'index'])->name('nurses.index');
         Route::get('/nurses/create', [NurseController::class, 'create'])->name('nurses.create');
         Route::post('/nurses', [NurseController::class, 'store'])->name('nurses.store');
+        Route::resource('patients', PatientController::class);
     });
 });
 
