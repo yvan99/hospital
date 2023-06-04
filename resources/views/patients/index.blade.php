@@ -106,7 +106,7 @@
 
                                                 <div class="mb-3">
                                                     <label for="gender" class="form-label">Gender</label>
-                                                    <select class="form-control" id="gender" name="gender">
+                                                    <select class="form-control form-select" id="gender" name="gender">
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
                                                     </select>
