@@ -50,7 +50,6 @@
                                         <th>Age</th>
                                         <th>Blood Group</th>
                                         <th>Insurance</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -63,9 +62,6 @@
                                             <td>{{ $patient->age }}</td>
                                             <td>{{ $patient->blood_group }}</td>
                                             <td>{{ $patient->insurance }}</td>
-                                            <td>
-                                                <!-- Actions, e.g., edit and delete buttons -->
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
