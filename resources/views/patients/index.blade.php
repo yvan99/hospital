@@ -50,6 +50,7 @@
                                         <th>Age</th>
                                         <th>Blood Group</th>
                                         <th>Insurance</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -62,6 +63,11 @@
                                             <td>{{ $patient->age }}</td>
                                             <td>{{ $patient->blood_group }}</td>
                                             <td>{{ $patient->insurance }}</td>
+                                            <td>
+                                                <button class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#createOrderModal"
+                                                    data-patient-id="{{ $patient->id }}">Create Order</button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
