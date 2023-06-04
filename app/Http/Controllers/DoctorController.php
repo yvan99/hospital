@@ -17,7 +17,7 @@ class DoctorController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'names' => 'required|string|max:255',
             'email' => 'required|email|unique:doctors',
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
