@@ -40,13 +40,16 @@
                             </div>
                         @endif
                         <div class="table-responsive border rounded">
-                            <table id="datatable" class="table" data-toggle="data-table">
+                            <table id="datatable" class="table " data-toggle="data-table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <!-- Add more columns here if needed -->
+                                        <th>Phone</th>
+                                        <th>Department</th>
+                                        <th>Head of Department</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,7 +58,12 @@
                                             <td>{{ $doctor->id }}</td>
                                             <td>{{ $doctor->name }}</td>
                                             <td>{{ $doctor->email }}</td>
-                                            <!-- Add more columns here if needed -->
+                                            <td>{{ $doctor->phone }}</td>
+                                            <td>{{ $doctor->department->name }}</td>
+                                            <td>{{ $doctor->is_hod ? 'Yes' : 'No' }}</td>
+                                            <td>
+                                                <!-- Actions, e.g., edit and delete buttons -->
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -108,8 +116,10 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="is_hod" name="is_hod" value="1">
-                                                    <label class="form-check-label" for="is_hod">Head of Department</label>
+                                                    <input type="checkbox" class="form-check-input" id="is_hod"
+                                                        name="is_hod" value="1">
+                                                    <label class="form-check-label" for="is_hod">Head of
+                                                        Department</label>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary mt-3">Create</button>
                                             </form>
