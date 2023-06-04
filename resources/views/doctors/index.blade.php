@@ -22,6 +22,23 @@
 
                     </div>
                     <div class="card-body">
+
+                        <!-- Alert div for displaying messages -->
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="table-responsive border rounded">
                             <table id="datatable" class="table" data-toggle="data-table">
                                 <thead>
@@ -74,8 +91,10 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="password">Password</label>
-                                                    <input type="password" class="form-control" id="password"
-                                                        name="password" required>
+                                                    <input type="text" class="form-control" id="password"
+                                                        name="password" value="{{ Str::random(12) }}" required>
+                                                    <button type="button" class="btn btn-secondary mt-2"
+                                                        onclick="copyPassword()">Copy</button>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="department_id">Department</label>
