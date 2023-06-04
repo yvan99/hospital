@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
@@ -24,11 +25,9 @@ class DoctorController extends Controller
             'department_id' => 'required|exists:departments,id',
             'is_hod' => 'required|boolean',
         ]);
-
-        // Create the doctor
+    
+        $validatedData['password'] = Hash::make($validatedData['password']);
         Doctor::create($validatedData);
-
-        // Redirect to the doctor listing page
         return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
 
