@@ -2,27 +2,6 @@
     data-toggle="main-sidebar" data-sidebar="responsive">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
         <a href="/doctor/dashboard" class="navbar-brand">
-
-            <!--Logo start-->
-            {{-- <div class="logo-main">
-                <div class="logo-normal">
-                    <svg class=" icon-30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M7.25333 2H22.0444L29.7244 15.2103L22.0444 28.1333H7.25333L0 15.2103L7.25333 2ZM11.2356 9.32316H18.0622L21.3334 15.2103L18.0622 20.9539H11.2356L8.10669 15.2103L11.2356 9.32316Z"
-                            fill="currentColor" />
-                        <path d="M23.751 30L13.2266 15.2103H21.4755L31.9999 30H23.751Z" fill="#3FF0B9" />
-                    </svg>
-                </div>
-                <div class="logo-mini">
-                    <svg class=" icon-30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M7.25333 2H22.0444L29.7244 15.2103L22.0444 28.1333H7.25333L0 15.2103L7.25333 2ZM11.2356 9.32316H18.0622L21.3334 15.2103L18.0622 20.9539H11.2356L8.10669 15.2103L11.2356 9.32316Z"
-                            fill="currentColor" />
-                        <path d="M23.751 30L13.2266 15.2103H21.4755L31.9999 30H23.751Z" fill="#3FF0B9" />
-                    </svg>
-                </div>
-            </div> --}}
-            <!--logo End-->
             <h4 class="logo-title" data-setting="app_name">{{ env('APP_NAME') }}</h4>
         </a>
         <div class="sidebar-toggle" data-toggle="sidebar" data-active="true">
@@ -69,23 +48,27 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('doctor/departments') ? 'active' : '' }}" aria-current="page"
-                        href="/doctor/departments">
-                        <i class="icon" data-bs-toggle="tooltip" title="Utilities" data-bs-placement="right">
-                            <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path opacity="0.4"
-                                    d="M11.9912 18.6215L5.49945 21.864C5.00921 22.1302 4.39768 21.9525 4.12348 21.4643C4.0434 21.3108 4.00106 21.1402 4 20.9668V13.7087C4 14.4283 4.40573 14.8725 5.47299 15.37L11.9912 18.6215Z"
-                                    fill="currentColor"></path>
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M8.89526 2H15.0695C17.7773 2 19.9735 3.06605 20 5.79337V20.9668C19.9989 21.1374 19.9565 21.3051 19.8765 21.4554C19.7479 21.7007 19.5259 21.8827 19.2615 21.9598C18.997 22.0368 18.7128 22.0023 18.4741 21.8641L11.9912 18.6215L5.47299 15.3701C4.40573 14.8726 4 14.4284 4 13.7088V5.79337C4 3.06605 6.19625 2 8.89526 2ZM8.22492 9.62227H15.7486C16.1822 9.62227 16.5336 9.26828 16.5336 8.83162C16.5336 8.39495 16.1822 8.04096 15.7486 8.04096H8.22492C7.79137 8.04096 7.43991 8.39495 7.43991 8.83162C7.43991 9.26828 7.79137 9.62227 8.22492 9.62227Z"
-                                    fill="currentColor"></path>
-                            </svg>
-                        </i>
-                        <span class="item-name">Departments</span>
-                    </a>
-                </li>
+                @if (auth()->user()->is_hod)
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('doctor/departments') ? 'active' : '' }}" aria-current="page"
+                            href="/doctor/departments">
+                            <i class="icon" data-bs-toggle="tooltip" title="Utilities" data-bs-placement="right">
+                                <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.4"
+                                        d="M11.9912 18.6215L5.49945 21.864C5.00921 22.1302 4.39768 21.9525 4.12348 21.4643C4.0434 21.3108 4.00106 21.1402 4 20.9668V13.7087C4 14.4283 4.40573 14.8725 5.47299 15.37L11.9912 18.6215Z"
+                                        fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M8.89526 2H15.0695C17.7773 2 19.9735 3.06605 20 5.79337V20.9668C19.9989 21.1374 19.9565 21.3051 19.8765 21.4554C19.7479 21.7007 19.5259 21.8827 19.2615 21.9598C18.997 22.0368 18.7128 22.0023 18.4741 21.8641L11.9912 18.6215L5.47299 15.3701C4.40573 14.8726 4 14.4284 4 13.7088V5.79337C4 3.06605 6.19625 2 8.89526 2ZM8.22492 9.62227H15.7486C16.1822 9.62227 16.5336 9.26828 16.5336 8.83162C16.5336 8.39495 16.1822 8.04096 15.7486 8.04096H8.22492C7.79137 8.04096 7.43991 8.39495 7.43991 8.83162C7.43991 9.26828 7.79137 9.62227 8.22492 9.62227Z"
+                                        fill="currentColor"></path>
+                                </svg>
+                            </i>
+                            <span class="item-name">Unassigned Requests</span>
+                        </a>
+                    </li>
+                @endif
+
+
 
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('doctor/doctors') ? 'active' : '' }}" aria-current="page"
