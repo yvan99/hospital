@@ -23,7 +23,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive border rounded">
-                            <table class="table">
+                            <table id="datatable" class="table " data-toggle="data-table">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
