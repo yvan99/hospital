@@ -17,7 +17,7 @@
                         </div>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#createDoctorModal">
-                            Register Doctor
+                            Register Patient
                         </button>
 
                     </div>
