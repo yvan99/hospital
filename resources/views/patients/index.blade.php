@@ -132,6 +132,29 @@
                                 </div>
                             </div>
 
+                             <!-- Create Order Modal -->
+    <div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog" aria-labelledby="createOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createOrderModalLabel">Create Patient Order</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('patient_orders.store') }}">
+                        @csrf
+
+                        <!-- Form fields for creating a patient order -->
+
+                        <input type="hidden" name="patient_id" id="patientIdInput">
+
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
                         </div>
                     </div>
