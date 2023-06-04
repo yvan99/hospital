@@ -92,9 +92,9 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="name" class="form-label">Name</label>
-                                                    <input type="text" class="form-control" id="name"
-                                                        name="name" value="{{ old('name') }}">
+                                                    <label for="names" class="form-label">Name</label>
+                                                    <input type="text" class="form-control" id="names"
+                                                        name="names" value="{{ old('names') }}">
                                                 </div>
 
                                                 <div class="mb-3">

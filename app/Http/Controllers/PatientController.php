@@ -22,7 +22,7 @@ class PatientController extends Controller
     {
         $validatedData = $request->validate([
             'code' => 'required|string|unique:patients',
-            'name' => 'required|string|max:255',
+            'names' => 'required|string|max:255',
             'gender' => 'required|string',
             'age' => 'required|integer',
             'blood_group' => 'required|string',
@@ -34,5 +34,4 @@ class PatientController extends Controller
         return redirect()->route('patients.index')->with('success', 'Patient created successfully.');
     }
 
-    // Implement edit, update, and delete methods as per your requirements
 }
