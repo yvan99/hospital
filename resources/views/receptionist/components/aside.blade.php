@@ -105,8 +105,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('receptionist/crops') ? 'active' : '' }}" aria-current="page"
-                        href="/receptionist/crops">
+                    <a class="nav-link {{ Request::is('receptionist/patients') ? 'active' : '' }}" aria-current="page"
+                        href="/receptionist/patients">
                         <i class="icon" data-bs-toggle="tooltip" title="Analytics" data-bs-placement="right">
                             <svg width="20" height="20" class="icon-20" viewBox="0 0 16 16" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
