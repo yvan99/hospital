@@ -49,21 +49,17 @@
                                         <th>Phone</th>
                                         <th>Department</th>
                                         <th>Head of Department</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($nurses as $nurse)
                                         <tr>
                                             <td>{{ $nurse->id }}</td>
-                                            <td>{{ $nurse->name }}</td>
+                                            <td>{{ $nurse->names }}</td>
                                             <td>{{ $nurse->email }}</td>
                                             <td>{{ $nurse->phone }}</td>
                                             <td>{{ $nurse->department->name }}</td>
                                             <td>{{ $nurse->is_hod ? 'Yes' : 'No' }}</td>
-                                            <td>
-                                                <!-- Actions, e.g., edit and delete buttons -->
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -75,7 +71,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="createDoctorModalLabel">Create Doctor</h5>
+                                            <h5 class="modal-title" id="createDoctorModalLabel">Create Nurse</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>

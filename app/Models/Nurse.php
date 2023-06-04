@@ -9,7 +9,7 @@ class Nurse extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'names',
         'email',
         'phone',
         'password',

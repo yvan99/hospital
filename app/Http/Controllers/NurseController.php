@@ -23,7 +23,7 @@ class NurseController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'names' => 'required|string|max:255',
             'email' => 'required|email|unique:nurses',
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
