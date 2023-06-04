@@ -49,21 +49,17 @@
                                         <th>Phone</th>
                                         <th>Department</th>
                                         <th>Head of Department</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($doctors as $doctor)
                                         <tr>
                                             <td>{{ $doctor->id }}</td>
-                                            <td>{{ $doctor->name }}</td>
+                                            <td>{{ $doctor->names }}</td>
                                             <td>{{ $doctor->email }}</td>
                                             <td>{{ $doctor->phone }}</td>
                                             <td>{{ $doctor->department->name }}</td>
                                             <td>{{ $doctor->is_hod ? 'Yes' : 'No' }}</td>
-                                            <td>
-                                                <!-- Actions, e.g., edit and delete buttons -->
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
