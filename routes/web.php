@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthNurseLoginController;
 use App\Http\Controllers\AuthReceptionistLoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\NurseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {

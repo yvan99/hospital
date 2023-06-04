@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Nurse;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,10 @@ class NurseController extends Controller
     public function index()
     {
         $nurses = Nurse::all();
-        return view('nurses.index', compact('nurses'));
+        $departments = Department::all();
+        return view('nurses.index', compact('nurses', 'departments'));
     }
+    
 
     public function create()
     {
