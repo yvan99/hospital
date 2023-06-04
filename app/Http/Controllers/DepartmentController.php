@@ -22,7 +22,7 @@ class DepartmentController extends Controller
 
         Department::create($validatedData);
 
-        return redirect()->route('department.index')->with('success', 'Department created successfully.');
+        return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
     public function index()
