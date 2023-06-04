@@ -43,6 +43,9 @@ Route::middleware('auth:receptionist')->group(function () {
         Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
         Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
         Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+        Route::get('/nurses', [NurseController::class, 'index'])->name('nurses.index');
+        Route::get('/nurses/create', [NurseController::class, 'create'])->name('nurses.create');
+        Route::post('/nurses', [NurseController::class, 'store'])->name('nurses.store');
     });
 });
 
