@@ -64,9 +64,9 @@
                                             <td>{{ $patient->blood_group }}</td>
                                             <td>{{ $patient->insurance }}</td>
                                             <td>
-                                                <button class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#createOrderModal"
-                                                    data-patient-id="{{ $patient->id }}">Create Order</button>
+                                                <button class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#createOrderModal"
+                                                    data-bs-patient-id="{{ $patient->id }}">Create Order</button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -132,28 +132,68 @@
                                 </div>
                             </div>
 
-                             <!-- Create Order Modal -->
-    <div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog" aria-labelledby="createOrderModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createOrderModalLabel">Create Patient Order</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('patient_orders.store') }}">
-                        @csrf
 
-                        <!-- Form fields for creating a patient order -->
+                            {{-- PATIENT ORDER MODAL --}}
 
-                        <input type="hidden" name="patient_id" id="patientIdInput">
+                            <!-- Create Order Modal -->
+                            <div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog"
+                                aria-labelledby="createOrderModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="createOrderModalLabel">Create Patient Order
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="{{ route('patient_orders.store') }}">
+                                                @csrf
 
-                        <button type="submit" class="btn btn-primary">Create</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                                                <div class="mb-3">
+                                                    <label for="patient_id" class="form-label">Patient ID</label>
+                                                    <input type="text" class="form-control" id="patient_id"
+                                                        name="patient_id">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="code" class="form-label">Code</label>
+                                                    <input type="text" class="form-control" id="code"
+                                                        name="code" value="{{ Str::random(15) }}">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Description</label>
+                                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="payment_status" class="form-label">Payment
+                                                        Status</label>
+                                                    <select class="form-control form-select" id="payment_status"
+                                                        name="payment_status">
+                                                        <option value="pending">Pending</option>
+                                                        <option value="paid">Paid</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="status" class="form-label">Status</label>
+                                                    <select class="form-control form-select" id="status" name="status">
+                                                        <option value="active">Active</option>
+                                                        <option value="inactive">Inactive</option>
+                                                    </select>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">Create</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
 
 
                         </div>
