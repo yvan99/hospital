@@ -11,7 +11,7 @@ class CreatePatientBatchesTable extends Migration
         Schema::create('patient_batches', function (Blueprint $table) {
             $table->id();
             $table->foreignId('consultation_id')->constrained('consultations');
-            $table->foreignId('nurse_id')->constrained('nurses');
+            $table->json('nurse_ids')->nullable()->after('consultation_id');
             $table->string('code')->unique();
             $table->string('status');
             $table->timestamps();

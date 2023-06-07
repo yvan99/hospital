@@ -89,14 +89,16 @@ class DoctorController extends Controller
 
         $patientBatch = new PatientBatch([
             'consultation_id' => $consultation->id,
-            'nurse_ids' => $validatedData['nurse_ids'],
             'code' => $validatedData['code'],
             'status' => $validatedData['status'],
         ]);
 
         $patientBatch->save();
 
-        return redirect()->route('consultation.index')->with('success', 'Patient batch registered successfully.');
+        // Associate nurses with the patient batch
+        $patientBatch->nurses()->attach($validatedData['nurse_ids']);
+
+        return redirect()->back()->with('success', 'Patient batch registered successfully.');
     }
 
     public function consultations()
@@ -106,5 +108,4 @@ class DoctorController extends Controller
         $nurses = Nurse::all();
         return view('consultation.index', compact('consultations', 'nurses'));
     }
-    
 }
