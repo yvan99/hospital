@@ -9,6 +9,7 @@ use App\Models\PatientOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PatientBatch;
 
 class DoctorController extends Controller
 {
@@ -73,5 +74,26 @@ class DoctorController extends Controller
 
         $consultation->save();
         return redirect()->route('doctors.patientOrders')->with('success', 'Patient consultation batch Assigned successfully.');
+    }
+
+    public function registerBatch(Request $request, Consultation $consultation)
+    {
+        $validatedData = $request->validate([
+            'nurse_ids' => 'required|array',
+            'nurse_ids.*' => 'exists:nurses,id',
+            'code' => 'required|string',
+            'status' => 'required|in:pending,completed',
+        ]);
+
+        $patientBatch = new PatientBatch([
+            'consultation_id' => $consultation->id,
+            'nurse_ids' => $validatedData['nurse_ids'],
+            'code' => $validatedData['code'],
+            'status' => $validatedData['status'],
+        ]);
+
+        $patientBatch->save();
+
+        return redirect()->route('doctors.consultations')->with('success', 'Patient batch registered successfully.');
     }
 }
