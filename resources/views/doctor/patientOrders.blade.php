@@ -12,13 +12,9 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Doctors List</h4>
+                            <h4 class="card-title">Unassigned Patients Requests</h4>
 
                         </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#createDoctorModal">
-                            Register Doctor
-                        </button>
 
                     </div>
                     <div class="card-body">
@@ -43,87 +39,59 @@
                             <table id="datatable" class="table " data-toggle="data-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Department</th>
-                                        <th>Head of Department</th>
+                                        <th>Order ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($doctors as $doctor)
+                                    @foreach ($patientOrders as $order)
                                         <tr>
-                                            <td>{{ $doctor->id }}</td>
-                                            <td>{{ $doctor->names }}</td>
-                                            <td>{{ $doctor->email }}</td>
-                                            <td>{{ $doctor->phone }}</td>
-                                            <td>{{ $doctor->department->name }}</td>
-                                            <td>{{ $doctor->is_hod ? 'Yes' : 'No' }}</td>
+                                            <td>{{ $order->id }}</td>
+                                            <td>{{ $order->patient->names }}</td>
+                                            <td>{{ $order->description }}</td>
+                                            <td>
+                                                @if (auth()->user()->is_hod)
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignModal{{ $order->id }}">Assign</button>
+                                                    <!-- Assign modal for each patient order -->
+                                                    <div class="modal fade" id="assignModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel{{ $order->id }}">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="assignModalLabel{{ $order->id }}">Assign Patient Order</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="{{ route('doctors.assignPatientOrder', $order->id) }}" method="POST">
+                                                                        @csrf
+                                                                        <div class="form-group">
+                                                                            <label for="nurse_id">Nurse</label>
+                                                                            <select name="nurse_id" id="nurse_id" class="form-control" required>
+                                                                                <!-- Populate the nurses options here -->
+                                                                                @foreach ($nurses as $nurse)
+                                                                                    <option value="{{ $nurse->id }}">{{ $nurse->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="description">Description</label>
+                                                                            <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-primary">Assign</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-
-                            <!-- Modal for adding doctor -->
-                            <div class="modal fade" id="createDoctorModal" tabindex="-1" role="dialog"
-                                aria-labelledby="createDoctorModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="createDoctorModalLabel">Create Doctor</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{ route('doctors.store') }}" method="POST">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <label for="name">Name</label>
-                                                    <input type="text" class="form-control" id="names"
-                                                        name="names" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" class="form-control" id="email"
-                                                        name="email" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="phone">Phone</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                        name="phone" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="password">Password</label>
-                                                    <input type="text" class="form-control" id="password"
-                                                        name="password" value="{{ Str::random(12) }}" required>
-                                                    <button type="button" class="btn btn-secondary mt-2"
-                                                        onclick="copyPassword()">Copy</button>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="department_id">Department</label>
-                                                    <select class="form-control" id="department_id" name="department_id"
-                                                        required>
-                                                        <option value="">Select Department</option>
-                                                        @foreach ($departments as $department)
-                                                            <option value="{{ $department->id }}">
-                                                                {{ $department->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input" id="is_hod"
-                                                        name="is_hod" value="1">
-                                                    <label class="form-check-label" for="is_hod">Head of
-                                                        Department</label>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary mt-3">Create</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
 
                         </div>
                     </div>

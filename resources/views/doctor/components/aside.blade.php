@@ -50,8 +50,8 @@
 
                 @if (auth()->user()->is_hod)
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('/doctor/patient-orders') ? 'active' : '' }}" aria-current="page"
-                            href="/doctor/patient-orders">
+                        <a class="nav-link {{ Request::is('doctor/patient-orders') ? 'active' : '' }}" aria-current="page"
+                            href="doctor/patient-orders">
                             <i class="icon" data-bs-toggle="tooltip" title="Utilities" data-bs-placement="right">
                                 <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
