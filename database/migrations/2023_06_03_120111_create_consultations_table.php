@@ -15,7 +15,6 @@ class CreateConsultationsTable extends Migration
             $table->text('description');
             $table->foreignId('doctor_id')->constrained('doctors');
             $table->string('status');
-            $table->foreignId('nurse_id')->constrained('nurses');
             $table->timestamps();
         });
     }

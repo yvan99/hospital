@@ -9,6 +9,8 @@ class Consultation extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['patient_order_id', 'description', 'doctor_id', 'status', 'code'];
+
     public function patientOrder()
     {
         return $this->belongsTo(PatientOrder::class);
@@ -18,9 +20,8 @@ class Consultation extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
-
-    public function nurse()
+    public function patientBatches()
     {
-        return $this->belongsTo(Nurse::class);
+        return $this->hasMany(PatientBatch::class, 'consultation_id');
     }
 }

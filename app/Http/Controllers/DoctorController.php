@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consultation;
 use App\Models\Department;
 use App\Models\Doctor;
+use App\Models\Nurse;
+use App\Models\PatientOrder;
+use App\Models\PatientBatch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class DoctorController extends Controller
 {
@@ -25,10 +32,8 @@ class DoctorController extends Controller
             'is_hod' => 'required|boolean',
         ]);
 
-        // Create the doctor
+        $validatedData['password'] = Hash::make($validatedData['password']);
         Doctor::create($validatedData);
-
-        // Redirect to the doctor listing page
         return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
 
@@ -38,5 +43,68 @@ class DoctorController extends Controller
         $departments = Department::all();
 
         return view('doctors.index', compact('doctors', 'departments'));
+    }
+
+    public function patientOrders()
+    {
+        $patientOrders = PatientOrder::all();
+        $doctors = Doctor::all();
+        return view('doctor.patientOrders', compact('patientOrders', 'doctors'));
+    }
+
+    public function assignPatientOrder(Request $request, $orderId)
+    {
+        //TODO: ONLY ASSIGN ORDERS FOR DOCTORS IN THE SAME DEPARTMENT
+        // Validate the request data
+        $validatedData = $request->validate([
+            'doctor_id' => 'required|exists:doctors,id',
+            'description' => 'required|string',
+        ]);
+
+        $patientOrder = PatientOrder::findOrFail($orderId);
+        // Update the status of the patient order to 'assigned'
+        $patientOrder->status = 'assigned';
+        $patientOrder->save();
+        $consultation = new Consultation([
+            'patient_order_id' => $patientOrder->id,
+            'code' => Str::random(15),
+            'description' => $validatedData['description'],
+            'doctor_id' => $validatedData['doctor_id'],
+            'status' => 'assigned',
+
+        ]);
+
+        $consultation->save();
+        return redirect()->route('doctors.patientOrders')->with('success', 'Patient consultation batch Assigned successfully.');
+    }
+
+    public function registerBatch(Request $request, Consultation $consultation)
+    {
+        $validatedData = $request->validate([
+            'nurse_ids' => 'required|array',
+            'nurse_ids.*' => 'exists:nurses,id',
+            'code' => 'required|string',
+        ]);
+
+        $patientBatch = new PatientBatch([
+            'consultation_id' => $consultation->id,
+            'code' => $validatedData['code'],
+            'status' => "assigned",
+        ]);
+
+        $patientBatch->save();
+
+        // Associate nurses with the patient batch
+        $patientBatch->nurses()->attach($validatedData['nurse_ids']);
+
+        return redirect()->back()->with('success', 'Patient batch registered successfully.');
+    }
+
+    public function consultations()
+    {
+        $doctorId = auth()->user()->id;
+        $consultations = Consultation::where('doctor_id', $doctorId)->get();
+        $nurses = Nurse::all();
+        return view('consultation.index', compact('consultations', 'nurses'));
     }
 }

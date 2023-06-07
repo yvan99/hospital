@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Nurse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class NurseController extends Controller
 {
@@ -13,7 +15,7 @@ class NurseController extends Controller
         $departments = Department::all();
         return view('nurses.index', compact('nurses', 'departments'));
     }
-    
+
 
     public function create()
     {
@@ -31,9 +33,8 @@ class NurseController extends Controller
             'is_hod' => 'required|boolean',
         ]);
 
+        $validatedData['password'] = Hash::make($validatedData['password']);
         Nurse::create($validatedData);
-
         return redirect()->route('nurses.index')->with('success', 'Nurse created successfully.');
     }
-
 }
