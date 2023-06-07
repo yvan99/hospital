@@ -63,25 +63,20 @@ class DoctorController extends Controller
     {
         // Validate the request data
         $validatedData = $request->validate([
-            'nurse_id' => 'required|exists:nurses,id',
+            'doctor_id' => 'required|exists:doctors,id',
             'description' => 'required|string',
         ]);
-
-        // Find the patient order
+    
         $patientOrder = PatientOrder::findOrFail($orderId);
-
-        // Create a new consultation record
         $consultation = new Consultation([
             'patient_order_id' => $patientOrder->id,
             'description' => $validatedData['description'],
-            'doctor_id' => auth()->user()->id,
-            'nurse_id' => $validatedData['nurse_id'],
+            'doctor_id' => $validatedData['doctor_id'],
             'status' => 'assigned',
         ]);
-
-        // Save the consultation
+    
         $consultation->save();
-
-        return redirect()->route('doctor.patientOrders')->with('success', 'Patient order assigned successfully.');
+        return redirect()->route('doctors.patientOrders')->with('success', 'Patient order assigned successfully.');
     }
+    
 }
