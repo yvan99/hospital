@@ -12,13 +12,9 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Nurses List</h4>
+                            <h4 class="card-title">Patient Consultation Report</h4>
 
                         </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#createDoctorModal">
-                            Register Nurse
-                        </button>
 
                     </div>
                     <div class="card-body">
@@ -58,7 +54,7 @@
                                             <td>
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#registerBatchModal{{ $consultation->id }}">
-                                                    Register Batch
+                                                    Assign Batch
                                                 </button>
                                             </td>
                                         </tr>
@@ -100,15 +96,7 @@
                                                             class="form-control" value="{{ Str::random(15) }}"
                                                             readonly>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label for="status">Status</label>
-                                                        <select name="status" id="status" class="form-control"
-                                                            required>
-                                                            <option value="pending">Pending</option>
-                                                            <option value="completed">Completed</option>
-                                                        </select>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Register</button>
+                                                    <button type="submit" class="btn btn-primary">Assign</button>
                                                 </form>
                                             </div>
                                         </div>

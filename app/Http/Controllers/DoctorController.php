@@ -84,13 +84,12 @@ class DoctorController extends Controller
             'nurse_ids' => 'required|array',
             'nurse_ids.*' => 'exists:nurses,id',
             'code' => 'required|string',
-            'status' => 'required|in:pending,completed',
         ]);
 
         $patientBatch = new PatientBatch([
             'consultation_id' => $consultation->id,
             'code' => $validatedData['code'],
-            'status' => $validatedData['status'],
+            'status' => "assigned",
         ]);
 
         $patientBatch->save();
