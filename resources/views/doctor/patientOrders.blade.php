@@ -65,19 +65,18 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="assignModalLabel{{ $order->id }}">Assign Patient Order</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <form action="{{ route('doctors.assignPatientOrder', $order->id) }}" method="POST">
                                                                         @csrf
                                                                         <div class="form-group">
-                                                                            <label for="nurse_id">Nurse</label>
-                                                                            <select name="nurse_id" id="nurse_id" class="form-control" required>
-                                                                                <!-- Populate the nurses options here -->
-                                                                                @foreach ($nurses as $nurse)
-                                                                                    <option value="{{ $nurse->id }}">{{ $nurse->name }}</option>
+                                                                            <label for="doctor_id">Assign Doctor</label>
+                                                                            <select name="doctor_id" id="doctor_id" class="form-control form-select" required>
+                                                                                <!-- Populate the doctors options here -->
+                                                                                @foreach ($doctors as $doctor)
+                                                                                    <option value="{{ $doctor->id }}">{{ $doctor->names }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
