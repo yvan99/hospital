@@ -55,8 +55,8 @@ class DoctorController extends Controller
     public function patientOrders()
     {
         $patientOrders = PatientOrder::all();
-        $nurses = Nurse::all();
-        return view('doctor.patientOrders', compact('patientOrders', 'nurses'));
+        $doctors = Doctor::all();
+        return view('doctor.patientOrders', compact('patientOrders', 'doctors'));
     }
 
     public function assignPatientOrder(Request $request, $orderId)
