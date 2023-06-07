@@ -52,7 +52,7 @@
                                 <tbody>
                                     @foreach ($consultations as $consultation)
                                         <tr>
-                                            <td>{{ $consultation->patientOrder->patient->name }}</td>
+                                            <td>{{ $consultation->patientOrder->patient->names }}</td>
                                             <td>{{ $consultation->description }}</td>
                                             <td>{{ $consultation->status }}</td>
                                             <td>
@@ -90,7 +90,7 @@
                                                             multiple required>
                                                             @foreach ($nurses as $nurse)
                                                                 <option value="{{ $nurse->id }}">
-                                                                    {{ $nurse->name }}</option>
+                                                                    {{ $nurse->names }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

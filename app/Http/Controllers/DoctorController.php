@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Consultation;
 use App\Models\Department;
 use App\Models\Doctor;
+use App\Models\Nurse;
 use App\Models\PatientOrder;
+use App\Models\PatientBatch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use PatientBatch;
+
 
 class DoctorController extends Controller
 {
@@ -99,12 +101,10 @@ class DoctorController extends Controller
 
     public function consultations()
     {
-        $doctor = auth()->user();
-
-        $consultations = Consultation::where('doctor_id', $doctor->id)
-            ->with('patientOrder')
-            ->get();
-
-        return view('consultation.index', compact('consultations'));
+        $doctorId = auth()->user()->id;
+        $consultations = Consultation::where('doctor_id', $doctorId)->get();
+        $nurses = Nurse::all();
+        return view('consultation.index', compact('consultations', 'nurses'));
     }
+    
 }
