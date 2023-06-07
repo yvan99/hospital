@@ -41,13 +41,21 @@ class DoctorController extends Controller
         return view('doctors.index', compact('doctors', 'departments'));
     }
 
+    // public function patientOrders()
+    // {
+    //     // Get the patient orders assigned to the logged-in doctor
+    //     $doctorId = auth()->user()->id;
+    //     $patientOrders = PatientOrder::whereHas('consultation', function ($query) use ($doctorId) {
+    //         $query->where('doctor_id', $doctorId);
+    //     })->get();
+
+    //     return view('doctor.patientOrders', compact('patientOrders'));
+    // }
+
     public function patientOrders()
     {
-        // Get the patient orders assigned to the logged-in doctor
-        $doctorId = auth()->user()->id;
-        $patientOrders = PatientOrder::whereHas('consultation', function ($query) use ($doctorId) {
-            $query->where('doctor_id', $doctorId);
-        })->get();
+        // Get all patient orders
+        $patientOrders = PatientOrder::all();
 
         return view('doctor.patientOrders', compact('patientOrders'));
     }
