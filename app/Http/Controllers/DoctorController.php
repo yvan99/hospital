@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Consultation;
 use App\Models\Department;
 use App\Models\Doctor;
+use App\Models\Nurse;
 use App\Models\PatientOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -51,13 +52,12 @@ class DoctorController extends Controller
 
     //     return view('doctor.patientOrders', compact('patientOrders'));
     // }
-
     public function patientOrders()
     {
-        // Get all patient orders
         $patientOrders = PatientOrder::all();
+        $nurses = Nurse::all();
 
-        return view('doctor.patientOrders', compact('patientOrders'));
+        return view('doctor.patientOrders', compact('patientOrders', 'nurses'));
     }
 
     public function assignPatientOrder(Request $request, $orderId)
