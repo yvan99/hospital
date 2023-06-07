@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Consultation;
 use App\Models\Department;
 use App\Models\Doctor;
-use App\Models\Nurse;
 use App\Models\PatientOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DoctorController extends Controller
 {
@@ -73,6 +73,7 @@ class DoctorController extends Controller
             'description' => $validatedData['description'],
             'doctor_id' => $validatedData['doctor_id'],
             'status' => 'assigned',
+            'code'=>Str::random(15)
         ]);
     
         $consultation->save();
