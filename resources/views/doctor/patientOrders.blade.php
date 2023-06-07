@@ -39,23 +39,28 @@
                             <table id="datatable" class="table " data-toggle="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Order ID</th>
-                                        <th>Patient Name</th>
+                                        <th>Order Code</th>
                                         <th>Description</th>
+                                        <th>Payment Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($patientOrders as $order)
                                         <tr>
-                                            <td>{{ $order->id }}</td>
-                                            <td>{{ $order->patient->names }}</td>
+                                            <td>{{ $order->code }}</td>
                                             <td>{{ $order->description }}</td>
+                                            <td>{{ $order->payment_status }}</td>
                                             <td>
-                                                @if (auth()->user()->is_hod)
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignModal{{ $order->id }}">Assign</button>
-                                                    <!-- Assign modal for each patient order -->
-                                                    <div class="modal fade" id="assignModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel{{ $order->id }}">
+                                                <!-- Conditional rendering based on is_hod -->
+                                                @if (auth()->user()->is_hod && $order->status=='initiated')
+                                                    <!-- Button to trigger assign modal -->
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignModal{{ $order->id }}">
+                                                        Assign
+                                                    </button>
+                            
+                                                    <!-- Assign modal -->
+                                                    <div class="modal fade" id="assignModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel{{ $order->id }}" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">

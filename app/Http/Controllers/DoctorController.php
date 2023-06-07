@@ -56,7 +56,6 @@ class DoctorController extends Controller
     {
         $patientOrders = PatientOrder::all();
         $nurses = Nurse::all();
-
         return view('doctor.patientOrders', compact('patientOrders', 'nurses'));
     }
 
