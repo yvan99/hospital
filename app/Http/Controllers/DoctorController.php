@@ -73,7 +73,7 @@ class DoctorController extends Controller
             'description' => $validatedData['description'],
             'doctor_id' => $validatedData['doctor_id'],
             'status' => 'assigned',
-            'code'=>Str::random(15)
+            'code'=>Str::random(15) 
         ]);
     
         $consultation->save();
