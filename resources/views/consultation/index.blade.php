@@ -43,94 +43,78 @@
                             <table id="datatable" class="table " data-toggle="data-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Department</th>
-                                        <th>Head of Department</th>
+                                        <th>Patient</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($nurses as $nurse)
+                                    @foreach ($consultations as $consultation)
                                         <tr>
-                                            <td>{{ $nurse->id }}</td>
-                                            <td>{{ $nurse->names }}</td>
-                                            <td>{{ $nurse->email }}</td>
-                                            <td>{{ $nurse->phone }}</td>
-                                            <td>{{ $nurse->department->name }}</td>
-                                            <td>{{ $nurse->is_hod ? 'Yes' : 'No' }}</td>
+                                            <td>{{ $consultation->patientOrder->patient->name }}</td>
+                                            <td>{{ $consultation->description }}</td>
+                                            <td>{{ $consultation->status }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#registerBatchModal{{ $consultation->id }}">
+                                                    Register Batch
+                                                </button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
 
-                            <!-- Modal for adding doctor -->
-                            <div class="modal fade" id="createDoctorModal" tabindex="-1" role="dialog"
-                                aria-labelledby="createDoctorModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="createDoctorModalLabel">Create Nurse</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST" action="{{ route('nurses.store') }}">
-                                                @csrf
-
-                                                <div class="mb-3">
-                                                    <label for="names" class="form-label">Names</label>
-                                                    <input type="text" class="form-control" id="names"
-                                                        name="names" value="{{ old('names') }}">
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="email"
-                                                        name="email" value="{{ old('email') }}">
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="phone" class="form-label">Phone</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                        name="phone" value="{{ old('phone') }}">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="password">Password</label>
-                                                    <input type="text" class="form-control" id="password"
-                                                        name="password" value="{{ Str::random(12) }}" required>
-                                                    <button type="button" class="btn btn-secondary mt-2"
-                                                        onclick="copyPassword()">Copy</button>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="department_id" class="form-label">Department</label>
-                                                    <select class="form-control" id="department_id"
-                                                        name="department_id">
-                                                        @foreach ($departments as $department)
-                                                            <option value="{{ $department->id }}">
-                                                                {{ $department->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-
-                                                <div class="mb-3 form-check">
-                                                    <input type="checkbox" class="form-check-input" id="is_hod"
-                                                        name="is_hod" value="1">
-                                                    <label class="form-check-label" for="is_hod">Head of
-                                                        Department</label>
-                                                </div>
-
-                                                <button type="submit" class="btn btn-primary">Register</button>
-                                            </form>
+                            <!-- Modal for registering patient batch -->
+                            @foreach ($consultations as $consultation)
+                                <div class="modal fade" id="registerBatchModal{{ $consultation->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="registerBatchModalLabel{{ $consultation->id }}"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"
+                                                    id="registerBatchModalLabel{{ $consultation->id }}">Register Patient
+                                                    Batch</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('doctors.registerBatch', $consultation->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="nurse_ids">Assign Nurses</label>
+                                                        <select name="nurse_ids[]" id="nurse_ids" class="form-control"
+                                                            multiple required>
+                                                            @foreach ($nurses as $nurse)
+                                                                <option value="{{ $nurse->id }}">
+                                                                    {{ $nurse->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="code">Code</label>
+                                                        <input type="text" name="code" id="code"
+                                                            class="form-control" value="{{ Str::random(15) }}"
+                                                            readonly>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="status">Status</label>
+                                                        <select name="status" id="status" class="form-control"
+                                                            required>
+                                                            <option value="pending">Pending</option>
+                                                            <option value="completed">Completed</option>
+                                                        </select>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Register</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-
+                            @endforeach
                         </div>
                     </div>
                 </div>
