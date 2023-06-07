@@ -22,4 +22,8 @@ class Doctor extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+    public function consultations()
+    {
+        return $this->hasMany(Consultation::class, 'doctor_id');
+    }
 }
