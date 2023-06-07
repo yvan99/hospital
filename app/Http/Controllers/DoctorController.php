@@ -66,18 +66,18 @@ class DoctorController extends Controller
             'doctor_id' => 'required|exists:doctors,id',
             'description' => 'required|string',
         ]);
-    
+
         $patientOrder = PatientOrder::findOrFail($orderId);
         $consultation = new Consultation([
             'patient_order_id' => $patientOrder->id,
+            'code' => Str::random(15),
             'description' => $validatedData['description'],
             'doctor_id' => $validatedData['doctor_id'],
             'status' => 'assigned',
-            'code'=>Str::random(15) 
+
         ]);
-    
+
         $consultation->save();
-        return redirect()->route('doctors.patientOrders')->with('success', 'Patient order assigned successfully.');
+        return redirect()->route('doctors.patientOrders')->with('success', 'Patient consultation batch Assigned successfully.');
     }
-    
 }
