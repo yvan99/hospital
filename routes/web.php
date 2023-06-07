@@ -55,6 +55,10 @@ Route::middleware('auth:doctor')->group(function () {
         Route::view('/dashboard', 'doctor.dashboard');
         Route::get('/patient-orders', [DoctorController::class, 'patientOrders'])->name('doctors.patientOrders');
         Route::post('/patient-orders/{orderId}/assign', [DoctorController::class, 'assignPatientOrder'])->name('doctors.assignPatientOrder');
+        Route::get('/consultations', [DoctorController::class, 'consultations'])->name('doctors.consultations');
+        Route::post('/consultations/{consultation}/register-batch', [DoctorController::class, 'registerBatch'])->name('doctors.registerBatch');
+
+
     });
 });
 
