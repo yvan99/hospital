@@ -94,6 +94,17 @@ class DoctorController extends Controller
 
         $patientBatch->save();
 
-        return redirect()->route('doctors.consultations')->with('success', 'Patient batch registered successfully.');
+        return redirect()->route('consultation.index')->with('success', 'Patient batch registered successfully.');
+    }
+
+    public function consultations()
+    {
+        $doctor = auth()->user();
+
+        $consultations = Consultation::where('doctor_id', $doctor->id)
+            ->with('patientOrder')
+            ->get();
+
+        return view('consultation.index', compact('consultations'));
     }
 }
