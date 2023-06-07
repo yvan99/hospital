@@ -53,8 +53,8 @@ Route::middleware('auth:receptionist')->group(function () {
 Route::middleware('auth:doctor')->group(function () {
     Route::prefix('doctor')->group(function () {
         Route::view('/dashboard', 'doctor.dashboard');
-        Route::get('/doctor/patient-orders', [DoctorController::class, 'patientOrders'])->name('doctors.patientOrders');
-        Route::post('/doctor/patient-orders/{orderId}/assign', [DoctorController::class, 'assignPatientOrder'])->name('doctors.assignPatientOrder');
+        Route::get('/patient-orders', [DoctorController::class, 'patientOrders'])->name('doctors.patientOrders');
+        Route::post('/patient-orders/{orderId}/assign', [DoctorController::class, 'assignPatientOrder'])->name('doctors.assignPatientOrder');
     });
 });
 
