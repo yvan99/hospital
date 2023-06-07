@@ -51,6 +51,7 @@ class DoctorController extends Controller
 
     public function assignPatientOrder(Request $request, $orderId)
     {
+        //TODO: ONLY ASSIGN ORDERS FOR DOCTORS IN THE SAME DEPARTMENT
         // Validate the request data
         $validatedData = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',

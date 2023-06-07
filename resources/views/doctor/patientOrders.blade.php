@@ -1,3 +1,4 @@
+
 @include('components.dashcss')
 @include('doctor.components.aside')
 <main class="main-content">
@@ -81,6 +82,7 @@
                                                                         action="{{ route('doctors.assignPatientOrder', $order->id) }}"
                                                                         method="POST">
                                                                         @csrf
+                                                                        <!--TODO: ONLY SHOW DOCTORS IN THE SAME DEPARTMENT -->
                                                                         <div class="form-group">
                                                                             <label for="doctor_id">Assign Doctor</label>
                                                                             <select name="doctor_id" id="doctor_id"
