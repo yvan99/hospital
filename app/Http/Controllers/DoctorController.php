@@ -42,16 +42,6 @@ class DoctorController extends Controller
         return view('doctors.index', compact('doctors', 'departments'));
     }
 
-    // public function patientOrders()
-    // {
-    //     // Get the patient orders assigned to the logged-in doctor
-    //     $doctorId = auth()->user()->id;
-    //     $patientOrders = PatientOrder::whereHas('consultation', function ($query) use ($doctorId) {
-    //         $query->where('doctor_id', $doctorId);
-    //     })->get();
-
-    //     return view('doctor.patientOrders', compact('patientOrders'));
-    // }
     public function patientOrders()
     {
         $patientOrders = PatientOrder::all();
@@ -68,6 +58,9 @@ class DoctorController extends Controller
         ]);
 
         $patientOrder = PatientOrder::findOrFail($orderId);
+        // Update the status of the patient order to 'assigned'
+        $patientOrder->status = 'assigned';
+        $patientOrder->save();
         $consultation = new Consultation([
             'patient_order_id' => $patientOrder->id,
             'code' => Str::random(15),

@@ -110,6 +110,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                @else
+                                                    <span class="btn btn-sm btn-success">Assigned</span>
                                                 @endif
                                             </td>
                                         </tr>
