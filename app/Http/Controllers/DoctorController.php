@@ -49,7 +49,7 @@ class DoctorController extends Controller
             $query->where('doctor_id', $doctorId);
         })->get();
 
-        return view('doctor.patient_orders', compact('patientOrders'));
+        return view('doctor.patientOrders', compact('patientOrders'));
     }
 
     public function assignPatientOrder(Request $request, $orderId)
