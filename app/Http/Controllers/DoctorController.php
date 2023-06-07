@@ -49,7 +49,7 @@ class DoctorController extends Controller
             $query->where('doctor_id', $doctorId);
         })->get();
 
-        return view('doctors.patient_orders', compact('patientOrders'));
+        return view('doctor.patient_orders', compact('patientOrders'));
     }
 
     public function assignPatientOrder(Request $request, $orderId)
@@ -75,6 +75,6 @@ class DoctorController extends Controller
         // Save the consultation
         $consultation->save();
 
-        return redirect()->route('doctors.patientOrders')->with('success', 'Patient order assigned successfully.');
+        return redirect()->route('doctor.patientOrders')->with('success', 'Patient order assigned successfully.');
     }
 }
