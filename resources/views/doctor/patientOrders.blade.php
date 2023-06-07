@@ -53,30 +53,49 @@
                                             <td>{{ $order->payment_status }}</td>
                                             <td>
                                                 <!-- Conditional rendering based on is_hod -->
-                                                @if (auth()->user()->is_hod && $order->status=='initiated')
+                                                @if (auth()->user()->is_hod && $order->status == 'initiated')
                                                     <!-- Button to trigger assign modal -->
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignModal{{ $order->id }}">
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#assignModal{{ $order->id }}">
                                                         Assign
                                                     </button>
-                            
+
                                                     <!-- Assign modal -->
-                                                    <div class="modal fade" id="assignModal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel{{ $order->id }}" aria-hidden="true">
+                                                    <div class="modal fade" id="assignModal{{ $order->id }}"
+                                                        tabindex="-1" role="dialog"
+                                                        aria-labelledby="assignModalLabel{{ $order->id }}"
+                                                        aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="assignModalLabel{{ $order->id }}">Assign Patient Order</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                    aria-label="Close"></button>
+                                                                    <h5 class="modal-title"
+                                                                        id="assignModalLabel{{ $order->id }}">Assign
+                                                                        Patient Order</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form action="{{ route('doctors.assignPatientOrder', $order->id) }}" method="POST">
+                                                                    <form
+                                                                        action="{{ route('doctors.assignPatientOrder', $order->id) }}"
+                                                                        method="POST">
                                                                         @csrf
                                                                         <div class="form-group">
                                                                             <label for="doctor_id">Assign Doctor</label>
-                                                                            <select name="doctor_id" id="doctor_id" class="form-control form-select" required>
+                                                                            <select name="doctor_id" id="doctor_id"
+                                                                                class="form-control form-select"
+                                                                                required>
                                                                                 <!-- Populate the doctors options here -->
                                                                                 @foreach ($doctors as $doctor)
-                                                                                    <option value="{{ $doctor->id }}">{{ $doctor->names }}</option>
+                                                                                    <option
+                                                                                        value="{{ $doctor->id }}">
+                                                                                        @if ($doctor->id == auth()->user()->id)
+                                                                                            Assign to Me
+                                                                                        @else
+                                                                                            {{ $doctor->names }}
+                                                                                        @endif
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
@@ -84,7 +103,8 @@
                                                                             <label for="description">Description</label>
                                                                             <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
                                                                         </div>
-                                                                        <button type="submit" class="btn btn-primary">Assign</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Assign</button>
                                                                     </form>
                                                                 </div>
                                                             </div>
