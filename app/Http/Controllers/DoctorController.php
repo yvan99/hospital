@@ -32,7 +32,7 @@ class DoctorController extends Controller
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
             'department_id' => 'required|exists:departments,id',
-            'is_hod' => 'required|boolean',
+            'is_hod' => 'boolean',
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);

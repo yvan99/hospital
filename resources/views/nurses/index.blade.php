@@ -107,7 +107,7 @@
 
                                                 <div class="mb-3">
                                                     <label for="department_id" class="form-label">Department</label>
-                                                    <select class="form-control" id="department_id"
+                                                    <select class="form-control form-select" id="department_id"
                                                         name="department_id">
                                                         @foreach ($departments as $department)
                                                             <option value="{{ $department->id }}">

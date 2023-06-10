@@ -58,7 +58,7 @@
                                         <tr>
                                             <td>{{ $patient->id }}</td>
                                             <td>{{ $patient->code }}</td>
-                                            <td>{{ $patient->name }}</td>
+                                            <td>{{ $patient->names }}</td>
                                             <td>{{ $patient->gender }}</td>
                                             <td>{{ $patient->age }}</td>
                                             <td>{{ $patient->blood_group }}</td>
