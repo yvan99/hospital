@@ -7,5 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timetable extends Model
 {
-    use HasFactory;
+    protected $fillable = ['nurse_id', 'patient_batch_id', 'date'];
+
+    public function nurse()
+    {
+        return $this->belongsTo(Nurse::class);
+    }
+
+    public function patientBatch()
+    {
+        return $this->belongsTo(PatientBatch::class);
+    }
 }
