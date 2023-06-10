@@ -63,7 +63,7 @@
                                                     <li>
                                                         {{ $batch->consultation->patientOrder->patient->gender }}</li>
                                                         <li>
-                                                            {{ $batch->consultation->patientOrder->patient->age }}</li>
+                                                            {{ $batch->consultation->patientOrder->patient->age }} years</li>
                                                 </ul>
 
                                             </td>
