@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BatchPatientNurse;
 use App\Models\Consultation;
 use App\Models\Department;
 use App\Models\Doctor;
@@ -13,7 +14,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 
 class DoctorController extends Controller
@@ -125,31 +125,37 @@ class DoctorController extends Controller
     public function generateNurseTimetable()
     {
         $nurses = Nurse::all();
-
+    
         foreach ($nurses as $nurse) {
-            $assignedPatientBatches = $nurse->assignedPatientBatches()->where('status', 'assigned')->get();
-
+            $assignedNursePatientBatches = $nurse->assignedPatientBatches()->where('status', 'pending')->get();
+    
             $assignedDates = [];
-            foreach ($assignedPatientBatches as $batch) {
+            foreach ($assignedNursePatientBatches as $batch) {
                 $assignedDates[] = $batch->created_at->toDateString();
             }
-
+    
             $timetableDates = [];
             foreach ($assignedDates as $date) {
                 $timetableDates[] = Carbon::parse($date);
                 $timetableDates[] = Carbon::parse($date)->addDays(2);
             }
-
+    
             // Generate the timetable entries
             foreach ($timetableDates as $date) {
+                $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
+                    ->whereDate('created_at', $date)
+                    ->first();
+    
                 Timetable::create([
                     'nurse_id' => $nurse->id,
-                    'patient_batch_id' => null,
+                    'nurse_patient_batch_id' => $nursePatientBatch ? $nursePatientBatch->id : null,
                     'date' => $date,
                 ]);
             }
         }
     }
+    
+    
 
     public function nurseTimetable()
     {
