@@ -45,6 +45,19 @@
             },
             defaultView: 'month',
             editable: true,
+            eventRender: function(event, element) {
+                // Define an array of color options
+                var colors = ['#ff6868', '#68a8ff', '#68ff91', '#ff68d4', '#ffdb68'];
+                
+                // Generate a random index for the color options
+                var randomIndex = Math.floor(Math.random() * colors.length);
+                
+                // Assign the color to the event element
+                element.css({
+                    'background-color': colors[randomIndex],
+                    'color': '#fff' // Set text color to white
+                });
+            },
             events: [
                 @foreach ($nurseTimetables as $timetable)
                     {
@@ -59,5 +72,7 @@
         });
     });
 </script>
+
+
 @include('components.dashjs')
 
