@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Nurse;
+use App\Models\BatchPatientNurse;
 use App\Models\Timetable;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -10,8 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
-
 
 class GenerateNurseTimetableJob implements ShouldQueue
 {
@@ -19,36 +17,29 @@ class GenerateNurseTimetableJob implements ShouldQueue
 
     public function handle()
     {
-        $nurses = Nurse::has('nurseAssignedBatches')->get();
+        $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
         $numberOfDays = 20;
 
-        Log::info('Nurses:', "dffsmfnfsksfklmsf");
+        for ($i = 0; $i < $numberOfDays; $i++) {
+            $date = Carbon::today()->addDays($i);
+            $assignedBatches = [];
 
-        foreach ($nurses as $nurse) {
-            $assignedDates = $nurse->nurseAssignedBatches->pluck('created_at')->map(function ($date) {
-                return Carbon::parse($date)->startOfDay();
-            });
+            foreach ($nursePatientBatches as $nursePatientBatch) {
+                $nurse = $nursePatientBatch->nurse;
+                $patientBatch = $nursePatientBatch->patientBatch;
 
-            $latestDate = $assignedDates->max();
-
-            if ($latestDate) {
-                $nextDate = $latestDate->copy()->addDays(2);
-
-                while ($assignedDates->contains($nextDate)) {
-                    $nextDate->addDays(2);
+                // Check if the patient_batch_id is already assigned on the same day
+                if (in_array($patientBatch->id, $assignedBatches)) {
+                    continue; // Skip assigning this nurse for this patient_batch_id
                 }
 
-                for ($i = 0; $i < $numberOfDays; $i++) {
-                    $assignedDate = $assignedDates->contains($nextDate) ? null : $nextDate;
+                Timetable::create([
+                    'nurse_id' => $nurse->id,
+                    'patient_batch_id' => $patientBatch->id,
+                    'date' => $date,
+                ]);
 
-                    Timetable::create([
-                        'nurse_id' => $nurse->id,
-                        'patient_batch_id' => null,
-                        'date' => $assignedDate,
-                    ]);
-
-                    $nextDate->addDays(2);
-                }
+                $assignedBatches[] = $patientBatch->id;
             }
         }
     }
