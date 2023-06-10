@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+}); 
 
 // Receptionist Auth
 Route::prefix('receptionist')->group(function () {
