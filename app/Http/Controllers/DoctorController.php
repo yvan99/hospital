@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\GenerateNurseTimetableJob;
 use App\Models\BatchPatientNurse;
 use App\Models\Consultation;
 use App\Models\Department;
@@ -159,56 +160,11 @@ class DoctorController extends Controller
         }
     }
 
-    public function generateNurseTimetable()
-    {
-        $nurses = Nurse::all();
-        $startDate = now();
-        $endDate = $startDate->copy()->addDays(30);
-    
-        // Generate the timetable entries
-        $index = 0;
-        foreach ($nurses as $nurse) {
-            $currentDate = $startDate;
-    
-            while ($currentDate <= $endDate) {
-                // Check if the nurse is assigned to a patient batch on the current date
-                $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
-                    ->whereHas('patientBatch', function ($query) use ($currentDate) {
-                        $query->whereDate('created_at', $currentDate);
-                    })
-                    ->first();
-                    dd($nursePatientBatch);
-    
-                if ($nursePatientBatch) {
-                    // Create a timetable entry for the nurse and patient batch
-                    Timetable::create([
-                        'nurse_id' => $nurse->id,
-                        'patient_batch_id' => $nursePatientBatch->patient_batch_id,
-                        'date' => $currentDate,
-                    ]);
-                }
-    
-                // Move to the next available date for the nurse
-                $currentDate = $startDate->copy()->addDays($index * 2);
-                $index++;
-            }
-        }
-    }
-    
-    
-    
-    
-    
-
-
-
-
-
 
 
     public function nurseTimetable()
     {
-        $this->generateNurseTimetable();
+        GenerateNurseTimetableJob::dispatch();
         $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
         return view('scheduling.index', compact('nurseTimetables'));
     }
