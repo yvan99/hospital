@@ -15,6 +15,9 @@ class CreateTimetablesTable extends Migration
     {
         Schema::create('timetables', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('nurse_id')->constrained('nurses');
+            $table->foreignId('patient_batch_id')->constrained('patient_batches');
+            $table->date('date');
             $table->timestamps();
         });
     }
