@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\GenerateNurseTimetableJob;
+use App\Models\BatchPatientNurse;
 use App\Models\Consultation;
 use App\Models\Department;
 use App\Models\Doctor;
 use App\Models\Nurse;
 use App\Models\PatientOrder;
 use App\Models\PatientBatch;
+use App\Models\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 
 class DoctorController extends Controller
@@ -29,7 +33,7 @@ class DoctorController extends Controller
             'phone' => 'required|string',
             'password' => 'required|string|min:6',
             'department_id' => 'required|exists:departments,id',
-            'is_hod' => 'required|boolean',
+            'is_hod' => 'boolean',
         ]);
 
         $validatedData['password'] = Hash::make($validatedData['password']);
@@ -104,7 +108,64 @@ class DoctorController extends Controller
     {
         $doctorId = auth()->user()->id;
         $consultations = Consultation::where('doctor_id', $doctorId)->get();
-        $nurses = Nurse::all();
+        $nurses = Nurse::all(); //TODO: RETURN NURSES IN THE SAME DEPARTMENT
         return view('consultation.index', compact('consultations', 'nurses'));
+    }
+
+    public function patientBatches()
+    {
+        // Get the logged-in doctor's assigned patient batches
+        $doctorId = auth()->user()->id;
+        $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
+            $query->where('doctor_id', $doctorId);
+        })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
+
+        return view('patients.batches', compact('patientBatches'));
+    }
+
+    public function generateNurseTimetableee()
+    {
+        $nurses = Nurse::all();
+
+        foreach ($nurses as $nurse) {
+            $assignedNursePatientBatches = $nurse->patientBatches()->where('status', 'pending')->get();
+
+            $assignedDates = [];
+            foreach ($assignedNursePatientBatches as $nursePatientBatch) {
+                $assignedDates[] = $nursePatientBatch->created_at->toDateString();
+            }
+
+            $timetableDates = [];
+            foreach ($assignedDates as $date) {
+                $timetableDates[] = Carbon::parse($date);
+                $timetableDates[] = Carbon::parse($date)->addDays(2);
+            }
+
+            // Generate the timetable entries
+            foreach ($timetableDates as $date) {
+                $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
+                    ->whereHas('patientBatch', function ($query) use ($date) {
+                        $query->whereDate('created_at', $date);
+                    })
+                    ->first();
+
+                if ($nursePatientBatch) {
+                    Timetable::create([
+                        'nurse_id' => $nurse->id,
+                        'patient_batch_id' => $nursePatientBatch->patient_batch_id,
+                        'date' => $date,
+                    ]);
+                }
+            }
+        }
+    }
+
+
+
+    public function nurseTimetable()
+    {
+        GenerateNurseTimetableJob::dispatch();
+        $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
+        return view('scheduling.index', compact('nurseTimetables'));
     }
 }

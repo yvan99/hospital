@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Unassigned Patients Requests</h4>
+                            <h4 class="card-title">Patients Requests</h4>
 
                         </div>
 
@@ -43,6 +43,7 @@
                                         <th>Order Code</th>
                                         <th>Description</th>
                                         <th>Payment Status</th>
+                                        <th>Created At</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -52,6 +53,7 @@
                                             <td>{{ $order->code }}</td>
                                             <td>{{ $order->description }}</td>
                                             <td>{{ $order->payment_status }}</td>
+                                            <th>{{ $order->created_at }}</th>
                                             <td>
                                                 <!-- Conditional rendering based on is_hod -->
                                                 @if (auth()->user()->is_hod && $order->status == 'initiated')

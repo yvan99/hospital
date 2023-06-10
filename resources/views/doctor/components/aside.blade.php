@@ -50,8 +50,8 @@
 
                 @if (auth()->user()->is_hod)
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('doctor/patient-orders') ? 'active' : '' }}" aria-current="page"
-                            href="/doctor/patient-orders">
+                        <a class="nav-link {{ Request::is('doctor/patient-orders') ? 'active' : '' }}"
+                            aria-current="page" href="/doctor/patient-orders">
                             <i class="icon" data-bs-toggle="tooltip" title="Utilities" data-bs-placement="right">
                                 <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +63,7 @@
                                         fill="currentColor"></path>
                                 </svg>
                             </i>
-                            <span class="item-name">Unassigned Requests</span>
+                            <span class="item-name">Patient Requests</span>
                         </a>
                     </li>
                 @endif
@@ -88,8 +88,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('doctor/patients') ? 'active' : '' }}" aria-current="page"
-                        href="/doctor/patients">
+                    <a class="nav-link {{ Request::is('doctor/patient-batches') ? 'active' : '' }}"
+                        aria-current="page" href="/doctor/patient-batches">
                         <i class="icon" data-bs-toggle="tooltip" title="Analytics" data-bs-placement="right">
                             <svg width="20" height="20" class="icon-20" viewBox="0 0 16 16" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -100,12 +100,12 @@
                                     fill="currentColor" />
                             </svg>
                         </i>
-                        <span class="item-name">Patients Report</span>
+                        <span class="item-name">Patients Batches</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('doctor/nurses') ? 'active' : '' }}" aria-current="page"
-                        href="/doctor/nurses">
+                    <a class="nav-link {{ Request::is('doctor/nurse-timetable') ? 'active' : '' }}" aria-current="page"
+                        href="/doctor/nurse-timetable">
                         <i class="icon" data-bs-toggle="tooltip" title="UI Elements" data-bs-placement="right">
                             <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +117,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Nurses Report</span>
+                        <span class="item-name">Nurse shifts</span>
                     </a>
                 </li>
 

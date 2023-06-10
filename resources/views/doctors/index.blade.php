@@ -102,7 +102,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="department_id">Department</label>
-                                                    <select class="form-control" id="department_id" name="department_id"
+                                                    <select class="form-control form-select" id="department_id" name="department_id"
                                                         required>
                                                         <option value="">Select Department</option>
                                                         @foreach ($departments as $department)

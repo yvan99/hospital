@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+}); 
 
 // Receptionist Auth
 Route::prefix('receptionist')->group(function () {
@@ -57,6 +57,8 @@ Route::middleware('auth:doctor')->group(function () {
         Route::post('/patient-orders/{orderId}/assign', [DoctorController::class, 'assignPatientOrder'])->name('doctors.assignPatientOrder');
         Route::get('/consultations', [DoctorController::class, 'consultations'])->name('doctors.consultations');
         Route::post('/consultations/{consultation}/register-batch', [DoctorController::class, 'registerBatch'])->name('doctors.registerBatch');
+        Route::get('/patient-batches', [DoctorController::class, 'patientBatches'])->name('doctor.patientBatches');
+        Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
 
 
     });
