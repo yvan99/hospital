@@ -116,6 +116,6 @@ class DoctorController extends Controller
             $query->where('doctor_id', $doctorId);
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
 
-        return view('doctor.patientBatches', compact('patientBatches'));
+        return view('patients.batches', compact('patientBatches'));
     }
 }
