@@ -107,4 +107,15 @@ class DoctorController extends Controller
         $nurses = Nurse::all(); //TODO: RETURN NURSES IN THE SAME DEPARTMENT
         return view('consultation.index', compact('consultations', 'nurses'));
     }
+
+    public function patientBatches()
+    {
+        // Get the logged-in doctor's assigned patient batches
+        $doctorId = auth()->user()->id;
+        $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
+            $query->where('doctor_id', $doctorId);
+        })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
+
+        return view('doctor.patientBatches', compact('patientBatches'));
+    }
 }
