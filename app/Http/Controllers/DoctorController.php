@@ -127,11 +127,11 @@ class DoctorController extends Controller
         $nurses = Nurse::all();
     
         foreach ($nurses as $nurse) {
-            $assignedNursePatientBatches = $nurse->assignedPatientBatches()->where('status', 'pending')->get();
+            $assignedNursePatientBatches = $nurse->patientBatches()->where('status', 'pending')->get();
     
             $assignedDates = [];
-            foreach ($assignedNursePatientBatches as $batch) {
-                $assignedDates[] = $batch->created_at->toDateString();
+            foreach ($assignedNursePatientBatches as $nursePatientBatch) {
+                $assignedDates[] = $nursePatientBatch->created_at->toDateString();
             }
     
             $timetableDates = [];
@@ -143,17 +143,24 @@ class DoctorController extends Controller
             // Generate the timetable entries
             foreach ($timetableDates as $date) {
                 $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
-                    ->whereDate('created_at', $date)
+                    ->whereHas('patientBatch', function ($query) use ($date) {
+                        $query->whereDate('created_at', $date);
+                    })
                     ->first();
     
-                Timetable::create([
-                    'nurse_id' => $nurse->id,
-                    'nurse_patient_batch_id' => $nursePatientBatch ? $nursePatientBatch->id : null,
-                    'date' => $date,
-                ]);
+                if ($nursePatientBatch) {
+                    Timetable::create([
+                        'nurse_id' => $nurse->id,
+                        'patient_batch_id' => $nursePatientBatch->patient_batch_id,
+                        'date' => $date,
+                    ]);
+                }
             }
         }
     }
+    
+    
+    
     
     
 

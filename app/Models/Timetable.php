@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Timetable extends Model
 {
     protected $fillable = ['nurse_id', 'patient_batch_id', 'date'];
+    protected $dates = ['date'];
+
 
     public function nurse()
     {
