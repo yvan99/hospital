@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!-- Library Bundle Script -->
 <script src="{{ asset('dashboard/js/core/libs.min.js') }}"></script>
@@ -21,6 +22,9 @@
 <!-- qompacui Script -->
 <script src="{{ asset('dashboard/js/qompac-uif700.js?v=1.0.1') }}" defer></script>
 <script src="{{ asset('dashboard/js/sidebarf700.js?v=1.0.1') }}" defer></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 
 <script>
     function copyPassword() {

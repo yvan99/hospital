@@ -1,6 +1,7 @@
 @include('components.dashcss')
 
 {{-- CALENDER FULL DEPENDENCY --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
@@ -47,7 +48,7 @@
             events: [
                 @foreach ($nurseTimetables as $timetable)
                     {
-                        title: '{{ $timetable->nurse->name }}',
+                        title: '{{ $timetable->nurse->names }}',
                         start: '{{ $timetable->date->format('Y-m-d') }}',
                         @if ($timetable->patientBatch)
                             url: '/patient-batches/{{ $timetable->patientBatch->id }}',
@@ -58,4 +59,5 @@
         });
     });
 </script>
+@include('components.dashjs')
 
