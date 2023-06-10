@@ -127,7 +127,7 @@ class DoctorController extends Controller
         $nurses = Nurse::all();
 
         foreach ($nurses as $nurse) {
-            $assignedPatientBatches = $nurse->patientBatches()->where('status', 'assigned')->get();
+            $assignedPatientBatches = $nurse->assignedPatientBatches()->where('status', 'assigned')->get();
 
             $assignedDates = [];
             foreach ($assignedPatientBatches as $batch) {

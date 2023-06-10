@@ -21,5 +21,8 @@ class Nurse extends Model
     {
         return $this->belongsTo(Department::class);
     }
-
+    public function assignedPatientBatches()
+    {
+        return $this->hasMany(PatientBatch::class, 'nurse_id');
+    }
 }
