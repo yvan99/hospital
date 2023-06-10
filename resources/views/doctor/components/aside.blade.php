@@ -63,7 +63,7 @@
                                         fill="currentColor"></path>
                                 </svg>
                             </i>
-                            <span class="item-name">Unassigned Requests</span>
+                            <span class="item-name">Patient Requests</span>
                         </a>
                     </li>
                 @endif
