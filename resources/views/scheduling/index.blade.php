@@ -1,4 +1,10 @@
 @include('components.dashcss')
+
+{{-- CALENDER FULL DEPENDENCY --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
+
 @include('doctor.components.aside')
 <main class="main-content">
     <div class="position-relative ">
@@ -19,8 +25,8 @@
                     </div>
                     <div class="card-body">
 
-                       
-                 
+                        <div id="calendar"></div>
+
                     </div>
                 </div>
             </div>
