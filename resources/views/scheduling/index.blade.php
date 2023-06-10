@@ -34,7 +34,6 @@
     </div>
     @include('components.dashfooter')
 </main>
-@include('components.dashjs')
 <script>
     $(document).ready(function() {
         $('#calendar').fullCalendar({
@@ -59,3 +58,4 @@
         });
     });
 </script>
+
