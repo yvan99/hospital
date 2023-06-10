@@ -153,6 +153,7 @@ class DoctorController extends Controller
 
     public function nurseTimetable()
     {
+        $this->generateNurseTimetable();
         $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
         return view('scheduling.index', compact('nurseTimetables'));
     }
