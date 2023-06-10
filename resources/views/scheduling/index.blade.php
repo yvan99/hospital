@@ -46,8 +46,8 @@
             defaultView: 'month',
             editable: true,
             eventRender: function(event, element) {
-                // Define an array of color options
-                var colors = ['#ff6868', '#68a8ff', '#68ff91', '#ff68d4', '#ffdb68'];
+                // Define an array of darker color options
+                var colors = ['#4c4c4c', '#5d5d5d', '#333333', '#6b6b6b', '#474747'];
                 
                 // Generate a random index for the color options
                 var randomIndex = Math.floor(Math.random() * colors.length);
@@ -72,6 +72,7 @@
         });
     });
 </script>
+
 
 
 @include('components.dashjs')
