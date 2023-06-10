@@ -44,6 +44,7 @@
                                         <th>Assigned Doctor</th>
                                         <th>Patient Info</th>
                                         <th>Assigned Nurses</th>
+                                        <th>Batch Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,14 +54,30 @@
                                             <td>{{ $batch->consultation->code }}</td>
                                             <td>{{ $batch->consultation->doctor->names }}</td>
                                             <td>
-                                                Patient Name:
-                                                {{ $batch->consultation->patientOrder->patient->names }}<br>
-                                                Patient ID: {{ $batch->consultation->patientOrder->patient->id }}
+
+                                                <ul>
+                                                    <li>
+                                                        {{ $batch->consultation->patientOrder->patient->names }}</li>
+                                                    <li>
+                                                        {{ $batch->consultation->patientOrder->patient->code }}</li>
+                                                    <li>
+                                                        {{ $batch->consultation->patientOrder->patient->gender }}</li>
+                                                        <li>
+                                                            {{ $batch->consultation->patientOrder->patient->age }}</li>
+                                                </ul>
+
                                             </td>
                                             <td>
-                                                @foreach ($batch->nurses as $nurse)
-                                                    {{ $nurse->names }}<br>
-                                                @endforeach
+                                                <ul>
+                                                    @foreach ($batch->nurses as $nurse)
+                                                        <li>{{ $nurse->names }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm">
+                                                    {{$batch->status}}
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
