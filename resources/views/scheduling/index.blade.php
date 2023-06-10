@@ -47,7 +47,7 @@
             editable: true,
             eventRender: function(event, element) {
                 // Define an array of darker color options
-                var colors = ['#4c4c4c', '#5d5d5d', '#333333', '#6b6b6b', '#474747'];
+                var colors = ['#1f2b4b', '#303030', '#0a6640'];
                 
                 // Generate a random index for the color options
                 var randomIndex = Math.floor(Math.random() * colors.length);
@@ -72,6 +72,7 @@
         });
     });
 </script>
+
 
 
 
