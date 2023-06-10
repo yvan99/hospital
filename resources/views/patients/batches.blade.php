@@ -47,18 +47,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($patientBatches as $batch)
+                                    @foreach ($patientBatches as $batch)
                                         <tr>
                                             <td>{{ $batch->code }}</td>
                                             <td>{{ $batch->consultation->code }}</td>
                                             <td>{{ $batch->consultation->doctor->names }}</td>
                                             <td>
-                                                Patient Name: {{ $batch->consultation->patientOrder->patient->name }}<br>
+                                                Patient Name:
+                                                {{ $batch->consultation->patientOrder->patient->names }}<br>
                                                 Patient ID: {{ $batch->consultation->patientOrder->patient->id }}
                                             </td>
                                             <td>
-                                                @foreach($batch->nurses as $nurse)
-                                                    {{ $nurse->name }}<br>
+                                                @foreach ($batch->nurses as $nurse)
+                                                    {{ $nurse->names }}<br>
                                                 @endforeach
                                             </td>
                                         </tr>
