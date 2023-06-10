@@ -104,8 +104,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('doctor/nurses') ? 'active' : '' }}" aria-current="page"
-                        href="/doctor/nurses">
+                    <a class="nav-link {{ Request::is('doctor/nurse-timetable') ? 'active' : '' }}" aria-current="page"
+                        href="/doctor/nurse-timetable">
                         <i class="icon" data-bs-toggle="tooltip" title="UI Elements" data-bs-placement="right">
                             <svg width="20" class="icon-20" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -117,7 +117,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Nurses Report</span>
+                        <span class="item-name">Nurse shifts</span>
                     </a>
                 </li>
 
