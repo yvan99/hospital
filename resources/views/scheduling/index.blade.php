@@ -35,3 +35,27 @@
     @include('components.dashfooter')
 </main>
 @include('components.dashjs')
+<script>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            defaultView: 'month',
+            editable: false,
+            events: [
+                @foreach ($nurseTimetables as $timetable)
+                    {
+                        title: '{{ $timetable->nurse->name }}',
+                        start: '{{ $timetable->date->format('Y-m-d') }}',
+                        @if ($timetable->patientBatch)
+                            url: '/patient-batches/{{ $timetable->patientBatch->id }}',
+                        @endif
+                    },
+                @endforeach
+            ]
+        });
+    });
+</script>
