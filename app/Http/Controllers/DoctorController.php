@@ -8,6 +8,7 @@ use App\Models\Doctor;
 use App\Models\Nurse;
 use App\Models\PatientOrder;
 use App\Models\PatientBatch;
+use App\Models\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -117,5 +118,34 @@ class DoctorController extends Controller
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
 
         return view('patients.batches', compact('patientBatches'));
+    }
+
+    public function generateNurseTimetable()
+    {
+        $nurses = Nurse::all();
+
+        foreach ($nurses as $nurse) {
+            $assignedPatientBatches = $nurse->patientBatches()->where('status', 'assigned')->get();
+
+            $assignedDates = [];
+            foreach ($assignedPatientBatches as $batch) {
+                $assignedDates[] = $batch->created_at->toDateString();
+            }
+
+            $timetableDates = [];
+            foreach ($assignedDates as $date) {
+                $timetableDates[] = Carbon::parse($date);
+                $timetableDates[] = Carbon::parse($date)->addDays(2);
+            }
+
+            // Generate the timetable entries
+            foreach ($timetableDates as $date) {
+                Timetable::create([
+                    'nurse_id' => $nurse->id,
+                    'patient_batch_id' => null,
+                    'date' => $date,
+                ]);
+            }
+        }
     }
 }
