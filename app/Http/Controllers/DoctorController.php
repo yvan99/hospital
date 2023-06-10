@@ -122,24 +122,24 @@ class DoctorController extends Controller
         return view('patients.batches', compact('patientBatches'));
     }
 
-    public function generateNurseTimetable()
+    public function generateNurseTimetableee()
     {
         $nurses = Nurse::all();
-    
+
         foreach ($nurses as $nurse) {
             $assignedNursePatientBatches = $nurse->patientBatches()->where('status', 'pending')->get();
-    
+
             $assignedDates = [];
             foreach ($assignedNursePatientBatches as $nursePatientBatch) {
                 $assignedDates[] = $nursePatientBatch->created_at->toDateString();
             }
-    
+
             $timetableDates = [];
             foreach ($assignedDates as $date) {
                 $timetableDates[] = Carbon::parse($date);
                 $timetableDates[] = Carbon::parse($date)->addDays(2);
             }
-    
+
             // Generate the timetable entries
             foreach ($timetableDates as $date) {
                 $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
@@ -147,7 +147,7 @@ class DoctorController extends Controller
                         $query->whereDate('created_at', $date);
                     })
                     ->first();
-    
+
                 if ($nursePatientBatch) {
                     Timetable::create([
                         'nurse_id' => $nurse->id,
@@ -158,11 +158,53 @@ class DoctorController extends Controller
             }
         }
     }
+
+    public function generateNurseTimetable()
+    {
+        $nurses = Nurse::all();
+        $startDate = now();
+        $endDate = $startDate->copy()->addDays(30);
+    
+        // Generate the timetable entries
+        $index = 0;
+        foreach ($nurses as $nurse) {
+            $currentDate = $startDate;
+    
+            while ($currentDate <= $endDate) {
+                // Check if the nurse is assigned to a patient batch on the current date
+                $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
+                    ->whereHas('patientBatch', function ($query) use ($currentDate) {
+                        $query->whereDate('created_at', $currentDate);
+                    })
+                    ->first();
+                    dd($nursePatientBatch);
+    
+                if ($nursePatientBatch) {
+                    // Create a timetable entry for the nurse and patient batch
+                    Timetable::create([
+                        'nurse_id' => $nurse->id,
+                        'patient_batch_id' => $nursePatientBatch->patient_batch_id,
+                        'date' => $currentDate,
+                    ]);
+                }
+    
+                // Move to the next available date for the nurse
+                $currentDate = $startDate->copy()->addDays($index * 2);
+                $index++;
+            }
+        }
+    }
     
     
     
     
     
+
+
+
+
+
+
 
     public function nurseTimetable()
     {

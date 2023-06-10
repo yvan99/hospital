@@ -41,10 +41,10 @@
             header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'month,agendaWeek,agendaDay'
+                right: 'month'
             },
             defaultView: 'month',
-            editable: false,
+            editable: true,
             events: [
                 @foreach ($nurseTimetables as $timetable)
                     {
