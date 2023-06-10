@@ -19,7 +19,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Patients Batches List</h4>
+                            <h4 class="card-title">Nurses shifts scheduler</h4>
 
                         </div>
 
@@ -72,6 +72,7 @@
         });
     });
 </script>
+
 
 
 
