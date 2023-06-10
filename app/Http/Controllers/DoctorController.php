@@ -104,7 +104,7 @@ class DoctorController extends Controller
     {
         $doctorId = auth()->user()->id;
         $consultations = Consultation::where('doctor_id', $doctorId)->get();
-        $nurses = Nurse::all();
+        $nurses = Nurse::all(); //TODO: RETURN NURSES IN THE SAME DEPARTMENT
         return view('consultation.index', compact('consultations', 'nurses'));
     }
 }

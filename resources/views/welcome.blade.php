@@ -25,11 +25,11 @@
                 </span>
             </a>
 
-            <a href="/nurse/login" class="btn btn-success rounded-pill px-3 m-1 mb-2 mb-lg-0">
+            {{-- <a href="/nurse/login" class="btn btn-success rounded-pill px-3 m-1 mb-2 mb-lg-0">
                 <span class="d-flex align-items-center">
                     <span class="small">Nurse Login</span>
                 </span>
-            </a>
+            </a> --}}
         </div>
     </div>
 </nav>
