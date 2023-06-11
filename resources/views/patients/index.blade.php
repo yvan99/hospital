@@ -131,6 +131,7 @@
                                                         <option value="AB-">AB-</option>
                                                         <option value="O+">O+</option>
                                                         <option value="O-">O-</option>
+                                                        <option value="none">Don't Know</option>
                                                     </select>
                                                 </div>
 
