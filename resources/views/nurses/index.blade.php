@@ -99,7 +99,7 @@
 
                                                 <div class="form-group">
                                                     <label for="password">Password</label>
-                                                    <input type="text" class="form-control" id="password"
+                                                    <input type="text" readonly class="form-control" id="password"
                                                         name="password" value="{{ Str::random(12) }}" required>
                                                     <button type="button" class="btn btn-secondary mt-2"
                                                         onclick="copyPassword()">Copy</button>
