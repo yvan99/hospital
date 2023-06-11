@@ -14,6 +14,11 @@ Route::get('/', function () {
     return view('welcome');
 }); 
 
+Route::get('/check', function() {
+    return response()->json([
+     'stuff' => phpinfo()
+    ]);
+ });
 // Receptionist Auth
 Route::prefix('receptionist')->group(function () {
     Route::get('/login', [AuthReceptionistLoginController::class, 'showLoginForm'])->name('receptionist.login');
