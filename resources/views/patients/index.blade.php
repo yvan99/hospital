@@ -132,8 +132,6 @@
                                                         <option value="O+">O+</option>
                                                         <option value="O-">O-</option>
                                                     </select>
-                                                    <input type="text" class="form-control" id="blood_group"
-                                                        name="blood_group" value="{{ old('blood_group') }}">
                                                 </div>
 
                                                 <div class="mb-3">
