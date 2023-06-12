@@ -126,30 +126,24 @@ class DoctorController extends Controller
 
     public function handleTimeTable()
     {
-        $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
+        $nurses = Nurse::all();
+        $patientBatches = PatientBatch::all();
         $numberOfDays = 15;
+        $nurseCount = count($nurses);
+        $patientBatchCount = count($patientBatches);
     
         for ($i = 0; $i < $numberOfDays; $i++) {
             $date = Carbon::today()->addDays($i);
     
-            // Debug statement for the date
-            echo "Date: " . $date . "\n";
-    
             $timetables = [];
     
-            // Shuffle the array to randomize the nurse-patient batch order
-            $shuffledNursePatientBatches = $nursePatientBatches->shuffle();
+            $nurseIndex = $i % $nurseCount; // Get the nurse index for the current day
     
-            $previousNurseId = null;
+            for ($j = 0; $j < $patientBatchCount; $j++) {
+                $patientBatchIndex = ($j + $nurseIndex) % $patientBatchCount; // Get the patient batch index using round-robin
     
-            foreach ($shuffledNursePatientBatches as $nursePatientBatch) {
-                $nurse = $nursePatientBatch->nurse;
-                $patientBatch = $nursePatientBatch->patientBatch;
-    
-                // Debug statements for Nurse ID and Patient Batch ID
-                echo "Nurse ID: " . $nurse->id . "\n";
-                echo "Patient Batch ID: " . $patientBatch->id . "\n";
-    
+                $nurse = $nurses[$nurseIndex];
+                $patientBatch = $patientBatches[$patientBatchIndex];
                 // Check if timetable already exists for the date and patient batch
                 $existingTimetable = Timetable::where('date', $date)
                     ->where('patient_batch_id', $patientBatch->id)
@@ -157,12 +151,6 @@ class DoctorController extends Controller
     
                 if ($existingTimetable) {
                     // Timetable already exists, skip creating a new one
-                    continue;
-                }
-    
-                // Check if the nurse ID is the same as the previous iteration
-                if ($nurse->id == $previousNurseId) {
-                    // Nurse ID is the same, skip creating a new one
                     continue;
                 }
     
@@ -177,10 +165,12 @@ class DoctorController extends Controller
     
                 $timetables[] = $timetable;
     
-                $previousNurseId = $nurse->id;
+                $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
             }
         }
     }
+    
+    
     
 
 
