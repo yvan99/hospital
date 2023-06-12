@@ -1,5 +1,84 @@
 @include('components.dashcss')
 @include('doctor.components.aside')
+
+<style>
+    :root {
+        --send-bg: #0B93F6;
+        --send-color: white;
+        --receive-bg: #E5E5EA;
+        --receive-text: black;
+        --page-background: white;
+    }
+
+    body {
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: normal;
+        max-width: 450px;
+        margin: 50px auto;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--page-background);
+    }
+
+    .message {
+        max-width: 255px;
+        word-wrap: break-word;
+        margin-bottom: 12px;
+        line-height: 24px;
+        position: relative;
+        padding: 10px 20px;
+        border-radius: 25px;
+    }
+
+    .message:before,
+    .message:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        height: 25px;
+    }
+
+    .send {
+        color: var(--send-color);
+        background: var(--send-bg);
+        align-self: flex-end;
+    }
+
+    .send:before {
+        right: -7px;
+        width: 20px;
+        background-color: var(--send-bg);
+        border-bottom-left-radius: 16px 14px;
+    }
+
+    .send:after {
+        right: -26px;
+        width: 26px;
+        background-color: var(--page-background);
+        border-bottom-left-radius: 10px;
+    }
+
+    .receive {
+        background: var(--receive-bg);
+        color: var(--receive-text);
+        align-self: flex-start;
+    }
+
+    .receive:before {
+        left: -7px;
+        width: 20px;
+        background-color: var(--receive-bg);
+        border-bottom-right-radius: 16px 14px;
+    }
+
+    .receive:after {
+        left: -26px;
+        width: 26px;
+        background-color: var(--page-background);
+        border-bottom-right-radius: 10px;
+    }
+</style>
 <main class="main-content">
     <div class="position-relative ">
         <!--Nav Start-->
@@ -93,8 +172,8 @@
 
                             <!-- Add this modal markup at the bottom of the view file -->
                             <!-- Create Note Modal -->
-                            <div class="modal fade" id="noteModal" tabindex="-1"
-                                aria-labelledby="noteModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel"
+                                aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -105,6 +184,15 @@
                                         <form action="{{ route('notes.store') }}" method="POST">
                                             @csrf
                                             <div class="modal-body">
+
+                                                @foreach ($notes as $note)
+                                                    @if ($note->user_type === 'doctor')
+                                                        <p class="message send">{{ $note->message }}</p>
+                                                    @else
+                                                        <p class="message receive">{{ $note->message }}</p>
+                                                    @endif
+                                                @endforeach
+
                                                 <input type="hidden" name="patient_batch_id"
                                                     value="{{ $batch->id }}">
                                                 <div class="mb-3">
@@ -135,44 +223,44 @@
 
 <script>
     $(function() {
-    $('#noteModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var patientBatchId = button.data('patient-batch-id'); // Extract info from data-* attributes
-        var modal = $(this);
+        $('#noteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var patientBatchId = button.data('patient-batch-id'); // Extract info from data-* attributes
+            var modal = $(this);
 
-        // Set the patient batch ID in the hidden form input
-        modal.find('#patientBatchId').val(patientBatchId);
+            // Set the patient batch ID in the hidden form input
+            modal.find('#patientBatchId').val(patientBatchId);
 
-        // Fetch and load the notes for the patient batch
-        $.ajax({
-            url: '/doctor/notes/' + patientBatchId,
-            type: 'GET',
-            dataType: 'html',
-            success: function(response) {
-                console.log(response) 
-                modal.find('.modal-body').html(response);
-            }
+            // Fetch and load the notes for the patient batch
+            $.ajax({
+                url: '/doctor/notes/' + patientBatchId,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    console.log(response)
+                    modal.find('.modal-body').html(response);
+                }
+            });
+        });
+
+        $('#sendNoteForm').on('submit', function(event) {
+            event.preventDefault();
+
+            var form = $(this);
+            var patientBatchId = form.find('#patientBatchId')
+        .val(); // Get the patient batch ID from the hidden input
+
+            // Submit the note form via AJAX
+            $.ajax({
+                url: form.attr('action') + '/' +
+                patientBatchId, // Append the patient batch ID to the URL
+                type: form.attr('method'),
+                data: form.serialize(),
+                dataType: 'html',
+                success: function(response) {
+                    $('#noteModal').modal('hide');
+                }
+            });
         });
     });
-
-    $('#sendNoteForm').on('submit', function(event) {
-        event.preventDefault();
-
-        var form = $(this);
-        var patientBatchId = form.find('#patientBatchId').val(); // Get the patient batch ID from the hidden input
-
-        // Submit the note form via AJAX
-        $.ajax({
-            url: form.attr('action') + '/' + patientBatchId, // Append the patient batch ID to the URL
-            type: form.attr('method'),
-            data: form.serialize(),
-            dataType: 'html',
-            success: function(response) {
-                $('#noteModal').modal('hide');
-            }
-        });
-    });
-});
-
 </script>
-

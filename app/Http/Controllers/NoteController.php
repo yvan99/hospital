@@ -31,6 +31,7 @@ class NoteController extends Controller
         $notes = $patientBatch->notes()->orderBy('created_at', 'asc')->get();
     
         return view('patients.batches', compact('notes'));
+
     }
     
 }
