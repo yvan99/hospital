@@ -1,6 +1,85 @@
 @include('components.dashcss')
 @include('doctor.components.aside')
 <main class="main-content">
+
+    <style>
+        :root {
+            --send-bg: #26005c;
+            --send-color: white;
+            --receive-bg: #E5E5EA;
+            --receive-text: black;
+            --page-background: white;
+        }
+
+        .notes-area {
+            font-size: 20px;
+            font-weight: normal;
+            max-width: 400px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--page-background);
+        }
+
+        p {
+            max-width: 255px;
+            font-weight: 300;
+            word-wrap: break-word;
+            margin-bottom: 12px;
+            line-height: 24px;
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 25px;
+        }
+
+        p:before,
+        p:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            height: 25px;
+        }
+
+        .send {
+            color: var(--send-color);
+            background: var(--send-bg);
+            align-self: flex-end;
+        }
+
+        .send:before {
+            right: -2px;
+            width: 20px;
+            background-color: var(--send-bg);
+            border-bottom-left-radius: 16px 14px;
+        }
+
+        .send:after {
+            right: -26px;
+            width: 26px;
+            background-color: var(--page-background);
+            border-bottom-left-radius: 10px;
+        }
+
+        .receive {
+            background: var(--receive-bg);
+            color: black;
+            align-self: flex-start;
+        }
+
+        .receive:before {
+            left: -7px;
+            width: 20px;
+            background-color: var(--receive-bg);
+            border-bottom-right-radius: 16px 14px;
+        }
+
+        .receive:after {
+            left: -26px;
+            width: 26px;
+            background-color: var(--page-background);
+            border-bottom-right-radius: 10px;
+        }
+    </style>
     <div class="position-relative ">
         <!--Nav Start-->
         @include('components.dasheader')
@@ -106,16 +185,16 @@
                                             @csrf
                                             <div class="modal-body">
 
-                                                <div>
+                                                <div class="notes-area">
                                                     @foreach ($notes as $patientBatchId => $patientNotes)
-                                                    <h4>Notes for Patient Batch ID: {{ $patientBatchId }}</h4>
-                                                    @foreach ($patientNotes as $note)
-                                                        <p class="{{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
-                                                            {{ $note->message }}
-                                                        </p>
+                                                        @foreach ($patientNotes as $note)
+                                                            <p
+                                                                class="{{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
+                                                                {{ $note->message }}
+                                                            </p>
+                                                        @endforeach
                                                     @endforeach
-                                                @endforeach
-                                                
+
 
                                                 </div>
 
@@ -125,14 +204,14 @@
 
 
                                                 <div class="mb-3">
-                                                    <label for="message" class="form-label">Message</label>
+                                                    <label for="message" class="form-label">leave a note</label>
                                                     <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-danger"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Add Note</button>
+                                                <button type="submit" class="btn btn-primary">Send Note</button>
                                             </div>
                                         </form>
                                     </div>
