@@ -128,3 +128,43 @@
     @include('components.dashfooter')
 </main>
 @include('components.dashjs')
+
+<script>
+    $(function() {
+        $('#noteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var patientBatchId = button.data('patient-batch-id'); // Extract info from data-* attributes
+            var modal = $(this);
+
+            // Set the patient batch ID in the hidden form input
+            modal.find('#patientBatchId').val(patientBatchId);
+
+            // Fetch and load the notes for the patient batch
+            $.ajax({
+                url: '/doctor/notes/' + patientBatchId,
+                type: 'GET',
+                dataType: 'html',
+                success: function(response) {
+                    modal.find('.modal-body').html(response);
+                }
+            });
+        });
+
+        $('#sendNoteForm').on('submit', function(event) {
+            event.preventDefault();
+
+            var form = $(this);
+
+            // Submit the note form via AJAX
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                dataType: 'html',
+                success: function(response) {
+                    $('#noteModal').modal('hide');
+                }
+            });
+        });
+    });
+</script>
