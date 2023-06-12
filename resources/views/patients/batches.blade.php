@@ -14,15 +14,15 @@
         .notes-area {
             font-size: 20px;
             font-weight: normal;
-            max-width: 400px;
+            max-width: 600px;
             margin: 20px auto;
             display: flex;
             flex-direction: column;
             background-color: var(--page-background);
         }
 
-        p {
-            max-width: 255px;
+        .message-area {
+            max-width: 305px;
             font-weight: 300;
             word-wrap: break-word;
             margin-bottom: 12px;
@@ -32,8 +32,8 @@
             border-radius: 25px;
         }
 
-        p:before,
-        p:after {
+        .message-area:before,
+        .message-area:after {
             content: "";
             position: absolute;
             bottom: 0;
@@ -78,6 +78,10 @@
             width: 26px;
             background-color: var(--page-background);
             border-bottom-right-radius: 10px;
+        }
+
+        .message-info {
+            font-size: 12px !important;
         }
     </style>
     <div class="position-relative ">
@@ -174,7 +178,7 @@
                             <!-- Create Note Modal -->
                             <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel"
                                 aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="noteModalLabel">Add Note</h5>
@@ -188,10 +192,12 @@
                                                 <div class="notes-area">
                                                     @foreach ($notes as $patientBatchId => $patientNotes)
                                                         @foreach ($patientNotes as $note)
-                                                            <p
-                                                                class="{{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
+                                                            <div
+                                                                class="message-area {{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
                                                                 {{ $note->message }}
-                                                            </p>
+                                                                <small style="message-info">{{ $note->user_name }} |
+                                                                    {{ $note->created_at }} </small>
+                                                            </div>
                                                         @endforeach
                                                     @endforeach
 
