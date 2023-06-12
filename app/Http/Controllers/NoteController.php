@@ -8,29 +8,20 @@ use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
-    public function index(PatientBatch $patientBatch)
-    {
-        $notes = Note::where('patient_batch_id', $patientBatch->id)
-            ->with('nurse', 'doctor')
-            ->latest()
-            ->get();
-
-        return view('notes.index', compact('patientBatch', 'notes'));
-    }
-
-    public function store(Request $request, PatientBatch $patientBatch)
+    public function store(Request $request)
     {
         $request->validate([
+            'patient_batch_id' => 'required|exists:patient_batches,id',
             'message' => 'required',
         ]);
 
         Note::create([
-            'patient_batch_id' => $patientBatch->id,
+            'patient_batch_id' => $request->input('patient_batch_id'),
             'nurse_id' => auth()->user()->id,
-            'doctor_id' => $patientBatch->doctor->id,
+            'doctor_id' => PatientBatch::find($request->input('patient_batch_id'))->doctor_id,
             'message' => $request->input('message'),
         ]);
 
-        return redirect()->route('notes.index', $patientBatch);
+        return redirect()->back();
     }
 }
