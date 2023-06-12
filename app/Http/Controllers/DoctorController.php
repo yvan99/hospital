@@ -163,6 +163,7 @@ class DoctorController extends Controller
     public function generateTimeTable()
     {
         GenerateNurseTimetableJob::dispatch();
+        return view('scheduling.index');
     }
 
 
