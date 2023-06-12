@@ -100,7 +100,7 @@
                                     fill="currentColor" />
                             </svg>
                         </i>
-                        <span class="item-name">Doctors Report</span>
+                        <span class="item-name">Doctors List</span>
                     </a>
                 </li>
 
@@ -134,7 +134,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Nurses Report</span>
+                        <span class="item-name">Nurses List</span>
                     </a>
                 </li>
 

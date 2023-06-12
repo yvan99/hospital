@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\GenerateNurseTimetableJob;
 use App\Models\BatchPatientNurse;
 use App\Models\Consultation;
 use App\Models\Department;
@@ -10,6 +9,7 @@ use App\Models\Doctor;
 use App\Models\Nurse;
 use App\Models\PatientOrder;
 use App\Models\PatientBatch;
+use App\Models\ProcessedCombination;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -123,49 +123,81 @@ class DoctorController extends Controller
         return view('patients.batches', compact('patientBatches'));
     }
 
-    public function generateNurseTimetableee()
+
+    public function handleTimeTable()
     {
-        $nurses = Nurse::all();
-
-        foreach ($nurses as $nurse) {
-            $assignedNursePatientBatches = $nurse->patientBatches()->where('status', 'pending')->get();
-
-            $assignedDates = [];
-            foreach ($assignedNursePatientBatches as $nursePatientBatch) {
-                $assignedDates[] = $nursePatientBatch->created_at->toDateString();
-            }
-
-            $timetableDates = [];
-            foreach ($assignedDates as $date) {
-                $timetableDates[] = Carbon::parse($date);
-                $timetableDates[] = Carbon::parse($date)->addDays(2);
-            }
-
-            // Generate the timetable entries
-            foreach ($timetableDates as $date) {
-                $nursePatientBatch = BatchPatientNurse::where('nurse_id', $nurse->id)
-                    ->whereHas('patientBatch', function ($query) use ($date) {
-                        $query->whereDate('created_at', $date);
-                    })
+        $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
+        $nurses = $nursePatientBatches->pluck('nurse')->unique();
+        $patientBatches = $nursePatientBatches->pluck('patientBatch')->unique();
+        $patientBatches = PatientBatch::all();
+        $numberOfDays = 15;
+        $nurseCount = count($nurses);
+        $patientBatchCount = count($patientBatches);
+    
+        for ($i = 0; $i < $numberOfDays; $i++) {
+            $date = Carbon::today()->addDays($i);
+    
+            $timetables = [];
+    
+            $nurseIndex = $i % $nurseCount; // Get the nurse index for the current day
+    
+            for ($j = 0; $j < $patientBatchCount; $j++) {
+                $patientBatchIndex = ($j + $nurseIndex) % $patientBatchCount; // Get the patient batch index using round-robin
+    
+                $nurse = $nurses[$nurseIndex];
+                $patientBatch = $patientBatches[$patientBatchIndex];
+                // Check if timetable already exists for the date and patient batch
+                $existingTimetable = Timetable::where('date', $date)
+                    ->where('patient_batch_id', $patientBatch->id)
                     ->first();
-
-                if ($nursePatientBatch) {
-                    Timetable::create([
-                        'nurse_id' => $nurse->id,
-                        'patient_batch_id' => $nursePatientBatch->patient_batch_id,
-                        'date' => $date,
-                    ]);
+    
+                if ($existingTimetable) {
+                    // Timetable already exists, skip creating a new one
+                    continue;
                 }
+    
+                $timetable = Timetable::create([
+                    'nurse_id' => $nurse->id,
+                    'patient_batch_id' => $patientBatch->id,
+                    'date' => $date,
+                ]);
+                $timetables[] = $timetable;
+    
+                $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
             }
         }
     }
+    
+    
+    
 
+
+
+
+    public function generateTimeTable()
+    {
+        $this->handleTimeTable();
+        return back();
+    }
 
 
     public function nurseTimetable()
     {
-        GenerateNurseTimetableJob::dispatch();
         $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
-        return view('scheduling.index', compact('nurseTimetables'));
+        $isDuplicate = false;
+
+        foreach ($nurseTimetables as $timetable) {
+            $duplicate = Timetable::where('nurse_id', $timetable->nurse_id)
+                ->where('patient_batch_id', $timetable->patient_batch_id)
+                ->whereDate('date', $timetable->date)
+                ->exists();
+
+            if ($duplicate) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        return view('scheduling.index', compact('nurseTimetables', 'isDuplicate'));
     }
 }

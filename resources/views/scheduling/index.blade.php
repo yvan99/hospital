@@ -1,5 +1,5 @@
 @include('components.dashcss')
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
 {{-- CALENDER FULL DEPENDENCY --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -22,7 +22,12 @@
                             <h4 class="card-title">Nurses shifts scheduler</h4>
 
                         </div>
-
+                        @if ($isDuplicate !=1)
+                        <a href="/doctor/generate-schedule" id="submitButton" class="btn btn-primary">
+                            Generate TimeTable
+                        </a>
+                        @endif
+                      
                     </div>
                     <div class="card-body">
 
@@ -37,6 +42,7 @@
 </main>
 <script>
     $(document).ready(function() {
+   
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -48,16 +54,17 @@
             eventRender: function(event, element) {
                 // Define an array of darker color options
                 var colors = ['#1f2b4b', '#303030', '#0a6640', '#c46f14', '#8c0d0d'];
-                
+
                 // Generate a random index for the color options
                 var randomIndex = Math.floor(Math.random() * colors.length);
-                
+
                 // Assign the color to the event element
                 element.css({
                     'background-color': colors[randomIndex],
                     'color': '#fff' // Set text color to white
                 });
             },
+            
             events: [
                 @foreach ($nurseTimetables as $timetable)
                     {
@@ -72,11 +79,6 @@
         });
     });
 </script>
-
-
-
-
-
-
 @include('components.dashjs')
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>

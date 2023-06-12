@@ -59,6 +59,7 @@ Route::middleware('auth:doctor')->group(function () {
         Route::post('/consultations/{consultation}/register-batch', [DoctorController::class, 'registerBatch'])->name('doctors.registerBatch');
         Route::get('/patient-batches', [DoctorController::class, 'patientBatches'])->name('doctor.patientBatches');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
+        Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
 
 
     });
