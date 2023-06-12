@@ -82,7 +82,8 @@
                                                     @csrf
                                                     <div class="form-group">
                                                         <label for="nurse_ids">Assign Nurses</label>
-                                                        <select name="nurse_ids[]" id="nurse_ids" class="select2-basic-multiple js-states form-control" multiple required>
+                                                        <select name="nurse_ids[]" id="nurse_ids" class="form-control"
+                                                            multiple required>
                                                             @foreach ($nurses as $nurse)
                                                                 <option value="{{ $nurse->id }}">
                                                                     {{ $nurse->names }}</option>
