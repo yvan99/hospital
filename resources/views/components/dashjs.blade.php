@@ -2,6 +2,7 @@
 
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  <script src="{{ asset('dashboard/js/core/libs.min.js') }}"></script>
+ <script src="{{ asset('dashboard/js/plugins/select2.js') }}"></script>
  <!-- Plugin Scripts -->
  <!-- Slider-tab Script -->
  <script src="{{ asset('dashboard/js/plugins/slider-tabs.js') }}"></script>
