@@ -169,6 +169,20 @@ class DoctorController extends Controller
     public function nurseTimetable()
     {
         $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
-        return view('scheduling.index', compact('nurseTimetables'));
+        $isDuplicate = false;
+
+        foreach ($nurseTimetables as $timetable) {
+            $duplicate = Timetable::where('nurse_id', $timetable->nurse_id)
+                ->where('patient_batch_id', $timetable->patient_batch_id)
+                ->whereDate('date', $timetable->date)
+                ->exists();
+
+            if ($duplicate) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        return view('scheduling.index', compact('nurseTimetables', 'isDuplicate'));
     }
 }
