@@ -18,7 +18,7 @@ class GenerateNurseTimetableJob implements ShouldQueue
     public function handle()
     {
         $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
-        $numberOfDays = 15;
+        $numberOfDays = 20;
 
         for ($i = 0; $i < $numberOfDays; $i++) {
             $date = Carbon::today()->addDays($i);
