@@ -63,8 +63,9 @@
                                                         {{ $batch->consultation->patientOrder->patient->code }}</li>
                                                     <li>
                                                         {{ $batch->consultation->patientOrder->patient->gender }}</li>
-                                                        <li>
-                                                            {{ $batch->consultation->patientOrder->patient->age }} years</li>
+                                                    <li>
+                                                        {{ $batch->consultation->patientOrder->patient->age }} years
+                                                    </li>
                                                 </ul>
 
                                             </td>
@@ -77,13 +78,47 @@
                                             </td>
                                             <td>
                                                 <button class="btn btn-warning btn-sm">
-                                                    {{$batch->status}}
+                                                    {{ $batch->status }}
                                                 </button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#noteModal"
+                                                    data-patient-batch-id="{{ $patientBatch->id }}">Note</button>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+
+                            <!-- Add this modal markup at the bottom of the view file -->
+                            <div class="modal fade" id="noteModal" tabindex="-1" role="dialog"
+                                aria-labelledby="noteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="noteModalLabel">Patient Batch Notes</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Notes content will be dynamically loaded here -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <form id="sendNoteForm" action="{{ route('notes.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="patient_batch_id" id="patientBatchId">
+                                                <textarea class="form-control" name="message" rows="3" placeholder="Type your message..." required></textarea>
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
