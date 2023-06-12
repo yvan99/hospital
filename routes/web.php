@@ -60,7 +60,6 @@ Route::middleware('auth:doctor')->group(function () {
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
         Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
         Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
-        Route::get('/notes/{patientBatchId}', [NoteController::class, 'getNotes'])->name('doctor.notes');
     });
 });
 

@@ -119,9 +119,16 @@ class DoctorController extends Controller
         $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
             $query->where('doctor_id', $doctorId);
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
-
-        return view('patients.batches', compact('patientBatches'));
+    
+        // Get the notes for each patient batch
+        $notes = [];
+        foreach ($patientBatches as $patientBatch) {
+            $notes[$patientBatch->id] = $patientBatch->notes()->orderBy('created_at', 'asc')->get();
+        }
+    
+        return view('patients.batches', compact('patientBatches', 'notes'));
     }
+    
 
 
     public function handleTimeTable()
