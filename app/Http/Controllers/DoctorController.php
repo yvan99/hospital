@@ -128,31 +128,60 @@ class DoctorController extends Controller
     {
         $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
         $numberOfDays = 15;
-
+    
         for ($i = 0; $i < $numberOfDays; $i++) {
             $date = Carbon::today()->addDays($i);
+    
+            // Debug statement for the date
+            echo "Date: " . $date . "\n";
+    
             $timetables = [];
+    
+            // Shuffle the array to randomize the nurse-patient batch order
             $shuffledNursePatientBatches = $nursePatientBatches->shuffle();
+    
+            $previousNurseId = null;
+    
             foreach ($shuffledNursePatientBatches as $nursePatientBatch) {
                 $nurse = $nursePatientBatch->nurse;
                 $patientBatch = $nursePatientBatch->patientBatch;
+    
+                // Debug statements for Nurse ID and Patient Batch ID
+                echo "Nurse ID: " . $nurse->id . "\n";
+                echo "Patient Batch ID: " . $patientBatch->id . "\n";
+    
+                // Check if timetable already exists for the date and patient batch
                 $existingTimetable = Timetable::where('date', $date)
                     ->where('patient_batch_id', $patientBatch->id)
                     ->first();
-
+    
                 if ($existingTimetable) {
+                    // Timetable already exists, skip creating a new one
                     continue;
                 }
-
+    
+                // Check if the nurse ID is the same as the previous iteration
+                if ($nurse->id == $previousNurseId) {
+                    // Nurse ID is the same, skip creating a new one
+                    continue;
+                }
+    
                 $timetable = Timetable::create([
                     'nurse_id' => $nurse->id,
                     'patient_batch_id' => $patientBatch->id,
                     'date' => $date,
                 ]);
+    
+                // Debug statement for the Timetable ID
+                echo "Timetable ID: " . $timetable->id . "\n";
+    
                 $timetables[] = $timetable;
+    
+                $previousNurseId = $nurse->id;
             }
         }
     }
+    
 
 
 
