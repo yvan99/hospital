@@ -128,7 +128,7 @@ class DoctorController extends Controller
     {
         $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
         $numberOfDays = 15;
-    
+
         for ($i = 0; $i < $numberOfDays; $i++) {
             $date = Carbon::today()->addDays($i);
             $timetables = [];
@@ -139,11 +139,11 @@ class DoctorController extends Controller
                 $existingTimetable = Timetable::where('date', $date)
                     ->where('patient_batch_id', $patientBatch->id)
                     ->first();
-    
+
                 if ($existingTimetable) {
                     continue;
                 }
-    
+
                 $timetable = Timetable::create([
                     'nurse_id' => $nurse->id,
                     'patient_batch_id' => $patientBatch->id,
@@ -153,14 +153,14 @@ class DoctorController extends Controller
             }
         }
     }
-    
-    
+
+
 
 
     public function generateTimeTable()
     {
         $this->handleTimeTable();
-        //return back();
+        return back();
     }
 
 
