@@ -52,7 +52,6 @@ Route::middleware('auth:receptionist')->group(function () {
 
 Route::middleware('auth:doctor')->group(function () {
     Route::prefix('doctor')->group(function () {
-        //Route::view('/dashboard', 'doctor.dashboard');
         Route::get('/dashboard', [DoctorController::class, 'patientOrders'])->name('doctors.patientOrders');
         Route::post('/patient-orders/{orderId}/assign', [DoctorController::class, 'assignPatientOrder'])->name('doctors.assignPatientOrder');
         Route::get('/consultations', [DoctorController::class, 'consultations'])->name('doctors.consultations');
@@ -60,8 +59,6 @@ Route::middleware('auth:doctor')->group(function () {
         Route::get('/patient-batches', [DoctorController::class, 'patientBatches'])->name('doctor.patientBatches');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
         Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
-
-
     });
 });
 
