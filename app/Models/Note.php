@@ -9,7 +9,12 @@ class Note extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['patient_batch_id', 'nurse_id', 'doctor_id', 'message'];
+    protected $fillable = [
+        'patient_batch_id',
+        'nurse_id',
+        'doctor_id',
+        'message',
+    ];
 
     public function patientBatch()
     {

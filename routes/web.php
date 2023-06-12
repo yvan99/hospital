@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthNurseLoginController;
 use App\Http\Controllers\AuthReceptionistLoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\NurseController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientOrderController;
@@ -59,6 +60,8 @@ Route::middleware('auth:doctor')->group(function () {
         Route::get('/patient-batches', [DoctorController::class, 'patientBatches'])->name('doctor.patientBatches');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
         Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
+        Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+
     });
 });
 

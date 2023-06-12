@@ -82,9 +82,9 @@
                                                 </button>
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#noteModal"
-                                                    data-patient-batch-id="{{ $patientBatch->id }}">Note</button>
+                                                <button class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#noteModal"
+                                                    data-patient-batch-id="{{ $batch->id }}">Note</button>
                                             </td>
                                         </tr>
                                     @endforeach
