@@ -126,7 +126,9 @@ class DoctorController extends Controller
 
     public function handleTimeTable()
     {
-        $nurses = Nurse::all();
+        $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')->get();
+        $nurses = $nursePatientBatches->pluck('nurse')->unique();
+        $patientBatches = $nursePatientBatches->pluck('patientBatch')->unique();
         $patientBatches = PatientBatch::all();
         $numberOfDays = 15;
         $nurseCount = count($nurses);
@@ -159,10 +161,6 @@ class DoctorController extends Controller
                     'patient_batch_id' => $patientBatch->id,
                     'date' => $date,
                 ]);
-    
-                // Debug statement for the Timetable ID
-                echo "Timetable ID: " . $timetable->id . "\n";
-    
                 $timetables[] = $timetable;
     
                 $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
