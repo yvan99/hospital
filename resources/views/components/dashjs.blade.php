@@ -1,9 +1,7 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- {{-- <script src="{{ asset('dashboard/js/core/libs.min.js') }}"></script> --}}
- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  --}}
 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script src="{{ asset('dashboard/js/core/libs.min.js') }}"></script>
  <!-- Plugin Scripts -->
  <!-- Slider-tab Script -->
  <script src="{{ asset('dashboard/js/plugins/slider-tabs.js') }}"></script>
