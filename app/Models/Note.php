@@ -11,23 +11,13 @@ class Note extends Model
 
     protected $fillable = [
         'patient_batch_id',
-        'nurse_id',
-        'doctor_id',
+        'user_name',
+        'user_type',
         'message',
     ];
 
     public function patientBatch()
     {
         return $this->belongsTo(PatientBatch::class);
-    }
-
-    public function nurse()
-    {
-        return $this->belongsTo(Nurse::class);
-    }
-
-    public function doctor()
-    {
-        return $this->belongsTo(Doctor::class);
     }
 }
