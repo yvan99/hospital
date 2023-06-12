@@ -17,7 +17,7 @@ class NoteController extends Controller
 
         Note::create([
             'patient_batch_id' => $request->input('patient_batch_id'),
-            'user_name' => auth()->user()->name,
+            'user_name' => auth()->user()->names,
             'user_type' => auth()->getDefaultDriver(),
             'message' => $request->input('message'),
         ]);
