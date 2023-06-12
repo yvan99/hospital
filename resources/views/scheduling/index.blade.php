@@ -23,6 +23,10 @@
 
                         </div>
 
+                        <a href="/doctor/generate-schedule" class="btn btn-primary">
+                            Generate TimeTable
+                        </a>
+
                     </div>
                     <div class="card-body">
 
@@ -48,10 +52,10 @@
             eventRender: function(event, element) {
                 // Define an array of darker color options
                 var colors = ['#1f2b4b', '#303030', '#0a6640', '#c46f14', '#8c0d0d'];
-                
+
                 // Generate a random index for the color options
                 var randomIndex = Math.floor(Math.random() * colors.length);
-                
+
                 // Assign the color to the event element
                 element.css({
                     'background-color': colors[randomIndex],
@@ -73,6 +77,3 @@
     });
 </script>
 @include('components.dashjs')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-
