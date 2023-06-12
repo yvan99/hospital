@@ -21,7 +21,10 @@ class PatientBatch extends Model
 
     public function nurses()
     {
-        return $this->belongsToMany(Nurse::class, 'nurse_patient_batch','patient_batch_id', 'nurse_id');
+        return $this->belongsToMany(Nurse::class, 'nurse_patient_batch', 'patient_batch_id', 'nurse_id');
     }
-
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
 }
