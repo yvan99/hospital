@@ -22,7 +22,7 @@
         }
 
         .message-area {
-            max-width: 305px;
+            width: 60%;
             font-weight: 300;
             word-wrap: break-word;
             margin-bottom: 12px;
@@ -81,7 +81,7 @@
         }
 
         .message-info {
-            font-size: 12px !important;
+            font-size: 15px !important;
         }
     </style>
     <div class="position-relative ">
@@ -194,9 +194,10 @@
                                                         @foreach ($patientNotes as $note)
                                                             <div
                                                                 class="message-area {{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
-                                                                {{ $note->message }}
-                                                                <small style="message-info">{{ $note->user_name }} |
-                                                                    {{ $note->created_at }} </small>
+                                                                <p>{{ $note->message }}</p>
+
+                                                                <span class="message-info">{{ $note->user_name }} |
+                                                                    {{ $note->created_at }} </span>
                                                             </div>
                                                         @endforeach
                                                     @endforeach
