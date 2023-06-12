@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-}); 
+});
 
 // Receptionist Auth
 Route::prefix('receptionist')->group(function () {
@@ -47,7 +47,6 @@ Route::middleware('auth:receptionist')->group(function () {
         Route::resource('nurses', NurseController::class);
         Route::resource('patients', PatientController::class);
         Route::post('/patient_orders', [PatientOrderController::class, 'store'])->name('patient_orders.store');
-
     });
 });
 
@@ -61,7 +60,7 @@ Route::middleware('auth:doctor')->group(function () {
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
         Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
         Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
-
+        Route::get('/notes', [NoteController::class, 'getNotes']);
     });
 });
 

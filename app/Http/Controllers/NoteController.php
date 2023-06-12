@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use App\Models\PatientBatch;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
@@ -22,5 +23,13 @@ class NoteController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function getNotes($patientBatchId)
+    {
+        $patientBatch = PatientBatch::findOrFail($patientBatchId);
+        $notes = $patientBatch->notes()->orderBy('created_at', 'asc')->get();
+
+        return view('patients.batches', compact('notes'));
     }
 }

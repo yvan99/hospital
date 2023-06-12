@@ -92,28 +92,32 @@
                             </table>
 
                             <!-- Add this modal markup at the bottom of the view file -->
-                            <div class="modal fade" id="noteModal" tabindex="-1" role="dialog"
+                            <!-- Create Note Modal -->
+                            <div class="modal fade" id="noteModal" tabindex="-1"
                                 aria-labelledby="noteModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="noteModalLabel">Patient Batch Notes</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                            <h5 class="modal-title" id="noteModalLabel">Add Note</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <!-- Notes content will be dynamically loaded here -->
-                                        </div>
-                                        <div class="modal-footer">
-                                            <form id="sendNoteForm" action="{{ route('notes.store') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="patient_batch_id" id="patientBatchId">
-                                                <textarea class="form-control" name="message" rows="3" placeholder="Type your message..." required></textarea>
-                                                <button type="submit" class="btn btn-primary">Send</button>
-                                            </form>
-                                        </div>
+                                        <form action="{{ route('notes.store') }}" method="POST">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <input type="hidden" name="patient_batch_id"
+                                                    value="{{ $batch->id }}">
+                                                <div class="mb-3">
+                                                    <label for="message" class="form-label">Message</label>
+                                                    <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Add Note</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -131,40 +135,43 @@
 
 <script>
     $(function() {
-        $('#noteModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var patientBatchId = button.data('patient-batch-id'); // Extract info from data-* attributes
-            var modal = $(this);
+    $('#noteModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var patientBatchId = button.data('patient-batch-id'); // Extract info from data-* attributes
+        var modal = $(this);
 
-            // Set the patient batch ID in the hidden form input
-            modal.find('#patientBatchId').val(patientBatchId);
+        // Set the patient batch ID in the hidden form input
+        modal.find('#patientBatchId').val(patientBatchId);
 
-            // Fetch and load the notes for the patient batch
-            $.ajax({
-                url: '/doctor/notes/' + patientBatchId,
-                type: 'GET',
-                dataType: 'html',
-                success: function(response) {
-                    modal.find('.modal-body').html(response);
-                }
-            });
-        });
-
-        $('#sendNoteForm').on('submit', function(event) {
-            event.preventDefault();
-
-            var form = $(this);
-
-            // Submit the note form via AJAX
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(),
-                dataType: 'html',
-                success: function(response) {
-                    $('#noteModal').modal('hide');
-                }
-            });
+        // Fetch and load the notes for the patient batch
+        $.ajax({
+            url: '/doctor/notes/' + patientBatchId,
+            type: 'GET',
+            dataType: 'html',
+            success: function(response) {
+                modal.find('.modal-body').html(response);
+            }
         });
     });
+
+    $('#sendNoteForm').on('submit', function(event) {
+        event.preventDefault();
+
+        var form = $(this);
+        var patientBatchId = form.find('#patientBatchId').val(); // Get the patient batch ID from the hidden input
+
+        // Submit the note form via AJAX
+        $.ajax({
+            url: form.attr('action') + '/' + patientBatchId, // Append the patient batch ID to the URL
+            type: form.attr('method'),
+            data: form.serialize(),
+            dataType: 'html',
+            success: function(response) {
+                $('#noteModal').modal('hide');
+            }
+        });
+    });
+});
+
 </script>
+
