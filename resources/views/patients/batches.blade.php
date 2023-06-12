@@ -45,6 +45,7 @@
                                         <th>Patient Info</th>
                                         <th>Assigned Nurses</th>
                                         <th>Batch Status</th>
+                                        <th>Note</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -2,83 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
+use App\Models\PatientBatch;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(PatientBatch $patientBatch)
     {
-        //
+        $notes = Note::where('patient_batch_id', $patientBatch->id)
+            ->with('nurse', 'doctor')
+            ->latest()
+            ->get();
+
+        return view('notes.index', compact('patientBatch', 'notes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request, PatientBatch $patientBatch)
     {
-        //
-    }
+        $request->validate([
+            'message' => 'required',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        Note::create([
+            'patient_batch_id' => $patientBatch->id,
+            'nurse_id' => auth()->user()->id,
+            'doctor_id' => $patientBatch->doctor->id,
+            'message' => $request->input('message'),
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('notes.index', $patientBatch);
     }
 }
