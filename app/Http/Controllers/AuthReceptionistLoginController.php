@@ -17,7 +17,7 @@ class AuthReceptionistLoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('receptionist')->attempt($credentials)) {
-            return redirect()->intended('/receptionist/dashboard');
+            return redirect()->intended('/receptionist/departments');
         }
 
         return back()->withErrors([
