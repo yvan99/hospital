@@ -107,8 +107,12 @@ class DoctorController extends Controller
     public function consultations()
     {
         $doctorId = auth()->user()->id;
+        // Get the doctor's department
+        $doctor = Doctor::findOrFail($doctorId);
+        $department = $doctor->department_id;
+        // Get the nurses in the same department
+        $nurses = Nurse::where('department_id', $department)->get();
         $consultations = Consultation::where('doctor_id', $doctorId)->get();
-        $nurses = Nurse::all(); //TODO: RETURN NURSES IN THE SAME DEPARTMENT
         return view('consultation.index', compact('consultations', 'nurses'));
     }
 
@@ -116,20 +120,20 @@ class DoctorController extends Controller
     {
         // Get the logged-in doctor's assigned patient batches
         $doctorId = auth()->user()->id;
-        
+
         $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
             $query->where('doctor_id', $doctorId);
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
-    
+
         // Get the notes for each patient batch
         $notes = [];
         foreach ($patientBatches as $patientBatch) {
             $notes[$patientBatch->id] = $patientBatch->notes()->orderBy('created_at', 'asc')->get();
         }
-    
+
         return view('patients.batches', compact('patientBatches', 'notes'));
     }
-    
+
 
 
     public function handleTimeTable()
@@ -141,43 +145,43 @@ class DoctorController extends Controller
         $numberOfDays = 15;
         $nurseCount = count($nurses);
         $patientBatchCount = count($patientBatches);
-    
+
         for ($i = 0; $i < $numberOfDays; $i++) {
             $date = Carbon::today()->addDays($i);
-    
+
             $timetables = [];
-    
+
             $nurseIndex = $i % $nurseCount; // Get the nurse index for the current day
-    
+
             for ($j = 0; $j < $patientBatchCount; $j++) {
                 $patientBatchIndex = ($j + $nurseIndex) % $patientBatchCount; // Get the patient batch index using round-robin
-    
+
                 $nurse = $nurses[$nurseIndex];
                 $patientBatch = $patientBatches[$patientBatchIndex];
                 // Check if timetable already exists for the date and patient batch
                 $existingTimetable = Timetable::where('date', $date)
                     ->where('patient_batch_id', $patientBatch->id)
                     ->first();
-    
+
                 if ($existingTimetable) {
                     // Timetable already exists, skip creating a new one
                     continue;
                 }
-    
+
                 $timetable = Timetable::create([
                     'nurse_id' => $nurse->id,
                     'patient_batch_id' => $patientBatch->id,
                     'date' => $date,
                 ]);
                 $timetables[] = $timetable;
-    
+
                 $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
             }
         }
     }
-    
-    
-    
+
+
+
 
 
 

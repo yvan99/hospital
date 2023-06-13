@@ -132,45 +132,54 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($patientBatches as $batch)
-                                        <tr>
-                                            <td>{{ $batch->code }}</td>
-                                            <td>{{ $batch->consultation->code }}</td>
-                                            <td>{{ $batch->consultation->doctor->names }}</td>
-                                            <td>
 
-                                                <ul>
-                                                    <li>
-                                                        {{ $batch->consultation->patientOrder->patient->names }}</li>
-                                                    <li>
-                                                        {{ $batch->consultation->patientOrder->patient->code }}</li>
-                                                    <li>
-                                                        {{ $batch->consultation->patientOrder->patient->gender }}</li>
-                                                    <li>
-                                                        {{ $batch->consultation->patientOrder->patient->age }} years
-                                                    </li>
-                                                </ul>
+                                    @if ($patientBatches->count() >0)
+                                        @foreach ($patientBatches as $batch)
+                                            <tr>
+                                                <td>{{ $batch->code }}</td>
+                                                <td>{{ $batch->consultation->code }}</td>
+                                                <td>{{ $batch->consultation->doctor->names }}</td>
+                                                <td>
 
-                                            </td>
-                                            <td>
-                                                <ul>
-                                                    @foreach ($batch->nurses as $nurse)
-                                                        <li>{{ $nurse->names }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-warning btn-sm">
-                                                    {{ $batch->status }}
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#noteModal"
-                                                    data-patient-batch-id="{{ $batch->id }}">Note</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                    <ul>
+                                                        <li>
+                                                            {{ $batch->consultation->patientOrder->patient->names }}
+                                                        </li>
+                                                        <li>
+                                                            {{ $batch->consultation->patientOrder->patient->code }}</li>
+                                                        <li>
+                                                            {{ $batch->consultation->patientOrder->patient->gender }}
+                                                        </li>
+                                                        <li>
+                                                            {{ $batch->consultation->patientOrder->patient->age }} years
+                                                        </li>
+                                                    </ul>
+
+                                                </td>
+                                                <td>
+                                                    <ul>
+                                                        @foreach ($batch->nurses as $nurse)
+                                                            <li>{{ $nurse->names }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-warning btn-sm">
+                                                        {{ $batch->status }}
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#noteModal"
+                                                        data-patient-batch-id="{{ $batch->id }}">Note</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <h2>No assigned Consultations</h2>
+
+                                    @endif
+
                                 </tbody>
                             </table>
 
