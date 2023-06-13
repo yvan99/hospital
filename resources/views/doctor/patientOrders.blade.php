@@ -55,6 +55,7 @@
                                             <td>{{ $order->payment_status }}</td>
                                             <th>{{ $order->created_at }}</th>
                                             <td>
+                                                
                                                 <!-- Conditional rendering based on is_hod -->
                                                 @if (auth()->user()->is_hod && $order->status == 'initiated')
                                                     <!-- Button to trigger assign modal -->

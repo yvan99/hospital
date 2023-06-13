@@ -9,7 +9,6 @@ use App\Models\Doctor;
 use App\Models\Nurse;
 use App\Models\PatientOrder;
 use App\Models\PatientBatch;
-use App\Models\ProcessedCombination;
 use App\Models\Timetable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -51,8 +50,10 @@ class DoctorController extends Controller
 
     public function patientOrders()
     {
+
         $patientOrders = PatientOrder::all();
-        $doctors = Doctor::all();
+        $departmentId = auth()->user()->department_id;
+        $doctors = Doctor::where('department_id', $departmentId)->get();
         return view('doctor.patientOrders', compact('patientOrders', 'doctors'));
     }
 
