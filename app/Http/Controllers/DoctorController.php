@@ -116,6 +116,7 @@ class DoctorController extends Controller
     {
         // Get the logged-in doctor's assigned patient batches
         $doctorId = auth()->user()->id;
+        
         $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
             $query->where('doctor_id', $doctorId);
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();

@@ -190,17 +190,20 @@
                                             <div class="modal-body">
 
                                                 <div class="notes-area">
-                                                    @foreach ($notes as $patientBatchId => $patientNotes)
-                                                        @foreach ($patientNotes as $note)
-                                                            <div
-                                                                class="message-area {{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
-                                                                <p>{{ $note->message }}</p>
+                                                    @if ($notes > 0)
+                                                        @foreach ($notes as $patientBatchId => $patientNotes)
+                                                            @foreach ($patientNotes as $note)
+                                                                <div
+                                                                    class="message-area {{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
+                                                                    <p>{{ $note->message }}</p>
 
-                                                                <span class="message-info">{{ $note->user_name }} |
-                                                                    {{ $note->created_at }} </span>
-                                                            </div>
+                                                                    <span class="message-info">{{ $note->user_name }} |
+                                                                        {{ $note->created_at }} </span>
+                                                                </div>
+                                                            @endforeach
                                                         @endforeach
-                                                    @endforeach
+                                                    @endif
+
 
 
                                                 </div>
