@@ -40,7 +40,7 @@ Route::prefix('nurse')->group(function () {
 
 Route::middleware('auth:receptionist')->group(function () {
     Route::prefix('receptionist')->group(function () {
-        Route::view('/dashboard', 'receptionist.dashboard');
+   
         Route::resource('patients', PatientController::class);
         Route::resource('departments', DepartmentController::class);
         Route::resource('doctors', DoctorController::class);
