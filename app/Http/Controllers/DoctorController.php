@@ -173,17 +173,14 @@ class DoctorController extends Controller
                     'patient_batch_id' => $patientBatch->id,
                     'date' => $date,
                 ]);
+                // Update the patient batch status to 'processed'
+                $patientBatch->update(['status' => 'processed']);
                 $timetables[] = $timetable;
 
                 $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
             }
         }
     }
-
-
-
-
-
 
 
     public function generateTimeTable()
