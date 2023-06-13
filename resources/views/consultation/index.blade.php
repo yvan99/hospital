@@ -52,10 +52,16 @@
                                             <td>{{ $consultation->description }}</td>
                                             <td>{{ $consultation->status }}</td>
                                             <td>
+                                                @if ($consultation->status == 'assigned')
+                                                <button class="btn btn-success btn-sm">Consultation Assigned</button>
+                                                    
+                                                @else
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#registerBatchModal{{ $consultation->id }}">
-                                                    Assign Batch
-                                                </button>
+                                                data-bs-target="#registerBatchModal{{ $consultation->id }}">
+                                                Assign Batch
+                                            </button>
+                                                @endif
+                                         
                                             </td>
                                         </tr>
                                     @endforeach
