@@ -42,7 +42,6 @@
 </main>
 <script>
     $(document).ready(function() {
-   
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -50,7 +49,7 @@
                 right: 'month'
             },
             defaultView: 'month',
-            editable: true,
+            editable: false,
             eventRender: function(event, element) {
                 // Define an array of darker color options
                 var colors = ['#1f2b4b', '#303030', '#0a6640', '#c46f14', '#8c0d0d'];
@@ -63,6 +62,9 @@
                     'background-color': colors[randomIndex],
                     'color': '#fff' // Set text color to white
                 });
+
+                // Add the code information to the event element
+                element.find('.fc-title').append('<br>' + event.description);
             },
             
             events: [
@@ -71,7 +73,8 @@
                         title: '{{ $timetable->nurse->names }}',
                         start: '{{ $timetable->date->format('Y-m-d') }}',
                         @if ($timetable->patientBatch)
-                            url: '/patient-batches/{{ $timetable->patientBatch->id }}',
+
+                            description: ' {{ $timetable->patientBatch->code }}', // Add the code info
                         @endif
                     },
                 @endforeach
@@ -79,6 +82,15 @@
         });
     });
 </script>
+
+
 @include('components.dashjs')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<style>
+    .fc-event {
+        padding: 8px;
+        margin-bottom: 10px; /* Add spacing between events */
+        height: 35px; /* Adjust the height of events */
+    }
+</style>

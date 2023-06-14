@@ -189,7 +189,9 @@ class DoctorController extends Controller
 
     public function nurseTimetable()
     {
-        $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
+        $nurseTimetables = Timetable::with('nurse', 'patientBatch')
+            ->orderBy('date', 'asc')
+            ->get();
         $isDuplicate = false;
 
         foreach ($nurseTimetables as $timetable) {
