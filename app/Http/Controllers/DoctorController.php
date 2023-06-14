@@ -101,6 +101,10 @@ class DoctorController extends Controller
         // Associate nurses with the patient batch
         $patientBatch->nurses()->attach($validatedData['nurse_ids']);
 
+        $patientBatchId = $patientBatch->id;
+
+        $this->handleTimeTable($patientBatchId);
+
         return redirect()->back()->with('success', 'Patient batch registered successfully.');
     }
 
@@ -135,81 +139,64 @@ class DoctorController extends Controller
     }
 
 
-    public function handleTimeTable()
+    public function handleTimeTable($batchId)
     {
-        $patientBatches = PatientBatch::with('nurses')->get();
+        $nursePatientBatches = BatchPatientNurse::with('nurse', 'patientBatch')
+            ->where('patient_batch_id', $batchId)
+            ->get();
+        $nurses = $nursePatientBatches->pluck('nurse')->unique();
+        $patientBatches = $nursePatientBatches->pluck('patientBatch')->unique();
+        $patientBatches = PatientBatch::all();
         $numberOfDays = 15;
-        $assignedDates = [];
-    
-        foreach ($patientBatches as $patientBatch) {
-            $nurses = $patientBatch->nurses;
-    
-            foreach ($nurses as $nurse) {
-                $nurseDays = range(0, $numberOfDays - 1);
-                shuffle($nurseDays);
-    
-                $batchDates = array_diff($nurseDays, $assignedDates);
-    
-                $assignedNurses = [];
-    
-                foreach ($batchDates as $dayOffset) {
-                    $date = Carbon::today()->addDays($dayOffset);
-    
-                    $previousDate = Carbon::today()->addDays($dayOffset - 1);
-                    $nextDate = Carbon::today()->addDays($dayOffset + 1);
-    
-                    $previousTimetable = Timetable::where('date', $previousDate)
-                        ->whereIn('nurse_id', $assignedNurses)
-                        ->exists();
-    
-                    $nextTimetable = Timetable::where('date', $nextDate)
-                        ->whereIn('nurse_id', $assignedNurses)
-                        ->exists();
-    
-                    if ($previousTimetable || $nextTimetable) {
-                        continue;
-                    }
-    
-                    $existingTimetable = Timetable::where('nurse_id', $nurse->id)
-                        ->where('date', $date)
-                        ->exists();
-    
-                    if ($existingTimetable) {
-                        continue;
-                    }
-    
-                    $conflictingTimetable = Timetable::where('date', $date)
-                        ->where('patient_batch_id', $patientBatch->id)
-                        ->exists();
-    
-                    if ($conflictingTimetable) {
-                        continue;
-                    }
-    
-                    $assignedDates[] = $dayOffset;
-                    $assignedNurses[] = $nurse->id;
-    
-                    $timetable = Timetable::create([
-                        'nurse_id' => $nurse->id,
-                        'patient_batch_id' => $patientBatch->id,
-                        'date' => $date,
-                    ]);
-    
-                    if (count($assignedNurses) === count($nurses)) {
-                        break;
-                    }
+        $nurseCount = count($nurses);
+        $patientBatchCount = count($patientBatches);
+
+        for ($i = 0; $i < $numberOfDays; $i++) {
+            $date = Carbon::today()->addDays($i);
+
+            $timetables = [];
+
+            $nurseIndex = $i % $nurseCount; // Get the nurse index for the current day
+
+            for ($j = 0; $j < $patientBatchCount; $j++) {
+                $patientBatchIndex = ($j + $nurseIndex) % $patientBatchCount; // Get the patient batch index using round-robin
+
+                $nurse = $nurses[$nurseIndex];
+                $patientBatch = $patientBatches[$patientBatchIndex];
+                // Check if timetable already exists for the date and patient batch
+                $existingTimetable = Timetable::where('date', $date)
+                    ->where('patient_batch_id', $patientBatch->id)
+                    ->first();
+
+                if ($existingTimetable) {
+                    // Timetable already exists, skip creating a new one
+                    continue;
                 }
+
+                $timetable = Timetable::create([
+                    'nurse_id' => $nurse->id,
+                    'patient_batch_id' => $patientBatch->id,
+                    'date' => $date,
+                ]);
+                // Update the patient batch status to 'processed'
+                // $patientBatch->update(['status' => 'processed']);
+                $timetables[] = $timetable;
+
+                $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
             }
-    
-            $patientBatch->status = 'processed';
-            $patientBatch->save();
         }
     }
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -226,7 +213,7 @@ class DoctorController extends Controller
 
     public function generateTimeTable()
     {
-        $this->handleTimeTable();
+        $this->handleTimeTable('1');
         return back();
     }
 

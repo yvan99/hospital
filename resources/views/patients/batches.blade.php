@@ -133,7 +133,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @if ($patientBatches->count() >0)
+                                    @if ($patientBatches->count() > 0)
                                         @foreach ($patientBatches as $batch)
                                             <tr>
                                                 <td>{{ $batch->code }}</td>
@@ -217,9 +217,11 @@
 
                                                 </div>
 
+                                                @if ($patientBatches->count() > 0)
+                                                    <input type="hidden" name="patient_batch_id"
+                                                        value="{{ $batch->id }}">
+                                                @endif
 
-                                                <input type="hidden" name="patient_batch_id"
-                                                    value="{{ $batch->id }}">
 
 
                                                 <div class="mb-3">
