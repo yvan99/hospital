@@ -171,7 +171,7 @@
                                                 <td>
                                                     <button class="btn btn-primary" data-bs-toggle="modal"
                                                         data-bs-target="#noteModal"
-                                                        data-patient-batch-id="{{ $batch->id }}">Note</button>
+                                                        data-bs-patient-batch-id="{{ $batch->id }}">Note</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -190,7 +190,8 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="noteModalLabel">Add Note</h5>
+                                            <h5 class="modal-title" id="noteModalLabel">Add Note {{ $batch->id }}
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -212,8 +213,6 @@
                                                             @endforeach
                                                         @endforeach
                                                     @endif
-
-
 
                                                 </div>
 
@@ -249,3 +248,15 @@
     @include('components.dashfooter')
 </main>
 @include('components.dashjs')
+
+<script>
+    $('#noteModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var patientBatchId = button.data(
+            'bs-patient-batch-id');
+        var modal = $(this);
+        modal.find('.modal-title').text('Add Note ' +
+            patientBatchId);
+        modal.find('#patientBatchId').val(patientBatchId);
+    });
+</script>
