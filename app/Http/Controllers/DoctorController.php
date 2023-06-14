@@ -146,7 +146,7 @@ class DoctorController extends Controller
             ->get();
         $nurses = $nursePatientBatches->pluck('nurse')->unique();
         $patientBatches = $nursePatientBatches->pluck('patientBatch')->unique();
-        $patientBatches = PatientBatch::all();
+        $patientBatches = PatientBatch::where('status', 'assigned')->get();
         $numberOfDays = 15;
         $nurseCount = count($nurses);
         $patientBatchCount = count($patientBatches);
@@ -179,42 +179,11 @@ class DoctorController extends Controller
                     'date' => $date,
                 ]);
                 // Update the patient batch status to 'processed'
-                // $patientBatch->update(['status' => 'processed']);
+                $patientBatch->update(['status' => 'processed']);
                 $timetables[] = $timetable;
-
                 $nurseIndex = ($nurseIndex + 1) % $nurseCount; // Move to the next nurse index
             }
         }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function generateTimeTable()
-    {
-        $this->handleTimeTable('1');
-        return back();
     }
 
 
