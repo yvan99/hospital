@@ -117,7 +117,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Nurse shifts</span>
+                        <span class="item-name">Nurse scheduler</span>
                     </a>
                 </li>
 
