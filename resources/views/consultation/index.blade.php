@@ -81,7 +81,7 @@
                                                     method="POST">
                                                     @csrf
                                                     <div class="form-group">
-                                                        <label for="nurse_ids">Assign Nurses</label>
+                                                        <label for="nurse_ids">Assign Nurses (In my department)</label>
                                                         <select name="nurse_ids[]" id="nurse_ids" class="form-control"
                                                             multiple required>
                                                             @foreach ($nurses as $nurse)

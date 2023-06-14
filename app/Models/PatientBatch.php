@@ -27,4 +27,10 @@ class PatientBatch extends Model
     {
         return $this->hasMany(Note::class);
     }
+    // PatientBatch model
+
+    public function timetables()
+    {
+        return $this->hasMany(Timetable::class);
+    }
 }

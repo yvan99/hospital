@@ -19,6 +19,7 @@ class BatchPatientNurse extends Model
     {
         return $this->belongsTo(Nurse::class, 'nurse_id');
     }
+    
 
     public function patientBatch()
     {

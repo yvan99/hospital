@@ -55,6 +55,7 @@
                                             <td>{{ $order->payment_status }}</td>
                                             <th>{{ $order->created_at }}</th>
                                             <td>
+                                                
                                                 <!-- Conditional rendering based on is_hod -->
                                                 @if (auth()->user()->is_hod && $order->status == 'initiated')
                                                     <!-- Button to trigger assign modal -->
@@ -84,7 +85,6 @@
                                                                         action="{{ route('doctors.assignPatientOrder', $order->id) }}"
                                                                         method="POST">
                                                                         @csrf
-                                                                        <!--TODO: ONLY SHOW DOCTORS IN THE SAME DEPARTMENT -->
                                                                         <div class="form-group">
                                                                             <label for="doctor_id">Assign Doctor</label>
                                                                             <select name="doctor_id" id="doctor_id"
