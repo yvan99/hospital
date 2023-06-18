@@ -86,7 +86,8 @@
                                                     </button>
                                                 </td>
                                                 <td>
-                                                   <a href="/doctor/notes/{{$batch->id}}" class="btn btn-sm btn-info">Manage Notes</a>
+                                                    <a href="/doctor/notes/{{ $batch->id }}"
+                                                        class="btn btn-sm btn-info">Manage Notes</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -108,4 +109,3 @@
     @include('components.dashfooter')
 </main>
 @include('components.dashjs')
-
