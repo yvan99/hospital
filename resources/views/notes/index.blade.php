@@ -1,6 +1,13 @@
 @include('components.dashcss')
 <link rel="stylesheet" href="{{ asset('dashboard/css/notes.css') }}">
-@include('doctor.components.aside')
+@if (auth()->check())
+    @if (Auth::getDefaultDriver() == 'doctor')
+        @include('doctor.components.aside')
+    @else
+        @include('nurse.components.aside')
+    @endif
+@endif
+
 
 <main class="main-content">
     <div class="position-relative ">

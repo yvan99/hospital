@@ -122,21 +122,25 @@ class DoctorController extends Controller
 
     public function patientBatches()
     {
-        // Get the logged-in doctor's assigned patient batches
         $doctorId = auth()->user()->id;
-
         $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
             $query->where('doctor_id', $doctorId);
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
-
-        // Get the notes for each patient batch
-        $notes = [];
-        foreach ($patientBatches as $patientBatch) {
-            $notes[$patientBatch->id] = $patientBatch->notes()->orderBy('created_at', 'asc')->get();
-        }
-
-        return view('patients.batches', compact('patientBatches', 'notes'));
+        return view('patients.batches', compact('patientBatches'));
     }
+
+    public function nurseBatches()
+    {
+        $nurseId = auth()->user()->id;
+
+        // Retrieve patient batches assigned to the nurse
+        $patientBatches = PatientBatch::whereHas('nurses', function ($query) use ($nurseId) {
+            $query->where('nurse_id', $nurseId);
+        })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
+
+        return view('nurse.dashboard', compact('patientBatches'));
+    }
+
 
 
     public function handleTimeTable($batchId)
