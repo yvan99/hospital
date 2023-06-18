@@ -86,7 +86,7 @@
                                                     </button>
                                                 </td>
                                                 <td>
-                                                   <a href="" class="btn btn-sm btn-info">Manage Notes</a>
+                                                   <a href="/doctor/notes/{{$batch->id}}" class="btn btn-sm btn-info">Manage Notes</a>
                                                 </td>
                                             </tr>
                                         @endforeach
