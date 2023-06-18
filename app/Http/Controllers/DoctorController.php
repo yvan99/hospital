@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
@@ -211,5 +211,33 @@ class DoctorController extends Controller
         }
 
         return view('scheduling.index', compact('nurseTimetables', 'isDuplicate'));
+    }
+
+    public function nurseSchedule()
+    {
+        $nurseId = Auth::id();
+
+        $nurseTimetables = Timetable::whereHas('nurse', function ($query) use ($nurseId) {
+            $query->where('id', $nurseId);
+        })
+            ->with('nurse', 'patientBatch')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $isDuplicate = false;
+
+        foreach ($nurseTimetables as $timetable) {
+            $duplicate = Timetable::where('nurse_id', $timetable->nurse_id)
+                ->where('patient_batch_id', $timetable->patient_batch_id)
+                ->whereDate('date', $timetable->date)
+                ->exists();
+
+            if ($duplicate) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        return view('scheduling.nurse', compact('nurseTimetables', 'isDuplicate'));
     }
 }

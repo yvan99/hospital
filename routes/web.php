@@ -69,5 +69,6 @@ Route::middleware('auth:nurse')->group(function () {
         Route::get('/dashboard', [DoctorController::class, 'nurseBatches'])->name('nurse.patientOrders');
         Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
         Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatch'])->name('notes.by.batch');
+        Route::get('/nurse-timetable', [DoctorController::class, 'nurseSchedule'])->name('nurse.nurseTimetable');
     });
 });
