@@ -9,48 +9,46 @@
             <i class="bi-list"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
-                <li class="nav-item"><a class="nav-link me-lg-3" href="#fhi">About</a></li>
-                <li class="nav-item"><a class="nav-link me-lg-3" href="#features">What we do</a></li>
+            <ul class="navbar-nav ms-auto me-5 my-3 my-lg-0">
+                {{-- <li class="nav-item"><a class="nav-link me-lg-3" href="#fhi">About</a></li>
+                <li class="nav-item"><a class="nav-link me-lg-3" href="#features">What we do</a></li> --}}
             </ul>
             <a href="/doctor/login" class="btn btn-warning rounded-pill px-3 m-1 mb-2 mb-lg-0">
                 <span class="d-flex align-items-center">
-                    <span class="small">Doctor Login</span>
+                    <span class="small">Doctor Portal</span>
                 </span>
             </a>
 
             <a href="/receptionist/login" class="btn btn-secondary rounded-pill px-3 m-1 mb-2 mb-lg-0">
                 <span class="d-flex align-items-center">
-                    <span class="small">Receptionist Login</span>
+                    <span class="small">Receptionist Portal</span>
                 </span>
             </a>
 
-            {{-- <a href="/nurse/login" class="btn btn-success rounded-pill px-3 m-1 mb-2 mb-lg-0">
+
+
+            <a href="/nurse/login" class="btn btn-success rounded-pill px-3 m-1 mb-2 mb-lg-0">
                 <span class="d-flex align-items-center">
-                    <span class="small">Nurse Login</span>
+                    <span class="small">Nurse Portal</span>
                 </span>
-            </a> --}}
+            </a>
         </div>
     </div>
 </nav>
 <!-- Mashead header-->
 <header class="masthead text-white" style="background: #300074">
     <div class="container px-1">
-        <div class="row gx-5 align-items-center">
+        <div class="row align-items-center">
             <div class="col-lg-6">
                 <!-- Mashead text and app badges-->
                 <div class="mb-5 mb-lg-0 text-center text-lg-start">
-                    <h1 class="display-1 lh-1 mb-3">Showcase your app beautifully.</h1>
-                    <p class="lead fw-normal text-muted mb-5">Launch your mobile app landing page faster with this free,
-                        open source theme from Start Bootstrap!</p>
+                    <h1 class="display-1 lh-2 mb-3">{{ env('APP_NAME') }}.</h1>
+                    <p class="lead fw-normal text-muted mb-5">{{ env('PROJECT_DESCRIPTION') }}</p>
 
                 </div>
             </div>
             <div class="col-lg-6">
-                <!-- Masthead device mockup feature-->
-
-
-                <img src="homepage/assets/img/nursing2.png" width="600" class="img-fluid" alt="">
+                <img src="homepage/assets/img/nursing.png" width="600" class="img-fluid" alt="">
 
             </div>
         </div>
@@ -59,7 +57,7 @@
 </header>
 
 <!-- App features section-->
-<section id="features">
+{{-- <section id="features">
     <div class="container px-5">
         <div class="row gx-5 align-items-center">
             <div class="col-lg-7 order-lg-1 mb-5 mb-lg-0">
@@ -111,14 +109,14 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 
 
 <!-- Footer-->
 <footer class="bg-black text-center py-5">
     <div class="container px-5">
         <div class="text-white-50 small">
-            <div class="mb-2">&copy; Your Website 2023. All Rights Reserved.</div>
+            <div class="mb-2">&copy; Developed By {{ env('PROJECT_OWNER') }} 2023. All Rights Reserved.</div>
         </div>
     </div>
 </footer>

@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
@@ -122,21 +122,25 @@ class DoctorController extends Controller
 
     public function patientBatches()
     {
-        // Get the logged-in doctor's assigned patient batches
         $doctorId = auth()->user()->id;
-
         $patientBatches = PatientBatch::whereHas('consultation', function ($query) use ($doctorId) {
             $query->where('doctor_id', $doctorId);
         })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
-
-        // Get the notes for each patient batch
-        $notes = [];
-        foreach ($patientBatches as $patientBatch) {
-            $notes[$patientBatch->id] = $patientBatch->notes()->orderBy('created_at', 'asc')->get();
-        }
-
-        return view('patients.batches', compact('patientBatches', 'notes'));
+        return view('patients.batches', compact('patientBatches'));
     }
+
+    public function nurseBatches()
+    {
+        $nurseId = auth()->user()->id;
+
+        // Retrieve patient batches assigned to the nurse
+        $patientBatches = PatientBatch::whereHas('nurses', function ($query) use ($nurseId) {
+            $query->where('nurse_id', $nurseId);
+        })->with('consultation.doctor', 'consultation.patientOrder.patient', 'nurses')->get();
+
+        return view('nurse.dashboard', compact('patientBatches'));
+    }
+
 
 
     public function handleTimeTable($batchId)
@@ -189,7 +193,9 @@ class DoctorController extends Controller
 
     public function nurseTimetable()
     {
-        $nurseTimetables = Timetable::with('nurse', 'patientBatch')->get();
+        $nurseTimetables = Timetable::with('nurse', 'patientBatch')
+            ->orderBy('date', 'asc')
+            ->get();
         $isDuplicate = false;
 
         foreach ($nurseTimetables as $timetable) {
@@ -205,5 +211,33 @@ class DoctorController extends Controller
         }
 
         return view('scheduling.index', compact('nurseTimetables', 'isDuplicate'));
+    }
+
+    public function nurseSchedule()
+    {
+        $nurseId = Auth::id();
+
+        $nurseTimetables = Timetable::whereHas('nurse', function ($query) use ($nurseId) {
+            $query->where('id', $nurseId);
+        })
+            ->with('nurse', 'patientBatch')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $isDuplicate = false;
+
+        foreach ($nurseTimetables as $timetable) {
+            $duplicate = Timetable::where('nurse_id', $timetable->nurse_id)
+                ->where('patient_batch_id', $timetable->patient_batch_id)
+                ->whereDate('date', $timetable->date)
+                ->exists();
+
+            if ($duplicate) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        return view('scheduling.nurse', compact('nurseTimetables', 'isDuplicate'));
     }
 }

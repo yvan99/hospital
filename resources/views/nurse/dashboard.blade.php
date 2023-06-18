@@ -1,5 +1,5 @@
 @include('components.dashcss')
-@include('doctor.components.aside')
+@include('nurse.components.aside')
 <main class="main-content">
     <div class="position-relative ">
         <!--Nav Start-->
@@ -12,29 +12,12 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Patients Batches List</h4>
+                            <h4 class="card-title">Assigned Patients Batches List</h4>
 
                         </div>
 
                     </div>
                     <div class="card-body">
-
-                        <!-- Alert div for displaying messages -->
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                         <div class="table-responsive border rounded">
                             <table class="table" id="datatable" data-toggle="data-table">
                                 <thead>
@@ -43,7 +26,6 @@
                                         <th>Consultation Code</th>
                                         <th>Assigned Doctor</th>
                                         <th>Patient Info</th>
-                                        <th>Assigned Nurses</th>
                                         <th>Batch Status</th>
                                         <th>Note</th>
                                     </tr>
@@ -73,21 +55,15 @@
                                                     </ul>
 
                                                 </td>
-                                                <td>
-                                                    <ul>
-                                                        @foreach ($batch->nurses as $nurse)
-                                                            <li>{{ $nurse->names }}</li>
-                                                        @endforeach
-                                                    </ul>
-                                                </td>
+
                                                 <td>
                                                     <button class="btn btn-warning btn-sm">
                                                         {{ $batch->status }}
                                                     </button>
                                                 </td>
                                                 <td>
-                                                    <a href="/doctor/notes/{{ $batch->id }}"
-                                                        class="btn btn-sm btn-info">Manage Notes</a>
+                                                    <a href="/nurse/notes/{{ $batch->id }}"
+                                                        class="btn btn-sm btn-info">View Notes</a>
                                                 </td>
                                             </tr>
                                         @endforeach

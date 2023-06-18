@@ -6,7 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
 
-@include('doctor.components.aside')
+@include('nurse.components.aside')
 <main class="main-content">
     <div class="position-relative ">
         <!--Nav Start-->
@@ -19,7 +19,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Nurses shifts scheduler</h4>
+                            <h4 class="card-title">Assigned Patient Batches schedule</h4>
 
                         </div>
                         @if ($isDuplicate !=1)

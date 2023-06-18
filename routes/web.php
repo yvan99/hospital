@@ -40,7 +40,7 @@ Route::prefix('nurse')->group(function () {
 
 Route::middleware('auth:receptionist')->group(function () {
     Route::prefix('receptionist')->group(function () {
-   
+
         Route::resource('patients', PatientController::class);
         Route::resource('departments', DepartmentController::class);
         Route::resource('doctors', DoctorController::class);
@@ -60,11 +60,15 @@ Route::middleware('auth:doctor')->group(function () {
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
         Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
         Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+        Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatch'])->name('notes.by.batch');
     });
 });
 
 Route::middleware('auth:nurse')->group(function () {
     Route::prefix('nurse')->group(function () {
-        // Add nurse dashboard routes here
+        Route::get('/dashboard', [DoctorController::class, 'nurseBatches'])->name('nurse.patientOrders');
+        Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
+        Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatch'])->name('notes.by.batch');
+        Route::get('/nurse-timetable', [DoctorController::class, 'nurseSchedule'])->name('nurse.nurseTimetable');
     });
 });
