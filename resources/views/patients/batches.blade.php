@@ -1,89 +1,6 @@
 @include('components.dashcss')
 @include('doctor.components.aside')
 <main class="main-content">
-
-    <style>
-        :root {
-            --send-bg: #26005c;
-            --send-color: white;
-            --receive-bg: #E5E5EA;
-            --receive-text: black;
-            --page-background: white;
-        }
-
-        .notes-area {
-            font-size: 20px;
-            font-weight: normal;
-            max-width: 600px;
-            margin: 20px auto;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--page-background);
-        }
-
-        .message-area {
-            width: 60%;
-            font-weight: 300;
-            word-wrap: break-word;
-            margin-bottom: 12px;
-            line-height: 24px;
-            position: relative;
-            padding: 10px 20px;
-            border-radius: 25px;
-        }
-
-        .message-area:before,
-        .message-area:after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            height: 25px;
-        }
-
-        .send {
-            color: var(--send-color);
-            background: var(--send-bg);
-            align-self: flex-end;
-        }
-
-        .send:before {
-            right: -2px;
-            width: 20px;
-            background-color: var(--send-bg);
-            border-bottom-left-radius: 16px 14px;
-        }
-
-        .send:after {
-            right: -26px;
-            width: 26px;
-            background-color: var(--page-background);
-            border-bottom-left-radius: 10px;
-        }
-
-        .receive {
-            background: var(--receive-bg);
-            color: black;
-            align-self: flex-start;
-        }
-
-        .receive:before {
-            left: -7px;
-            width: 20px;
-            background-color: var(--receive-bg);
-            border-bottom-right-radius: 16px 14px;
-        }
-
-        .receive:after {
-            left: -26px;
-            width: 26px;
-            background-color: var(--page-background);
-            border-bottom-right-radius: 10px;
-        }
-
-        .message-info {
-            font-size: 15px !important;
-        }
-    </style>
     <div class="position-relative ">
         <!--Nav Start-->
         @include('components.dasheader')
@@ -169,9 +86,7 @@
                                                     </button>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#noteModal"
-                                                        data-bs-patient-batch-id="{{ $batch->id }}">Note</button>
+                                                   <a href="" class="btn btn-sm btn-info">Manage Notes</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -182,61 +97,6 @@
 
                                 </tbody>
                             </table>
-
-                            <!-- Add this modal markup at the bottom of the view file -->
-                            <!-- Create Note Modal -->
-                            <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="noteModalLabel">Add Note {{ $batch->id }}
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <form action="{{ route('notes.store') }}" method="POST">
-                                            @csrf
-                                            <div class="modal-body">
-
-                                                <div class="notes-area">
-                                                    @if ($notes > 0)
-                                                        @foreach ($notes as $patientBatchId => $patientNotes)
-                                                            @foreach ($patientNotes as $note)
-                                                                <div
-                                                                    class="message-area {{ $note->user_type === 'doctor' ? 'send' : 'receive' }}">
-                                                                    <p>{{ $note->message }}</p>
-
-                                                                    <span class="message-info">{{ $note->user_name }} |
-                                                                        {{ $note->created_at }} </span>
-                                                                </div>
-                                                            @endforeach
-                                                        @endforeach
-                                                    @endif
-
-                                                </div>
-
-                                                @if ($patientBatches->count() > 0)
-                                                    <input type="hidden" name="patient_batch_id"
-                                                        value="{{ $batch->id }}">
-                                                @endif
-
-
-
-                                                <div class="mb-3">
-                                                    <label for="message" class="form-label">leave a note</label>
-                                                    <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Send Note</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
 
 
                         </div>
@@ -249,14 +109,3 @@
 </main>
 @include('components.dashjs')
 
-<script>
-    $('#noteModal').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget);
-        var patientBatchId = button.data(
-            'bs-patient-batch-id');
-        var modal = $(this);
-        modal.find('.modal-title').text('Add Note ' +
-            patientBatchId);
-        modal.find('#patientBatchId').val(patientBatchId);
-    });
-</script>
