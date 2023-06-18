@@ -29,7 +29,7 @@ class NoteController extends Controller
     {
         // Retrieve notes by batch ID
         $notes = Note::where('patient_batch_id', $batchId)->get();
-        return view('notes.index')->with('notes', $notes);
+        return view('notes.index', compact('batchId', 'notes'));
     }
 
     

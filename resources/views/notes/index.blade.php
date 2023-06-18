@@ -1,4 +1,5 @@
 @include('components.dashcss')
+<link rel="stylesheet" href="{{ asset('dashboard/css/notes.css') }}">
 @include('doctor.components.aside')
 
 <main class="main-content">
@@ -13,7 +14,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Patients Batches List</h4>
+                            <h4 class="card-title">Patients Batch Notes</h4>
 
                         </div>
 
@@ -40,15 +41,25 @@
                                             <p>No notes found for this batch.</p>
                                         @endif
                                     </div>
-                                    <div class="chat-box bg-white">
-                                        <div class="input-group">
-                                            <input class="form-control border no-shadow no-rounded"
-                                                placeholder="Type your message here">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-success no-rounded" type="button">Send</button>
-                                            </span>
-                                        </div><!-- /input-group -->
-                                    </div>
+
+                                    <form action="{{ route('notes.store') }}" method="POST">
+                                        @csrf
+                                        <div class="chat-box bg-white">
+                                            <div class="input-group">
+                                                @if ($notes->count() > 0)
+                                                    <input type="hidden" name="patient_batch_id"
+                                                        value="{{ $batchId }}">
+                                                @endif
+                                                <input class="form-control border no-shadow no-rounded"
+                                                    placeholder="Type your note here" name="message">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-primary no-rounded" type="submit">Send
+                                                        Note</button>
+                                                </span>
+                                            </div><!-- /input-group -->
+                                        </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>

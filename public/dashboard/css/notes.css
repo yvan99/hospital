@@ -9,7 +9,7 @@
 .notes-area {
     font-size: 20px;
     font-weight: normal;
-    max-width: 600px;
+    width: 80%;
     margin: 20px auto;
     display: flex;
     flex-direction: column;
