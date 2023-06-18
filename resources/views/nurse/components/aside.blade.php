@@ -68,7 +68,7 @@
                                     fill="currentColor"></path>
                             </svg>
                         </i>
-                        <span class="item-name">Nurse scheduler</span>
+                        <span class="item-name">My timetable</span>
                     </a>
                 </li>
 
