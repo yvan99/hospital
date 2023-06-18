@@ -28,6 +28,23 @@
                     </div>
                     <div class="card-body">
 
+                         <!-- Alert div for displaying messages -->
+                         @if (session('success'))
+                         <div class="alert alert-success">
+                             {{ session('success') }}
+                         </div>
+                     @endif
+
+                     @if ($errors->any())
+                         <div class="alert alert-danger">
+                             <ul>
+                                 @foreach ($errors->all() as $error)
+                                     <li>{{ $error }}</li>
+                                 @endforeach
+                             </ul>
+                         </div>
+                     @endif
+
 
                         <div class="bootstrap snippets bootdey">
                             <div class="row">
@@ -49,14 +66,16 @@
                                         @endif
                                     </div>
 
+          
+
                                     <form action="{{ route('notes.store') }}" method="POST">
                                         @csrf
                                         <div class="chat-box bg-white">
                                             <div class="input-group">
-                                                @if ($notes->count() > 0)
+                                            
                                                     <input type="hidden" name="patient_batch_id"
                                                         value="{{ $batchId }}">
-                                                @endif
+                                              
                                                 <input class="form-control border no-shadow no-rounded"
                                                     placeholder="Type your note here" name="message">
                                                 <span class="input-group-btn">
