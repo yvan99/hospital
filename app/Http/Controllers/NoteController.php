@@ -32,5 +32,10 @@ class NoteController extends Controller
         return view('notes.index', compact('batchId', 'notes'));
     }
 
-    
+    public function getNotesByBatchNurse($batchId)
+    {
+        // Retrieve notes by batch ID
+        $notes = Note::where('patient_batch_id', $batchId)->get();
+        return view('notes.nurse', compact('batchId', 'notes'));
+    }
 }

@@ -81,7 +81,7 @@
                                                     </ul>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-warning btn-sm">
+                                                    <button class="btn btn-success btn-sm">
                                                         {{ $batch->status }}
                                                     </button>
                                                 </td>

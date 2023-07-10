@@ -57,13 +57,13 @@
                                                 </td>
 
                                                 <td>
-                                                    <button class="btn btn-warning btn-sm">
+                                                    <button class="btn btn-success btn-sm">
                                                         {{ $batch->status }}
                                                     </button>
                                                 </td>
                                                 <td>
                                                     <a href="/nurse/notes/{{ $batch->id }}"
-                                                        class="btn btn-sm btn-info">View Notes</a>
+                                                        class="btn btn-sm btn-info">Progress Notes</a>
                                                 </td>
                                             </tr>
                                         @endforeach
