@@ -11,7 +11,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
-  --bs-blue: #2937f0;
+  --bs-blue: #0073be;
   --bs-indigo: #6610f2;
   --bs-purple: #9f1ae2;
   --bs-pink: #d63384;
@@ -77,6 +77,11 @@
   --bs-link-hover-color: #212cc0;
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
+}
+
+.btn-primary{
+  background-color: var(--bs-blue) !important;
+
 }
 
 *,
@@ -2849,7 +2854,7 @@ textarea.form-control-lg {
   --bs-btn-bg: #2937f0;
   --bs-btn-border-color: #2937f0;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #232fcc;
+  --bs-btn-hover-bg: #0073be;
   --bs-btn-hover-border-color: #212cc0;
   --bs-btn-focus-shadow-rgb: 73, 85, 242;
   --bs-btn-active-color: #fff;
@@ -2883,7 +2888,7 @@ textarea.form-control-lg {
   --bs-btn-bg: #198754;
   --bs-btn-border-color: #198754;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #157347;
+  --bs-btn-hover-bg: #026852;
   --bs-btn-hover-border-color: #146c43;
   --bs-btn-focus-shadow-rgb: 60, 153, 110;
   --bs-btn-active-color: #fff;

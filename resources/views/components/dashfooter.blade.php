@@ -7,7 +7,7 @@
             </ul> --}}
             <div class="right-panel">
                 ©  {{ date('Y') }}
-             Developed By <span data-setting="app_name">{{ env('PROJECT_OWNER') }}</span>
+             Developed By <span>{{ env('PROJECT_OWNER') }}</span>
             </div>
         </div>
     </footer>

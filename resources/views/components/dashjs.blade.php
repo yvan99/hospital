@@ -35,6 +35,16 @@
          alert('Password copied to clipboard!');
      }
  </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<style>
+    .fc-event {
+        padding: 8px;
+        margin-bottom: 10px; /* Add spacing between events */
+        height: 35px; /* Adjust the height of events */
+    }
+</style>
  </body>
 
  </html>

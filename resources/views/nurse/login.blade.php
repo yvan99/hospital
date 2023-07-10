@@ -3,7 +3,7 @@
 <body class="">
     <div class="wrapper">
         <section class="login-content overflow-hidden">
-            <div class="row no-gutters align-items-center auth-screen" style="background: #300074">
+            <div class="row no-gutters align-items-center auth-screen" style="background: #0073be">
                 <div class="col-md-12 col-lg-12 align-self-center">
                     <div class="row justify-content-center">
                         <div class="col-md-3">
@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="form-group row mb-0">
                                             <div class="col-md-6">
-                                                <button type="submit" class="btn btn-warning">
+                                                <button type="submit" class="btn btn-success">
                                                     {{ __('Login') }}
                                                 </button>
                                             </div>

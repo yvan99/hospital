@@ -59,12 +59,12 @@
                 <li class="nav-item dropdown">
                     <a class="py-0 nav-link d-flex align-items-center ps-3" href="#"
                         id="profile-setting" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{asset('dashboard/images/avatars/01.png')}}" alt="User-Profile"
+                        <img src="{{asset('dashboard/images/avatars/doctor.png')}}" alt="User-Profile"
                             class="img-fluid avatar avatar-50 avatar-rounded" loading="lazy">
                         <div class="caption ms-3 d-none d-md-block ">
-                            <h6 class="mb-0 caption-title">{{ Auth::user()->name }}</h6>
+                            <h6 class="mb-0 caption-title text-capitalize">{{ Auth::user()->name }}</h6>
                             {{-- <h4>Logged in as ({{ Auth::getDefaultDriver() }})</h4> --}}
-                            <p class="mb-0 caption-sub-title">{{ Auth::user()->names }}</p>
+                            <p class="mb-0 caption-sub-title text-capitalize">{{ Auth::user()->names }}</p>
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile-setting">

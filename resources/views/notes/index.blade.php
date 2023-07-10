@@ -21,7 +21,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Patients Batch Notes</h4>
+                            <h4 class="card-title">Patient Progress Notes</h4>
 
                         </div>
 
@@ -68,7 +68,7 @@
 
           
 
-                                    <form action="{{ route('notes.store') }}" method="POST">
+                                    <form action="{{ route('notees.store') }}" method="POST">
                                         @csrf
                                         <div class="chat-box bg-white">
                                             <div class="input-group">

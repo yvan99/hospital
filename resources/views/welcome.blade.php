@@ -13,13 +13,13 @@
                 {{-- <li class="nav-item"><a class="nav-link me-lg-3" href="#fhi">About</a></li>
                 <li class="nav-item"><a class="nav-link me-lg-3" href="#features">What we do</a></li> --}}
             </ul>
-            <a href="/doctor/login" class="btn btn-warning rounded-pill px-3 m-1 mb-2 mb-lg-0">
+            <a href="/doctor/login" class="btn btn-dark rounded-pill px-3 m-1 mb-2 mb-lg-0">
                 <span class="d-flex align-items-center">
                     <span class="small">Doctor Portal</span>
                 </span>
             </a>
 
-            <a href="/receptionist/login" class="btn btn-secondary rounded-pill px-3 m-1 mb-2 mb-lg-0">
+            <a href="/receptionist/login" class="btn btn-primary rounded-pill px-3 m-1 mb-2 mb-lg-0">
                 <span class="d-flex align-items-center">
                     <span class="small">Receptionist Portal</span>
                 </span>
@@ -36,14 +36,14 @@
     </div>
 </nav>
 <!-- Mashead header-->
-<header class="masthead text-white" style="background: #300074">
+<header class="masthead text-white" style="background: #026852">
     <div class="container px-1">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <!-- Mashead text and app badges-->
                 <div class="mb-5 mb-lg-0 text-center text-lg-start">
                     <h1 class="display-1 lh-2 mb-3">{{ env('APP_NAME') }}.</h1>
-                    <p class="lead fw-normal text-muted mb-5">{{ env('PROJECT_DESCRIPTION') }}</p>
+                    <p class="lead fw-normal text-white mb-5">{{ env('PROJECT_DESCRIPTION') }}</p>
 
                 </div>
             </div>
