@@ -180,6 +180,7 @@ class DoctorController extends Controller
                 $timetable = Timetable::create([
                     'nurse_id' => $nurse->id,
                     'patient_batch_id' => $patientBatch->id,
+                    'doctor_id'=> Auth::user()->id,
                     'date' => $date,
                 ]);
                 // Update the patient batch status to 'processed'

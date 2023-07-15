@@ -19,13 +19,17 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="header-title">
+                    <div class="card-header container-fluid">
+                        <div class="row">
+                          <div class="col-md-8">
                             <h4 class="card-title">Patient Progress Notes</h4>
-
+                          </div>
+                          <div class="col-md-4 float-right">
+                            <a href="/nurse/medical/{{ $batchId }}" target="_blank"
+                            class="btn btn-primary">Generate Progress Report</a>
+                           </div>
                         </div>
-
-                    </div>
+                      </div>
                     <div class="card-body">
 
                          <!-- Alert div for displaying messages -->
