@@ -51,9 +51,9 @@ class DoctorController extends Controller
         $validatedData['password'] = Hash::make($generatedPassword);
         $doctor = Doctor::create($validatedData);
         $callSms = new SmsController;
-        $message = 'Hello ' . $doctor->names . ', welcome ! Your doctor account is created successfully Your password is: ' . $generatedPassword;
+        $message = 'Hello ' . $doctor->names . ', Welcome ! Your doctor account is created successfully Your password is: ' . $generatedPassword;
         $callSms->sendSms($request->phone, $message);
-        return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
+        return redirect()->route('doctors.index')->with('success', 'Doctor created successfully. Password Sent to User via SMS');
     }
 
     public function index()

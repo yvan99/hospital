@@ -39,9 +39,9 @@ class NurseController extends Controller
 
         $nurse = Nurse::create($validatedData);
 
-        $message = 'Hello ' . $nurse->names . ', welcome ! Your Nurse account is created successfully Your password is: ' . $generatedPassword;
+        $message = 'Hello ' . $nurse->names . ', Welcome ! Your Nurse account is created successfully Your password is: ' . $generatedPassword;
         $callSms->sendSms($request->phone, $message);
 
-        return redirect()->route('nurses.index')->with('success', 'Nurse created successfully.');
+        return redirect()->route('nurses.index')->with('success', 'Nurse created successfully. Password Sent to User via SMS');
     }
 }
