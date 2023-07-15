@@ -28,13 +28,20 @@ class NurseController extends Controller
             'names' => 'required|string|max:255',
             'email' => 'required|email|unique:nurses',
             'phone' => 'required|string',
-            'password' => 'required|string|min:6',
             'department_id' => 'required|exists:departments,id',
             'is_hod' => 'boolean',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        Nurse::create($validatedData);
-        return redirect()->route('nurses.index')->with('success', 'Nurse created successfully.');
+        $doController = new DoctorController;
+        $callSms = new SmsController;
+        $generatedPassword=$doController->generatePassword();
+        $validatedData['password'] = Hash::make($generatedPassword);
+
+        $nurse = Nurse::create($validatedData);
+
+        $message = 'Hello ' . $nurse->names . ', Welcome ! Your Nurse account is created successfully Your password is: ' . $generatedPassword;
+        $callSms->sendSms($request->phone, $message);
+
+        return redirect()->route('nurses.index')->with('success', 'Nurse created successfully. Password Sent to User via SMS');
     }
 }

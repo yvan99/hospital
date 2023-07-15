@@ -58,9 +58,10 @@ Route::middleware('auth:doctor')->group(function () {
         Route::post('/consultations/{consultation}/register-batch', [DoctorController::class, 'registerBatch'])->name('doctors.registerBatch');
         Route::get('/patient-batches', [DoctorController::class, 'patientBatches'])->name('doctor.patientBatches');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseTimetable'])->name('doctor.nurseTimetable');
-        Route::get('/generate-schedule', [DoctorController::class, 'generateTimeTable']);
+        // Route::get('/generate-schedule', [DoctorController::class, 'handleTimeTable']);
         Route::post('/notes', [NoteController::class, 'store'])->name('notees.store');
         Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatch'])->name('notes.by.batch');
+        Route::get('/medical/{patient_batch_id}', [NoteController::class,'viewMedicalReport'])->name('medical-report');
     });
 });
 
@@ -70,5 +71,7 @@ Route::middleware('auth:nurse')->group(function () {
         Route::post('/notes', [NoteController::class, 'store'])->name('notes.keep');
         Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatchNurse'])->name('notes.by.batch');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseSchedule'])->name('nurse.nurseTimetable');
+        Route::get('/medical/{patient_batch_id}', [NoteController::class,'viewMedicalReport'])->name('medical-report');
+
     });
 });

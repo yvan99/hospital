@@ -15,11 +15,11 @@
                             <h4 class="card-title">Nurses shifts scheduler</h4>
 
                         </div>
-                        @if ($isDuplicate !=1)
+                        {{-- @if ($isDuplicate !=1)
                         <a href="/doctor/generate-schedule" id="submitButton" class="btn btn-primary">
                             Generate TimeTable
                         </a>
-                        @endif
+                        @endif --}}
                       
                     </div>
                     <div class="card-body">

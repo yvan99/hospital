@@ -68,7 +68,7 @@
                                                    
                                                 <button class="btn btn-success btn-sm">Pending Order</button>
                                                 @else
-                                                    <button class="btn btn-secondary" data-bs-toggle="modal"
+                                                    <button class="btn btn-primary" data-bs-toggle="modal"
                                                         data-bs-target="#createOrderModal"
                                                         data-patient-id="{{ $patient->id }}">Create Order</button>
                                                 @endif

@@ -17,6 +17,7 @@ class CreateTimetablesTable extends Migration
             $table->id();
             $table->foreignId('nurse_id')->constrained('nurses');
             $table->foreignId('patient_batch_id')->constrained('patient_batches');
+            $table->foreignId('doctor_id')->nullable()->constrained('doctors')->onDelete('set null');
             $table->date('date');
             $table->timestamps();
         });

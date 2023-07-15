@@ -23,6 +23,19 @@ class DoctorController extends Controller
         return view('doctors.create');
     }
 
+    public function generatePassword($length = 10)
+    {
+        $characters = '0123456789aABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+        $max = strlen($characters) - 1;
+
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[random_int(0, $max)];
+        }
+
+        return $password;
+    }
+
     public function store(Request $request)
     {
         // Validate the request data
@@ -30,14 +43,17 @@ class DoctorController extends Controller
             'names' => 'required|string|max:255',
             'email' => 'required|email|unique:doctors',
             'phone' => 'required|string',
-            'password' => 'required|string|min:6',
             'department_id' => 'required|exists:departments,id',
             'is_hod' => 'boolean',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-        Doctor::create($validatedData);
-        return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
+        $generatedPassword = $this->generatePassword();
+        $validatedData['password'] = Hash::make($generatedPassword);
+        $doctor = Doctor::create($validatedData);
+        $callSms = new SmsController;
+        $message = 'Hello ' . $doctor->names . ', Welcome ! Your doctor account is created successfully Your password is: ' . $generatedPassword;
+        $callSms->sendSms($request->phone, $message);
+        return redirect()->route('doctors.index')->with('success', 'Doctor created successfully. Password Sent to User via SMS');
     }
 
     public function index()
@@ -180,6 +196,7 @@ class DoctorController extends Controller
                 $timetable = Timetable::create([
                     'nurse_id' => $nurse->id,
                     'patient_batch_id' => $patientBatch->id,
+                    'doctor_id' => Auth::user()->id,
                     'date' => $date,
                 ]);
                 // Update the patient batch status to 'processed'

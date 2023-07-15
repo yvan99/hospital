@@ -38,4 +38,19 @@ class NoteController extends Controller
         $notes = Note::where('patient_batch_id', $batchId)->get();
         return view('notes.nurse', compact('batchId', 'notes'));
     }
+
+    // public function viewMedicalReport($patientBatchId)
+    // {
+    //     $notes = Note::where('patient_batch_id', $patientBatchId)->get();
+    //     return view('notes.table', compact('notes'));
+    // }
+
+    public function viewMedicalReport($patientBatchId)
+{
+    $patientBatch = PatientBatch::find($patientBatchId);
+    $patient = $patientBatch->consultation->patientOrder->patient;
+    $notes = Note::where('patient_batch_id', $patientBatchId)->get();
+
+    return view('notes.table', compact('patient', 'notes'));
+}
 }

@@ -19,31 +19,37 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="header-title">
+
+                    <div class="card-header container-fluid">
+                        <div class="row">
+                          <div class="col-md-8">
                             <h4 class="card-title">Patient Progress Notes</h4>
-
+                          </div>
+                          <div class="col-md-4 float-right">
+                            <a href="/doctor/medical/{{ $batchId }}" target="_blank"
+                            class="btn btn-primary">Generate Progress Report</a>
+                           </div>
                         </div>
-
-                    </div>
+                      </div>
+                 
                     <div class="card-body">
 
-                         <!-- Alert div for displaying messages -->
-                         @if (session('success'))
-                         <div class="alert alert-success">
-                             {{ session('success') }}
-                         </div>
-                     @endif
+                        <!-- Alert div for displaying messages -->
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
-                     @if ($errors->any())
-                         <div class="alert alert-danger">
-                             <ul>
-                                 @foreach ($errors->all() as $error)
-                                     <li>{{ $error }}</li>
-                                 @endforeach
-                             </ul>
-                         </div>
-                     @endif
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
 
                         <div class="bootstrap snippets bootdey">
@@ -66,16 +72,16 @@
                                         @endif
                                     </div>
 
-          
+
 
                                     <form action="{{ route('notees.store') }}" method="POST">
                                         @csrf
                                         <div class="chat-box bg-white">
                                             <div class="input-group">
-                                            
-                                                    <input type="hidden" name="patient_batch_id"
-                                                        value="{{ $batchId }}">
-                                              
+
+                                                <input type="hidden" name="patient_batch_id"
+                                                    value="{{ $batchId }}">
+
                                                 <input class="form-control border no-shadow no-rounded"
                                                     placeholder="Type your note here" name="message">
                                                 <span class="input-group-btn">
