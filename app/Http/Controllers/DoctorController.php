@@ -23,7 +23,7 @@ class DoctorController extends Controller
         return view('doctors.create');
     }
 
-    private function generatePassword($length = 10)
+    public function generatePassword($length = 10)
     {
         $characters = '0123456789aABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $password = '';
