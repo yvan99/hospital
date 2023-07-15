@@ -63,4 +63,4 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 - The project was developed for final year project.
 
 ## Contact
-For any inquiries or further information, please contact John Doe at ishimweyvan90@gmail.com.
+For any inquiries or further information, please contact me at ishimweyvan90@gmail.com.
