@@ -32,8 +32,6 @@ The Hospital Management System is a web application designed to streamline the m
 2. Register as a new user or log in with existing credentials
 3. Use the different features of the system to manage patients, doctors, consultations, batches, timetables, and notes
 
-## Configuration
-- The application uses the default Laravel configuration file (`config/app.php`) for various settings such as timezone, locale, and encryption. Modify these settings as per your requirements.
 
 ## API Documentation
 - The Hospital Management System does not expose an API.
@@ -62,7 +60,7 @@ The Hospital Management System is a web application designed to streamline the m
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Acknowledgements
-- The project was developed as a learning exercise and does not represent a real-world hospital management system.
+- The project was developed for final year project.
 
 ## Contact
-For any inquiries or further information, please contact John Doe at john.doe@example.com.
+For any inquiries or further information, please contact John Doe at ishimweyvan90@gmail.com.
