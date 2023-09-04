@@ -60,7 +60,7 @@
                                             <label for="department_id" class="form-label">Datetime</label>
                                             <select class="form-control form-select" id="newDate" name="newDate" onchange="getNurses(this)">
                                                 <option>Select Date</option>
-                                                @foreach ($nurseTimetables as $timetable)
+                                                @foreach ($nurseTimetables->unique('date') as $timetable)
                                                     <option value="{{ $timetable->date->format('Y-m-d') }}">{{ $timetable->date->format('Y-m-d') }}</option>
                                                 @endforeach
                                             </select>
