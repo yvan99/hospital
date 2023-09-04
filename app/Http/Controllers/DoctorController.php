@@ -296,9 +296,14 @@ class DoctorController extends Controller
         $message = "Hello " . $newNurse->names . ", You've been assigned to new shift on: ".$request->newDate;
         $callSms->sendSms($newNurse->phone, $message);
 
-        return redirect()->route('receptionist.timetable')->with('success', 'Nurse shift changed');
+        return redirect()->route('receptionist.timetable')->with('success', $newNurse->names.' shifted to '.$request->newDate.', and sent sms notification');
     }
 
+    /**
+     * Get all dates from timetable
+     *
+     * @param Request $request
+     */
     public function timetableByDate (Request $request) {
         return response()->json([
             'data' => Timetable::with('nurse')->where('date', $request->date)->get()
