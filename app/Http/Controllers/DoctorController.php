@@ -230,8 +230,7 @@ class DoctorController extends Controller
         return view('scheduling.index', compact('nurseTimetables', 'isDuplicate'));
     }
 
-    public function nurseSchedule()
-    {
+    public function nurseSchedule() {
         $nurseId = Auth::id();
 
         $nurseTimetables = Timetable::whereHas('nurse', function ($query) use ($nurseId) {
@@ -256,5 +255,58 @@ class DoctorController extends Controller
         }
 
         return view('scheduling.nurse', compact('nurseTimetables', 'isDuplicate'));
+    }
+
+    public function receptionistTimetablePreview() {
+        $nurseTimetables = Timetable::with('nurse', 'patientBatch')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $isDuplicate = false;
+
+        foreach ($nurseTimetables as $timetable) {
+            $duplicate = Timetable::where('nurse_id', $timetable->nurse_id)
+                ->where('patient_batch_id', $timetable->patient_batch_id)
+                ->whereDate('date', $timetable->date)
+                ->exists();
+
+            if ($duplicate) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        $nurses = Nurse::all();
+
+        return view('receptionist.nurse_timetable', compact('nurseTimetables', 'isDuplicate', 'nurses'));
+    }
+
+    public function timetableChanges(Request $request) {
+        $oldNurse = Timetable::where('nurse_id', $request->old_nurse)->where('date', $request->newDate)->first();
+        $newNurse = Nurse::where('id', $request->new_nurse)->first();
+
+        $oldNurse->update([
+            'nurse_id' => $request->new_nurse,
+            'date' => $request->newDate,
+            'patient_batch_id' => $oldNurse->patient_batch_id,
+            'doctor_id' => $oldNurse->doctor_id
+        ]);
+
+        $callSms = new SmsController;
+        $message = "Hello " . $newNurse->names . ", You've been assigned to new shift on: ".$request->newDate;
+        $callSms->sendSms($newNurse->phone, $message);
+
+        return redirect()->route('receptionist.timetable')->with('success', $newNurse->names.' shifted to '.$request->newDate.', and sent sms notification');
+    }
+
+    /**
+     * Get all dates from timetable
+     *
+     * @param Request $request
+     */
+    public function timetableByDate (Request $request) {
+        return response()->json([
+            'data' => Timetable::with('nurse')->where('date', $request->date)->get()
+        ]);
     }
 }
