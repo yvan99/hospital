@@ -40,13 +40,14 @@ Route::prefix('nurse')->group(function () {
 
 Route::middleware('auth:receptionist')->group(function () {
     Route::prefix('receptionist')->group(function () {
-
         Route::resource('patients', PatientController::class);
         Route::resource('departments', DepartmentController::class);
         Route::resource('doctors', DoctorController::class);
         Route::resource('nurses', NurseController::class);
         Route::resource('patients', PatientController::class);
+
         Route::post('/patient_orders', [PatientOrderController::class, 'store'])->name('patient_orders.store');
+        Route::get('/nurse-timetable', [DoctorController::class, 'receptionistTimetablePreview'])->name('receptionist.timetable');
     });
 });
 
@@ -72,6 +73,5 @@ Route::middleware('auth:nurse')->group(function () {
         Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatchNurse'])->name('notes.by.batch');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseSchedule'])->name('nurse.nurseTimetable');
         Route::get('/medical/{patient_batch_id}', [NoteController::class,'viewMedicalReport'])->name('medical-report');
-
     });
 });

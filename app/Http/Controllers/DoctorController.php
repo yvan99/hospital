@@ -230,8 +230,7 @@ class DoctorController extends Controller
         return view('scheduling.index', compact('nurseTimetables', 'isDuplicate'));
     }
 
-    public function nurseSchedule()
-    {
+    public function nurseSchedule() {
         $nurseId = Auth::id();
 
         $nurseTimetables = Timetable::whereHas('nurse', function ($query) use ($nurseId) {
@@ -256,5 +255,39 @@ class DoctorController extends Controller
         }
 
         return view('scheduling.nurse', compact('nurseTimetables', 'isDuplicate'));
+    }
+
+    public function receptionistTimetablePreview() {
+        $nurseTimetables = Timetable::with('nurse', 'patientBatch')
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $isDuplicate = false;
+
+        foreach ($nurseTimetables as $timetable) {
+            $duplicate = Timetable::where('nurse_id', $timetable->nurse_id)
+                ->where('patient_batch_id', $timetable->patient_batch_id)
+                ->whereDate('date', $timetable->date)
+                ->exists();
+
+            if ($duplicate) {
+                $isDuplicate = true;
+                break;
+            }
+        }
+
+        return view('receptionist.nurse_timetable', compact('nurseTimetables', 'isDuplicate'));
+    }
+
+    public function timetableChanges(Request $request) {
+        $timetable = Timetable::where('id', $request->timetable_id)->first();
+
+        $timetable->update([
+            'date' => $request->newDate
+        ]);
+
+        return response()->json([
+            'message' => 'timetable updated'
+        ]);
     }
 }

@@ -6,6 +6,7 @@
         @include('components.dasheader')
         <!--Nav End-->
     </div>
+    
     <div class="content-inner container-fluid pb-0" id="page_layout">
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-5 mt-5 gap-3">
             <div class="d-flex flex-column">
@@ -18,6 +19,7 @@
             <h1>row</h1>
         </div>
     </div>
+
     @include('components.dashfooter')
 </main>
 @include('components.dashjs')
