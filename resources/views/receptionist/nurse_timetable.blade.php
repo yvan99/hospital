@@ -15,9 +15,79 @@
                         <div class="header-title">
                             <h4 class="card-title">Nurses shifts scheduler</h4>
                         </div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#createDoctorModal">
+                            Shift nurses
+                        </button>
                     </div>
+
                     <div class="card-body">
+                        <!-- Alert div for displaying messages -->
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div id="calendar"></div>
+                    </div>
+
+                    <!-- Modal for adding doctor -->
+                    <div class="modal fade" id="createDoctorModal" tabindex="-1" role="dialog"
+                        aria-labelledby="createDoctorModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createDoctorModalLabel">Shift nurses</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{{ route('change.nurse.shift') }}">
+                                        @csrf
+
+                                        <div class="mb-3">
+                                            <label for="department_id" class="form-label">Datetime</label>
+                                            <select class="form-control form-select" id="newDate" name="newDate" onchange="getNurses(this)">
+                                                <option>Select Date</option>
+                                                @foreach ($nurseTimetables as $timetable)
+                                                    <option value="{{ $timetable->date->format('Y-m-d') }}">{{ $timetable->date->format('Y-m-d') }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="department_id" class="form-label">Current Nurse</label>
+                                            <select class="form-control form-select" id="currentNurses" name="old_nurse">
+                                                <option value="">Select Current Nurses | on date</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="department_id" class="form-label">To Replace Nurse</label>
+                                            <select class="form-control form-select" id="new_nurse" name="new_nurse">
+                                                <option value="">Select New Nurses</option>
+                                                @foreach ($nurses as $nurse)
+                                                    <option value="{{ $nurse->id }}">{{ $nurse->names }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -28,6 +98,25 @@
 </main>
 
 <script>
+    async function getNurses(element) {
+        const apiUrl = `/api/receptionist/timetable/${element.value}`;
+
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        };
+
+        await fetch(apiUrl, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('currentNurses').innerHTML = "";
+
+                data.data.forEach((value, index, array) => {
+                    document.getElementById('currentNurses').innerHTML += `<option value='${value.nurse.id}'>${value.nurse.names}</option>`
+                });
+            });
+    }
+
     $(document).ready(function() {
         $('#calendar').fullCalendar({
             header: {
@@ -65,88 +154,6 @@
                 @endforeach
             ]
         });
-    });
-
-    $(document).ready(function() {
-        let dragable = document.querySelectorAll('.fc-day-grid-event');
-        let droppable = document.querySelectorAll('.fc-event-container');
-
-        dragable.forEach(element => {
-            element.setAttribute('id', 'draggable');
-            element.setAttribute('draggable', 'true');
-
-            // Add event listeners to the draggable element
-            element.addEventListener('dragstart', handleDragStart);
-            element.addEventListener('dragend', handleDragEnd);
-
-            element.parentNode.setAttribute('data-date', element.getAttribute('parsed').split(' - ')[1]);
-        });
-
-        droppable.forEach(element => {
-            element.setAttribute('id', 'droppable');
-
-            // Add event listeners to the droppable element
-            element.addEventListener('dragover', handleDragOver);
-
-            element.addEventListener('drop', (event) => {
-                event.preventDefault();
-
-                const data = event.dataTransfer.getData('text/plain');
-                const draggedElement = document.getElementById(data);
-
-                let changable = draggedElement.getAttribute('parsed').split(' - ');
-
-                let pasedData = {
-                    nurse_id: changable[0],
-                    new_date: element.getAttribute('data-date')
-                };
-
-                submitChanges(pasedData);
-
-                element.appendChild(draggedElement);
-            });
-        });
-
-        // Function to handle the drag start event
-        function handleDragStart(event) {
-            event.dataTransfer.setData('text/plain', event.target.id);
-            event.target.classList.add('dragging');
-        }
-
-        // Function to handle the drag end event
-        function handleDragEnd(event) {
-            event.target.classList.remove('dragging');
-        }
-
-        // Function to handle the drag over event
-        function handleDragOver(event) {
-            event.preventDefault();
-        }
-
-        function submitChanges(changable) {
-            const apiUrl = '/api/receptionist/timetable-changes';
-
-            console.log(changable);
-
-            const dataToSend = {
-                timetable_id: changable.nurse_id,
-                newDate: changable.new_date,
-            };
-
-            console.log(dataToSend)
-
-            const requestOptions = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataToSend),
-            };
-
-            fetch(apiUrl, requestOptions).then(response => {
-                // window.location.reload();
-            }).catch(error => {
-                alert("Unable to swap nurses");
-            });
-        }
     });
 </script>
 

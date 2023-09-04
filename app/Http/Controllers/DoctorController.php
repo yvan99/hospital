@@ -276,18 +276,32 @@ class DoctorController extends Controller
             }
         }
 
-        return view('receptionist.nurse_timetable', compact('nurseTimetables', 'isDuplicate'));
+        $nurses = Nurse::all();
+
+        return view('receptionist.nurse_timetable', compact('nurseTimetables', 'isDuplicate', 'nurses'));
     }
 
     public function timetableChanges(Request $request) {
-        $timetable = Timetable::where('id', $request->timetable_id)->first();
+        $oldNurse = Timetable::where('nurse_id', $request->old_nurse)->first();
+        $newNurse = Nurse::where('id', $request->new_nurse)->first();
 
-        $timetable->update([
-            'date' => $request->newDate
+        $oldNurse->update([
+            'nurse_id' => $request->new_nurse,
+            'date' => $request->newDate,
+            'patient_batch_id' => $oldNurse->patient_batch_id,
+            'doctor_id' => $oldNurse->doctor_id
         ]);
 
+        $callSms = new SmsController;
+        $message = "Hello " . $newNurse->names . ", You've been assigned to new shift on: ".$request->newDate;
+        $callSms->sendSms($newNurse->phone, $message);
+
+        return redirect()->route('receptionist.timetable')->with('success', 'Nurse shift changed');
+    }
+
+    public function timetableByDate (Request $request) {
         return response()->json([
-            'message' => 'timetable updated'
+            'data' => Timetable::with('nurse')->where('date', $request->date)->get()
         ]);
     }
 }

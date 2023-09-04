@@ -48,6 +48,7 @@ Route::middleware('auth:receptionist')->group(function () {
 
         Route::post('/patient_orders', [PatientOrderController::class, 'store'])->name('patient_orders.store');
         Route::get('/nurse-timetable', [DoctorController::class, 'receptionistTimetablePreview'])->name('receptionist.timetable');
+        Route::post('/receptionist/timetable-changes', [DoctorController::class, 'timetableChanges'])->name('change.nurse.shift');
     });
 });
 

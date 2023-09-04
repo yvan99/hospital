@@ -20,3 +20,4 @@ use Illuminate\Http\Request;
     });
 
     Route::post('/receptionist/timetable-changes', [DoctorController::class, 'timetableChanges']);
+    Route::get('/receptionist/timetable/{date}', [DoctorController::class, 'timetableByDate']);
