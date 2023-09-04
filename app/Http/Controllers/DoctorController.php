@@ -282,7 +282,7 @@ class DoctorController extends Controller
     }
 
     public function timetableChanges(Request $request) {
-        $oldNurse = Timetable::where('nurse_id', $request->old_nurse)->first();
+        $oldNurse = Timetable::where('nurse_id', $request->old_nurse)->where('date', $request->newDate)->first();
         $newNurse = Nurse::where('id', $request->new_nurse)->first();
 
         $oldNurse->update([

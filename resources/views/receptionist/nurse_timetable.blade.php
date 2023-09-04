@@ -74,7 +74,7 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="department_id" class="form-label">To Replace Nurse</label>
+                                            <label for="department_id" class="form-label">New nurse</label>
                                             <select class="form-control form-select" id="new_nurse" name="new_nurse">
                                                 <option value="">Select New Nurses</option>
                                                 @foreach ($nurses as $nurse)
