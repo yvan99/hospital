@@ -11,6 +11,7 @@
         protected $fillable = [
             'nurse_id',
             'receptionist_id',
+            'type',
             'direction',
             'message',
             'payload',

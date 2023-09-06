@@ -102,8 +102,7 @@ class DoctorController extends Controller
         return redirect()->route('doctors.patientOrders')->with('success', 'Patient consultation batch Assigned successfully.');
     }
 
-    public function registerBatch(Request $request, Consultation $consultation)
-    {
+    public function registerBatch(Request $request, Consultation $consultation, Notifier $notifier) {
         $validatedData = $request->validate([
             'nurse_ids' => 'required|array',
             'nurse_ids.*' => 'exists:nurses,id',
@@ -117,11 +116,33 @@ class DoctorController extends Controller
         ]);
 
         $patientBatch->save();
-
-        // Associate nurses with the patient batch
         $patientBatch->nurses()->attach($validatedData['nurse_ids']);
 
         $patientBatchId = $patientBatch->id;
+
+        foreach($request->nurse_ids as $nurse) {
+            $nurse = Nurse::where('id', $nurse)->first();
+            $patient = $consultation->patientOrder->patient;
+
+            $inivtationUrl = env('APP_URL').'/nurse/schedule/invitation';
+            $message = "Hello " . $nurse->names . ", You've been assigned to new patient as : ".$patient->names. ", Confurm the batches ".$inivtationUrl;
+
+            $notifier->send([
+                SMSNotification::process([
+                    'phone' => $nurse->phone,
+                    'message' => $message
+                ])->to($nurse),
+            ]);
+
+            NurseScheduleInvitation::create([
+                'nurse_id' => $nurse->id,
+                'receptionist_id' => Auth::user()->id,
+                'direction' => "forward",
+                'message' => $message,
+                'payload' => [ 'patient_batch_id' => $patientBatchId ],
+                'type' => "schedule",
+            ]);
+        }
 
         $this->handleTimeTable($patientBatchId);
 
@@ -149,8 +170,7 @@ class DoctorController extends Controller
         return view('patients.batches', compact('patientBatches'));
     }
 
-    public function nurseBatches()
-    {
+    public function nurseBatches() {
         $nurseId = auth()->user()->id;
 
         // Retrieve patient batches assigned to the nurse
@@ -160,7 +180,6 @@ class DoctorController extends Controller
 
         return view('nurse.dashboard', compact('patientBatches'));
     }
-
 
 
     public function handleTimeTable($batchId)
@@ -311,6 +330,7 @@ class DoctorController extends Controller
             'receptionist_id' => Auth::user()->id,
             'direction' => "forward",
             'message' => $message,
+            'type' => "schedule",
             'payload' => [
                 'timetable' => $timetable->id,
                 'old_nurse' => $oldNurse,
@@ -337,45 +357,75 @@ class DoctorController extends Controller
         $invitation = NurseScheduleInvitation::where('id', $request->invitation)->first();
         $choise = $request->choice;
 
-        if($invitation && $choise == "approve") {
-            $timetable = Timetable::where('id', $invitation->payload['timetable'])->first();
-            $newNurse = Nurse::where('id', $invitation->payload['new_nurse'])->first();
+        if($invitation && $invitation->type == "schedule") {
+            if($choise == "approve") {
+                $timetable = Timetable::where('id', $invitation->payload['timetable'])->first();
+                $newNurse = Nurse::where('id', $invitation->payload['new_nurse'])->first();
 
-            $timetable->update([
-                'nurse_id' => $newNurse->id,
-                'date' => $invitation->payload['date'],
-                'patient_batch_id' => $timetable->patient_batch_id,
-                'doctor_id' => $timetable->doctor_id
-            ]);
+                $timetable->update([
+                    'nurse_id' => $newNurse->id,
+                    'date' => $invitation->payload['date'],
+                    'patient_batch_id' => $timetable->patient_batch_id,
+                    'doctor_id' => $timetable->doctor_id
+                ]);
 
-            $invitation->update([
-                'active_status' => false,
-                'direction' => "backward",
-                'message' => $newNurse->names." ".$choise." your calender schedule"
-            ]);
+                $invitation->update([
+                    'active_status' => false,
+                    'direction' => "backward",
+                    'message' => $newNurse->names." ".$choise." your calender schedule"
+                ]);
 
-            return redirect()->route('invitations')->with('success', "You've ".$choise." the schedule, Your response sent to receptionist");
+                return redirect()->route('invitations')->with('success', "You've ".$choise." the schedule, Your response sent to receptionist");
+            }
+
+            if($choise == "reject") {
+                $timetable = Timetable::where('id', $invitation->payload['timetable'])->first();
+                $newNurse = Nurse::where('id', $invitation->payload['new_nurse'])->first();
+
+                $timetable->update([
+                    'nurse_id' => $invitation->payload['old_nurse'],
+                    'date' => $invitation->payload['date'],
+                    'patient_batch_id' => $timetable->patient_batch_id,
+                    'doctor_id' => $timetable->doctor_id
+                ]);
+
+                $invitation->update([
+                    'active_status' => false,
+                    'direction' => "backward",
+                    'message' => $newNurse->names." ".$choise." your calender schedule"
+                ]);
+
+                return redirect()->route('invitations')->with('success', "You've ".$choise." the schedule, Your response sent to receptionist");
+            }
         }
 
-        if($invitation && $choise == "reject") {
-            $timetable = Timetable::where('id', $invitation->payload['timetable'])->first();
-            $newNurse = Nurse::where('id', $invitation->payload['new_nurse'])->first();
+        if($invitation && $invitation->type == "assignment") {
+            if($choise == "approve") {
+                $nurse = Nurse::where('id', $invitation->nurse_id)->first();
 
-            $timetable->update([
-                'nurse_id' => $invitation->payload['old_nurse'],
-                'date' => $invitation->payload['date'],
-                'patient_batch_id' => $timetable->patient_batch_id,
-                'doctor_id' => $timetable->doctor_id
-            ]);
+                $invitation->update([
+                    'active_status' => false,
+                    'direction' => "backward",
+                    'message' => $nurse->names." ".$choise." your calender schedule"
+                ]);
 
-            $invitation->update([
-                'active_status' => false,
-                'direction' => "backward",
-                'message' => $newNurse->names." ".$choise." your calender schedule"
-            ]);
+                return redirect()->route('invitations')->with('success', "You've ".$choise." the batch, Your response sent to receptionist");
+            }
 
-            return redirect()->route('invitations')->with('success', "You've ".$choise." the schedule, Your response sent to receptionist");
+            if($choise == "reject") {
+                $timetable = Timetable::where('nurse_id', $invitation->nurse_id)->where('patient_batch_id', $invitation->payload['patient_batch_id'])->delete();
+                $nurse = Nurse::where('id', $invitation->nurse_id)->first();
+
+                $invitation->update([
+                    'active_status' => false,
+                    'direction' => "backward",
+                    'message' => $nurse->names." ".$choise." your calender schedule"
+                ]);
+
+                return redirect()->route('invitations')->with('success', "You've ".$choise." the batch, Your response sent to receptionist");
+            }
         }
+
     }
 
     public function invitationView() {

@@ -22,10 +22,10 @@
                 </ul>
             </div>
         @endif
-        
+
         <div class="row">
-            <div class="col-sm-12">
-                @forelse ($invitations as $invitation)
+            @forelse ($invitations as $invitation)
+                <div class="col-sm-4">
                     <div class="card">
                         <div class="card-header d-flex flex-column align-items-center justify-content-between">
                             <h2>You've been scheduled</h2>
@@ -36,12 +36,12 @@
                                     @csrf
                                     <input type="hidden" name="invitation" value="{{ $invitation->id }}">
                                     <input type="hidden" name="choice" value="reject">
-                                    <button type="submit" class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#createDoctorModal">
+                                    <button type="submit" class="btn btn-danger mr-2" data-bs-toggle="modal" data-bs-target="#createDoctorModal">
                                         reject
                                     </button>
                                 </form>
 
-                                <form method="POST" action="{{ route('schedule.approve') }}">
+                                <form method="POST" action="{{ route('schedule.approve') }}" class="ml-2" style="margin-left: 5px">
                                     @csrf
                                     <input type="hidden" name="invitation" value="{{ $invitation->id }}">
                                     <input type="hidden" name="choice" value="approve">
@@ -52,14 +52,14 @@
                             </div>
                         </div>
                     </div>
-                @empty
+                </div>
+            @empty
                 <div class="card shadow-none">
                     <div class="card-header d-flex flex-column align-items-center justify-content-between">
                         <h4>No Schedule updates found</h4>
                     </div>
                 </div>
-                @endforelse
-            </div>
+            @endforelse
         </div>
     </div>
     @include('components.dashfooter')

@@ -16,6 +16,7 @@
                 $table->unsignedBigInteger('receptionist_id');
                 $table->unsignedBigInteger('nurse_id');
                 $table->longText('message')->nullable();
+                $table->string('type')->nullable();
                 $table->string('direction')->nullable()->default('forward');
                 $table->json('payload')->nullable();
                 $table->boolean('active_status')->nullable()->default(true);
