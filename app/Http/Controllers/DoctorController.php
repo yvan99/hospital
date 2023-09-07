@@ -140,7 +140,7 @@ class DoctorController extends Controller
                 'direction' => "forward",
                 'message' => $message,
                 'payload' => [ 'patient_batch_id' => $patientBatchId ],
-                'type' => "schedule",
+                'type' => "assignment",
             ]);
         }
 
@@ -366,7 +366,8 @@ class DoctorController extends Controller
                     'nurse_id' => $newNurse->id,
                     'date' => $invitation->payload['date'],
                     'patient_batch_id' => $timetable->patient_batch_id,
-                    'doctor_id' => $timetable->doctor_id
+                    'doctor_id' => $timetable->doctor_id,
+                    'confurmed' => true,
                 ]);
 
                 $invitation->update([
@@ -386,7 +387,8 @@ class DoctorController extends Controller
                     'nurse_id' => $invitation->payload['old_nurse'],
                     'date' => $invitation->payload['date'],
                     'patient_batch_id' => $timetable->patient_batch_id,
-                    'doctor_id' => $timetable->doctor_id
+                    'doctor_id' => $timetable->doctor_id,
+                    'confurmed' => true
                 ]);
 
                 $invitation->update([
@@ -402,6 +404,10 @@ class DoctorController extends Controller
         if($invitation && $invitation->type == "assignment") {
             if($choise == "approve") {
                 $nurse = Nurse::where('id', $invitation->nurse_id)->first();
+
+                Timetable::where('nurse_id', $invitation->nurse_id)
+                        ->where('patient_batch_id', $invitation->payload['patient_batch_id'])
+                        ->update([ 'confurmed' => true ]);
 
                 $invitation->update([
                     'active_status' => false,

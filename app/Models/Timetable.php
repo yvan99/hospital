@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timetable extends Model
 {
-    protected $fillable = ['nurse_id', 'patient_batch_id','doctor_id', 'date'];
+    protected $fillable = ['nurse_id', 'patient_batch_id','doctor_id', 'date', 'confurmed'];
     protected $dates = ['date'];
 
 

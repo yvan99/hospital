@@ -162,7 +162,7 @@
 
             events: [
                 @foreach ($nurseTimetables as $timetable) {
-                    title: '{{ $timetable->nurse->names }}'.toUpperCase(),
+                    title: '{{ $timetable->confurmed }}' == 1 ? '{{ $timetable->nurse->names }}'.toUpperCase() : '{{ $timetable->nurse->names }}'.toUpperCase() + "\n (wait Confirmation)",
                     start: '{{ $timetable->date->format('Y-m-d') }}',
                     data: '{{ $timetable->id }} - {{ $timetable->date->format('Y-m-d') }}'
                 },
