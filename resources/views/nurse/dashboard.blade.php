@@ -13,9 +13,10 @@
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
                             <h4 class="card-title">Assigned Patients Batches List</h4>
-
                         </div>
-
+                        <a href="{{ route('invitations') }}" class="btn btn-primary">
+                            Invitations
+                        </a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive border rounded">

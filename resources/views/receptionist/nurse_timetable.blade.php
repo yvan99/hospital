@@ -22,6 +22,21 @@
                     </div>
 
                     <div class="card-body">
+                        @foreach ($nurseScheduleStatus as $notification)
+                            <div class="mb-5">
+                                <div class="alert alert-info">
+                                    <form action="{{ route('delete.invitation') }}" method="POST" class="d-flex justify-content-between align-items-center">
+                                        @csrf
+                                        <div>{{ $notification->message }}</div>
+                                        <input type="hidden" name="invitation" value="{{ $notification->id }}">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createDoctorModal">
+                                            Ok
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endforeach
+
                         <!-- Alert div for displaying messages -->
                         @if (session('success'))
                             <div class="alert alert-success">
@@ -147,7 +162,7 @@
 
             events: [
                 @foreach ($nurseTimetables as $timetable) {
-                    title: '{{ $timetable->nurse->names }}'.toUpperCase(),
+                    title: '{{ $timetable->confurmed }}' == 1 ? '{{ $timetable->nurse->names }}'.toUpperCase() : '{{ $timetable->nurse->names }}'.toUpperCase() + "\n (wait Confirmation)",
                     start: '{{ $timetable->date->format('Y-m-d') }}',
                     data: '{{ $timetable->id }} - {{ $timetable->date->format('Y-m-d') }}'
                 },

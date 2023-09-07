@@ -49,6 +49,7 @@ Route::middleware('auth:receptionist')->group(function () {
         Route::post('/patient_orders', [PatientOrderController::class, 'store'])->name('patient_orders.store');
         Route::get('/nurse-timetable', [DoctorController::class, 'receptionistTimetablePreview'])->name('receptionist.timetable');
         Route::post('/receptionist/timetable-changes', [DoctorController::class, 'timetableChanges'])->name('change.nurse.shift');
+        Route::post('/delete/schedule/invitation', [DoctorController::class, 'deleteInvitation'])->name('delete.invitation');
     });
 });
 
@@ -74,5 +75,8 @@ Route::middleware('auth:nurse')->group(function () {
         Route::get('/notes/{batchId}', [NoteController::class, 'getNotesByBatchNurse'])->name('notes.by.batch');
         Route::get('/nurse-timetable', [DoctorController::class, 'nurseSchedule'])->name('nurse.nurseTimetable');
         Route::get('/medical/{patient_batch_id}', [NoteController::class,'viewMedicalReport'])->name('medical-report');
+
+        Route::post('/schedule/approve', [DoctorController::class, 'approveNurseSchedule'])->name('schedule.approve');
+        Route::get('/schedule/invitation', [DoctorController::class, 'invitationView'])->name('invitations');
     });
 });
