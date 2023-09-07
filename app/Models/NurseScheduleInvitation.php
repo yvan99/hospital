@@ -21,4 +21,12 @@
         protected $casts = [
             'payload' => 'array'
         ];
+
+        public function receptionist() {
+            return $this->belongsTo(Receptionist::class);
+        }
+
+        public function nurse() {
+            return $this->belongsTo(Nurse::class);
+        }
     }

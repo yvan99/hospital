@@ -27,8 +27,8 @@
             @forelse ($invitations as $invitation)
                 <div class="col-sm-4">
                     <div class="card">
-                        <div class="card-header d-flex flex-column align-items-center justify-content-between">
-                            <h2>You've been scheduled</h2>
+                        <div class="card-header d-flex text-center flex-column align-items-center justify-content-between">
+                            <h4>{{ $invitation->receptionist->names }}, Sent a Request </h4>
                             <p class="mt-4">{{ $invitation->message }}</p>
 
                             <div class="mt-4 d-flex">
