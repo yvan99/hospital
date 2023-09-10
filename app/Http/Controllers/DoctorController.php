@@ -12,14 +12,11 @@ use App\Models\PatientOrder;
 use App\Models\PatientBatch;
 use App\Models\Receptionist;
 use App\Models\Timetable;
-use App\Notifications\DatabaseNotification;
-use App\Notifications\SMSNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Patienceman\Notifier\Notifier;
 
 class DoctorController extends Controller
 {
@@ -103,7 +100,7 @@ class DoctorController extends Controller
         return redirect()->route('doctors.patientOrders')->with('success', 'Patient consultation batch Assigned successfully.');
     }
 
-    public function registerBatch(Request $request, Consultation $consultation, Notifier $notifier) {
+    public function registerBatch(Request $request, Consultation $consultation) {
         $validatedData = $request->validate([
             'nurse_ids' => 'required|array',
             'nurse_ids.*' => 'exists:nurses,id',
@@ -121,14 +118,14 @@ class DoctorController extends Controller
 
         $patientBatchId = $patientBatch->id;
 
-        $this->inviteEachNurse($request->nurse_ids, $consultation, $notifier, $patientBatchId);
+        $this->inviteEachNurse($request->nurse_ids, $consultation, $patientBatchId);
 
         $this->handleTimeTable($patientBatchId);
 
         return redirect()->back()->with('success', 'Patient batch registered successfully.');
     }
 
-    public function inviteEachNurse($nursesId, $consultation, $notifier, $patientBatchId) {
+    public function inviteEachNurse($nursesId, $consultation, $patientBatchId) {
         foreach($nursesId as $nurse) {
             $nurse = Nurse::where('id', $nurse)->first();
             $patient = $consultation->patientOrder->patient;
@@ -136,12 +133,8 @@ class DoctorController extends Controller
             $inivtationUrl = env('APP_URL').'/nurse/schedule/invitation';
             $message = "Hello " . $nurse->names . ", You've been assigned to new patient as : ".$patient->names. ", Confurm the batches ".$inivtationUrl;
 
-            $notifier->send([
-                SMSNotification::process([
-                    'phone' => $nurse->phone,
-                    'message' => $message
-                ])->to($nurse),
-            ]);
+            $callSms = new SmsController();
+            $callSms->sendSms($nurse->phone, $message);
 
             NurseScheduleInvitation::create([
                 'nurse_id' => $nurse->id,
@@ -314,7 +307,7 @@ class DoctorController extends Controller
         return view('receptionist.nurse_timetable', compact('nurseTimetables', 'isDuplicate', 'nurses', 'nurseScheduleStatus'));
     }
 
-    public function timetableChanges(Request $request, Notifier $notifier) {
+    public function timetableChanges(Request $request) {
         $timetable = Timetable::where('nurse_id', $request->old_nurse)->where('date', $request->newDate)->first();
         $newNurse = Nurse::where('id', $request->new_nurse)->first();
         $oldNurse = $timetable->nurse_id;
@@ -329,9 +322,8 @@ class DoctorController extends Controller
         $inivtationUrl = env('APP_URL').'/nurse/schedule/invitation';
         $message = "Hello " . $newNurse->names . ", You've been assigned to new shift on: ".$request->newDate. ", Confurm the invitation ".$inivtationUrl;
 
-        $notifier->send([
-            SMSNotification::process([ 'phone' => $newNurse->phone, 'message' => $message ])->to($newNurse),
-        ]);
+        $callSms = new SmsController();
+        $callSms->sendSms($newNurse->phone, $message);
 
         NurseScheduleInvitation::create([
             'nurse_id' => $newNurse->id,
