@@ -20,12 +20,10 @@
                             Generate TimeTable
                         </a>
                         @endif --}}
-                      
+
                     </div>
                     <div class="card-body">
-
                         <div id="calendar"></div>
-
                     </div>
                 </div>
             </div>
@@ -33,6 +31,7 @@
     </div>
     @include('components.dashfooter')
 </main>
+
 <script>
     $(document).ready(function() {
         $('#calendar').fullCalendar({
@@ -59,18 +58,19 @@
                 // Add the code information to the event element
                 // element.find('.fc-title').append('<br>' + event.description);
             },
-            
+
             events: [
                 @foreach ($nurseTimetables as $timetable)
                     {
                         title: '{{ $timetable->nurse->names }}'.toUpperCase(),
-                        start: '{{ $timetable->date->format('Y-m-d') }}',    
+                        start: '{{ $timetable->date->format('Y-m-d') }}',
                     },
                 @endforeach
             ]
         });
     });
 </script>
+
 {{-- // @if ($timetable->patientBatch)
 
 //     description: ' {{ $timetable->patientBatch->code }}', // Add the code info
