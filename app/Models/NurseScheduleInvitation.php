@@ -15,7 +15,8 @@
             'direction',
             'message',
             'payload',
-            'active_status'
+            'active_status',
+            'confurmed'
         ];
 
         protected $casts = [

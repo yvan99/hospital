@@ -282,7 +282,7 @@ class DoctorController extends Controller
     }
 
     public function receptionistTimetablePreview() {
-        $nurseTimetables = Timetable::with('nurse', 'patientBatch')
+        $nurseTimetables = Timetable::with(['nurse', 'patientBatch'])
             ->orderBy('date', 'asc')
             ->get();
 

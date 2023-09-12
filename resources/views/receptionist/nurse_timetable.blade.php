@@ -110,7 +110,7 @@
     </div>
 
     <div id="events-data" data-events="{{ json_encode($nurseTimetables->map(function($timetable) {
-        $title = $timetable->confirmed == 1 ? strtoupper(optional($timetable->nurse)->names) : strtoupper(optional($timetable->nurse)->names . "\n (wait Confirmation)");
+        $title = $timetable->confurmed ? strtoupper(optional($timetable->nurse)->names) : strtoupper(optional($timetable->nurse)->names . "\n (wait Confirmation)");
         $start = $timetable->date->format('Y-m-d');
         $data = $timetable->id . ' - ' . $timetable->date->format('Y-m-d');
 
