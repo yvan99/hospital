@@ -109,6 +109,18 @@
         </div>
     </div>
 
+    <div id="events-data" data-events="{{ json_encode($nurseTimetables->map(function($timetable) {
+        $title = $timetable->confirmed == 1 ? strtoupper(optional($timetable->nurse)->names) : strtoupper(optional($timetable->nurse)->names . "\n (wait Confirmation)");
+        $start = $timetable->date->format('Y-m-d');
+        $data = $timetable->id . ' - ' . $timetable->date->format('Y-m-d');
+
+        return [
+            'title' => $title,
+            'start' => $start,
+            'data' => $data,
+        ];
+    })->toArray()) }}"></div>
+
     @include('components.dashfooter')
 </main>
 
@@ -131,6 +143,8 @@
                 });
             });
     }
+
+    var events = JSON.parse(document.getElementById('events-data').getAttribute('data-events'));
 
     $(document).ready(function() {
         $('#calendar').fullCalendar({
@@ -160,14 +174,7 @@
                 element[0].setAttribute('indentifier', identifier);
             },
 
-            events: [
-                @foreach ($nurseTimetables as $timetable) {
-                    title: '{{ $timetable->confurmed }}' == 1 ? '{{ $timetable->nurse->names }}'.toUpperCase() : '{{ $timetable->nurse->names }}'.toUpperCase() + "\n (wait Confirmation)",
-                    start: '{{ $timetable->date->format('Y-m-d') }}',
-                    data: '{{ $timetable->id }} - {{ $timetable->date->format('Y-m-d') }}'
-                },
-                @endforeach
-            ]
+            events: events,
         });
     });
 </script>
